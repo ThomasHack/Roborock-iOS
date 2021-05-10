@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2226494C0000E1C041 /* StatusItemView.swift */; };
+		52046F2626494DA100E1C041 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2526494DA100E1C041 /* ButtonStyles.swift */; };
+		52046F2926494DC400E1C041 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2826494DC400E1C041 /* BlurView.swift */; };
 		6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542893B2646B78B009B8BE5 /* RoborockApp.swift */; };
 		654289402646B78C009B8BE5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6542893F2646B78C009B8BE5 /* Assets.xcassets */; };
 		654289432646B78C009B8BE5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 654289422646B78C009B8BE5 /* Preview Assets.xcassets */; };
@@ -24,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		52046F2226494C0000E1C041 /* StatusItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemView.swift; sourceTree = "<group>"; };
+		52046F2526494DA100E1C041 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		52046F2826494DC400E1C041 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		654289382646B78B009B8BE5 /* Roborock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roborock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6542893B2646B78B009B8BE5 /* RoborockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoborockApp.swift; sourceTree = "<group>"; };
 		6542893F2646B78C009B8BE5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -53,6 +59,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52046F2126494BF100E1C041 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				52046F2226494C0000E1C041 /* StatusItemView.swift */,
+				52046F2526494DA100E1C041 /* ButtonStyles.swift */,
+				52046F2826494DC400E1C041 /* BlurView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		6542892F2646B78B009B8BE5 = {
 			isa = PBXGroup;
 			children = (
@@ -72,6 +88,7 @@
 		6542893A2646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXGroup;
 			children = (
+				52046F2126494BF100E1C041 /* Views */,
 				654289592646C438009B8BE5 /* Main */,
 				654289562646C402009B8BE5 /* Home */,
 				6542894D2646C1CF009B8BE5 /* Api */,
@@ -206,14 +223,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				6542895D2646C4F4009B8BE5 /* ApiClient.swift in Sources */,
+				52046F2926494DC400E1C041 /* BlurView.swift in Sources */,
 				6542896A2646EE53009B8BE5 /* Segments.swift in Sources */,
 				654289682646E884009B8BE5 /* MainView.swift in Sources */,
 				654289662646E6DF009B8BE5 /* Home+HomeFeature.swift in Sources */,
 				6542896C264725F1009B8BE5 /* SegmentList.swift in Sources */,
 				6542895B2646C442009B8BE5 /* Main.swift in Sources */,
 				654289622646C728009B8BE5 /* Status.swift in Sources */,
+				52046F2626494DA100E1C041 /* ButtonStyles.swift in Sources */,
 				6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */,
 				654289642646E631009B8BE5 /* HomeView.swift in Sources */,
+				52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */,
 				6542895F2646C623009B8BE5 /* Api.swift in Sources */,
 				654289582646C40F009B8BE5 /* Home.swift in Sources */,
 			);
@@ -345,7 +365,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
-				DEVELOPMENT_TEAM = B3Q7FS5SEU;
+				DEVELOPMENT_TEAM = RSH2FX9LFY;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Roborock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -353,7 +373,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Roborock;
+				PRODUCT_BUNDLE_IDENTIFIER = de.deloittedigital.Roborock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -367,7 +387,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
-				DEVELOPMENT_TEAM = B3Q7FS5SEU;
+				DEVELOPMENT_TEAM = RSH2FX9LFY;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Roborock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -375,7 +395,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Roborock;
+				PRODUCT_BUNDLE_IDENTIFIER = de.deloittedigital.Roborock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

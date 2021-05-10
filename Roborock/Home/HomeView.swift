@@ -10,97 +10,94 @@ import ComposableArchitecture
 
 struct HomeView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
-    
+
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            NavigationView {
-                ZStack {
-                    Color(UIColor.secondarySystemBackground)
-                        .edgesIgnoringSafeArea(.bottom)
-                    
-                    VStack {
-                        if let status = viewStore.api.status {
-                            
-                            HStack {
-                                Text("Status: \(status.humanState)")
-                                Spacer()
-                                HStack(spacing: 8) {
-                                    if status.humanState == "Charging" {
-                                        Image(systemName: "battery.100.bolt")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(height: 14)
-                                    } else if status.battery < 25 {
-                                        Image(systemName: "battery.25")
-                                    } else {
-                                        Image(systemName: "battery.100")
-                                    }
-                                    
-                                    HStack(alignment: .lastTextBaseline, spacing: 1) {
-                                        Text("\(status.battery)")
-                                        Text("%")
-                                            .font(.system(size: 12))
-                                    }
-                                }
+            ZStack {
+                Image("background")
+                    .resizable()
+                    // .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+
+                VStack {
+
+                    HStack {
+                        Text("Roborock")
+                            .font(.system(size: 36, weight: .bold, design: .default))
+                        Spacer()
+                    }
+                    .padding()
+
+                    if let status = viewStore.api.status {
+
+                        HStack {
+                            Text("Status: \(status.humanState)")
+                            Spacer()
+                            Button(action: { viewStore.send(.fetchStatus)}) {
+                                Image(systemName: "arrow.clockwise")
                             }
                             .padding()
-                            
-                            SegmentList(store: store)
-                            
-                            Spacer()
-                            
-                            HStack {
-                                Button(action: { viewStore.send(.driveHome) }) {
-                                    Image(systemName: "house.fill")
-                                }
-                                .padding()
-                                
+                        }
+                        .padding()
+
+                        SegmentList(store: store)
+
+                        Spacer()
+
+                        HStack(spacing: 0) {
+                            Button(action: { viewStore.send(.driveHome) }) {
+                                Image(systemName: "house.fill")
+                            }
+                            .padding()
+
+                            if status.inCleaning == 0 && status.inReturning == 0 {
                                 Button(action: { viewStore.send(.startCleaning) }) {
                                     Image(systemName: "play.fill")
                                 }
-                                .disabled(viewStore.state.rooms.isEmpty)
                                 .padding()
-                                
-                                Button(action: { viewStore.send(.pauseCleaning) }) {
-                                    Image(systemName: "pause.fill")
-                                }
-                                .disabled(status.inCleaning == 0 && status.inReturning == 0)
-                                .padding()
-                                
+                            } else {
+
                                 Button(action: { viewStore.send(.stopCleaning) }) {
                                     Image(systemName: "stop.fill")
                                 }
-                                .disabled(status.inCleaning == 0 && status.inReturning == 0)
                                 .padding()
-                                
-                                Button(action: { viewStore.send(.fetchStatus)}) {
-                                    Image(systemName: "arrow.clockwise")
-                                }
-                                .padding()
-                                
-                                Button(action: { viewStore.send(.fetchMap)}) {
-                                    Image(systemName: "map.fill")
-                                }
-                                .padding()
-                                
                             }
-                            Spacer()
+
+                            /* Button(action: { viewStore.send(.pauseCleaning) }) {
+                                Image(systemName: "pause.fill")
+                            }
+                            .disabled(status.inCleaning == 0 && status.inReturning == 0)
+                            .padding()
+
+                            Button(action: { viewStore.send(.fetchMap)}) {
+                                Image(systemName: "map.fill")
+                            }
+                            .padding()
+
+                            Button(action: {
+                                viewStore.send(.selectAll)
+                            }) {
+                                Image(systemName: "list.bullet")
+                            }
+                            .padding()*/
                         }
+                        Spacer()
+                    }
+
+                    Spacer()
+
+                    if let status = viewStore.api.status {
+                        HStack {
+                            StatusItemView(iconName: viewStore.batteryIcon, label: "Battery", value: status.battery)
+
+                            StatusItemView(iconName: "stopwatch", label: "Clean Time", value: status.cleanTime)
+
+                            StatusItemView(iconName: "square.dashed", label: "Clean Area", value: status.cleanArea)
+                        }
+                        .padding()
                     }
                 }
-                // .edgesIgnoringSafeArea(.bottom)
-                .navigationBarTitle(Text("Roborock"), displayMode: .automatic)
-                .navigationBarItems(trailing:
-                                        HStack {
-                                            Button(action: {
-                                                viewStore.send(.selectAll)
-                                            }) {
-                                                Image(systemName: "list.bullet")
-                                            }
-                                        }
-                )
             }
-            // .navigationViewStyle(StackNavigationViewStyle())
         }.onAppear {
             let viewStore = ViewStore(store)
             viewStore.send(.fetchStatus)
