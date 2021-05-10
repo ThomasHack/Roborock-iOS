@@ -3,23 +3,42 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542893B2646B78B009B8BE5 /* RoborockApp.swift */; };
-		6542893E2646B78B009B8BE5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542893D2646B78B009B8BE5 /* ContentView.swift */; };
 		654289402646B78C009B8BE5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6542893F2646B78C009B8BE5 /* Assets.xcassets */; };
 		654289432646B78C009B8BE5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 654289422646B78C009B8BE5 /* Preview Assets.xcassets */; };
+		6542894C2646B7D5009B8BE5 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 6542894B2646B7D5009B8BE5 /* ComposableArchitecture */; };
+		654289582646C40F009B8BE5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289572646C40F009B8BE5 /* Home.swift */; };
+		6542895B2646C442009B8BE5 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542895A2646C442009B8BE5 /* Main.swift */; };
+		6542895D2646C4F4009B8BE5 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542895C2646C4F4009B8BE5 /* ApiClient.swift */; };
+		6542895F2646C623009B8BE5 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542895E2646C623009B8BE5 /* Api.swift */; };
+		654289622646C728009B8BE5 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289612646C728009B8BE5 /* Status.swift */; };
+		654289642646E631009B8BE5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289632646E631009B8BE5 /* HomeView.swift */; };
+		654289662646E6DF009B8BE5 /* Home+HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289652646E6DF009B8BE5 /* Home+HomeFeature.swift */; };
+		654289682646E884009B8BE5 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289672646E884009B8BE5 /* MainView.swift */; };
+		6542896A2646EE53009B8BE5 /* Segments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289692646EE53009B8BE5 /* Segments.swift */; };
+		6542896C264725F1009B8BE5 /* SegmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542896B264725F1009B8BE5 /* SegmentList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		654289382646B78B009B8BE5 /* Roborock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roborock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6542893B2646B78B009B8BE5 /* RoborockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoborockApp.swift; sourceTree = "<group>"; };
-		6542893D2646B78B009B8BE5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6542893F2646B78C009B8BE5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		654289422646B78C009B8BE5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		654289442646B78C009B8BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		654289572646C40F009B8BE5 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		6542895A2646C442009B8BE5 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		6542895C2646C4F4009B8BE5 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		6542895E2646C623009B8BE5 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		654289612646C728009B8BE5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
+		654289632646E631009B8BE5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		654289652646E6DF009B8BE5 /* Home+HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Home+HomeFeature.swift"; sourceTree = "<group>"; };
+		654289672646E884009B8BE5 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		654289692646EE53009B8BE5 /* Segments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segments.swift; sourceTree = "<group>"; };
+		6542896B264725F1009B8BE5 /* SegmentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6542894C2646B7D5009B8BE5 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,8 +72,10 @@
 		6542893A2646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXGroup;
 			children = (
+				654289592646C438009B8BE5 /* Main */,
+				654289562646C402009B8BE5 /* Home */,
+				6542894D2646C1CF009B8BE5 /* Api */,
 				6542893B2646B78B009B8BE5 /* RoborockApp.swift */,
-				6542893D2646B78B009B8BE5 /* ContentView.swift */,
 				6542893F2646B78C009B8BE5 /* Assets.xcassets */,
 				654289442646B78C009B8BE5 /* Info.plist */,
 				654289412646B78C009B8BE5 /* Preview Content */,
@@ -67,6 +89,45 @@
 				654289422646B78C009B8BE5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		6542894D2646C1CF009B8BE5 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				654289602646C70F009B8BE5 /* Model */,
+				6542895C2646C4F4009B8BE5 /* ApiClient.swift */,
+				6542895E2646C623009B8BE5 /* Api.swift */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		654289562646C402009B8BE5 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				654289572646C40F009B8BE5 /* Home.swift */,
+				654289652646E6DF009B8BE5 /* Home+HomeFeature.swift */,
+				654289632646E631009B8BE5 /* HomeView.swift */,
+				6542896B264725F1009B8BE5 /* SegmentList.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		654289592646C438009B8BE5 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				6542895A2646C442009B8BE5 /* Main.swift */,
+				654289672646E884009B8BE5 /* MainView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		654289602646C70F009B8BE5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				654289612646C728009B8BE5 /* Status.swift */,
+				654289692646EE53009B8BE5 /* Segments.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,6 +146,9 @@
 			dependencies = (
 			);
 			name = Roborock;
+			packageProductDependencies = (
+				6542894B2646B7D5009B8BE5 /* ComposableArchitecture */,
+			);
 			productName = Roborock;
 			productReference = 654289382646B78B009B8BE5 /* Roborock.app */;
 			productType = "com.apple.product-type.application";
@@ -112,6 +176,9 @@
 				Base,
 			);
 			mainGroup = 6542892F2646B78B009B8BE5;
+			packageReferences = (
+				6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			productRefGroup = 654289392646B78B009B8BE5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -138,8 +205,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6542893E2646B78B009B8BE5 /* ContentView.swift in Sources */,
+				6542895D2646C4F4009B8BE5 /* ApiClient.swift in Sources */,
+				6542896A2646EE53009B8BE5 /* Segments.swift in Sources */,
+				654289682646E884009B8BE5 /* MainView.swift in Sources */,
+				654289662646E6DF009B8BE5 /* Home+HomeFeature.swift in Sources */,
+				6542896C264725F1009B8BE5 /* SegmentList.swift in Sources */,
+				6542895B2646C442009B8BE5 /* Main.swift in Sources */,
+				654289622646C728009B8BE5 /* Status.swift in Sources */,
 				6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */,
+				654289642646E631009B8BE5 /* HomeView.swift in Sources */,
+				6542895F2646C623009B8BE5 /* Api.swift in Sources */,
+				654289582646C40F009B8BE5 /* Home.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +404,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.18.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6542894B2646B7D5009B8BE5 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 654289302646B78B009B8BE5 /* Project object */;
 }

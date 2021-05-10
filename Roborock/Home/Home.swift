@@ -1,0 +1,77 @@
+//
+//  Home.swift
+//  Roborock
+//
+//  Created by Thomas Hack on 08.05.21.
+//
+
+import Foundation
+import ComposableArchitecture
+
+enum Home {
+    struct State: Equatable {
+        var rooms: [Int]
+    }
+    
+    enum Action {
+        case fetchStatus
+        case fetchSegments
+        case fetchMap
+        case toggleRoom(Int)
+        case startCleaning
+        case stopCleaning
+        case pauseCleaning
+        case driveHome
+        case selectAll
+        
+        case api(Api.Action)
+    }
+    
+    typealias Environment = Main.Environment
+    
+    static let reducer = Reducer<HomeFeatureState, Action, Environment>.combine(
+        Reducer { state, action, environment in
+            switch action {
+            case .fetchStatus:
+                return Effect(value: Action.api(.fetchCurrentStatus))
+            case .fetchSegments:
+                return Effect(value: Action.api(.fetchSegments))
+            case .fetchMap:
+                return Effect(value: Action.api(.fetchSimpleMap))
+            case .toggleRoom(let roomId):
+                if let index = state.rooms.firstIndex(of: roomId) {
+                    state.rooms.remove(at: index)
+                } else {
+                    state.rooms.append(roomId)
+                }
+                return .none
+            case .startCleaning:
+                return Effect(value: Action.api(.startCleaningSegment(state.rooms)))
+            case .stopCleaning:
+                return Effect(value: Action.api(.stopCleaning))
+            case .pauseCleaning:
+                return Effect(value: Action.api(.pauseCleaning))
+            case .driveHome:
+                return Effect(value: Action.api(.driveHome))
+            case .selectAll:
+                if state.rooms.isEmpty {
+                    guard let segments = state.api.segments else { return .none }
+                    let rooms = segments.data.map { $0.id!}
+                    state.rooms = rooms
+                    return .none
+                }
+                state.rooms = []
+                return .none
+            case .api:
+                return .none
+            }
+        },
+        Api.reducer.pullback(
+            state: \HomeFeatureState.api,
+            action: /Action.api,
+            environment: { $0 }
+        )
+    )
+    
+    static let initialState = State(rooms: [])
+}

@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct RoborockApp: App {
+    var store: Store<Main.State, Main.Action> = Main.store
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView(store: store)
         }
     }
 }
