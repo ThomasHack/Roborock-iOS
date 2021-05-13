@@ -14,11 +14,6 @@ extension Home {
         var home: Home.State
         var api: Api.State
 
-        var batteryValue: Int {
-            guard let status = api.status else { return 0 }
-            return status.battery
-        }
-
         var batteryIcon: String {
             guard let status = api.status else { return "exclamationmark.circle" }
             if status.humanState == "Charging" {

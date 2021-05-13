@@ -16,93 +16,68 @@ struct HomeView: View {
             ZStack {
                 Image("background")
                     .resizable()
-                    // .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
 
                 VStack {
 
                     HStack {
                         Text("Roborock")
-                            .font(.system(size: 36, weight: .bold, design: .default))
+                            .font(.system(size: 42, weight: .bold, design: .default))
                         Spacer()
+                        Button(action: { viewStore.send(.fetchStatus) }) {
+                            Image(systemName: "arrow.clockwise")
+                        }
+                        .buttonStyle(SecondaryButtonStyle())
                     }
-                    .padding()
+                    .padding(.top, 36)
+                    .padding(.bottom, 0)
+                    .padding(.horizontal, 16)
 
                     if let status = viewStore.api.status {
 
                         HStack {
-                            Text("Status: \(status.humanState)")
+                            Text("Status:")
+                                .font(.system(size: 16, weight: .light, design: .default))
+                            Text("\(status.humanState)")
+                                .font(.system(.headline))
                             Spacer()
-                            Button(action: { viewStore.send(.fetchStatus)}) {
-                                Image(systemName: "arrow.clockwise")
-                            }
-                            .padding()
+
                         }
-                        .padding()
+                        .padding(.horizontal)
 
-                        SegmentList(store: store)
+                        MapView(store: store)
 
-                        Spacer()
+                        StatusView(store: store)
 
-                        HStack(spacing: 0) {
-                            Button(action: { viewStore.send(.driveHome) }) {
-                                Image(systemName: "house.fill")
-                            }
-                            .padding()
-
-                            if status.inCleaning == 0 && status.inReturning == 0 {
-                                Button(action: { viewStore.send(.startCleaning) }) {
-                                    Image(systemName: "play.fill")
-                                }
-                                .padding()
-                            } else {
-
-                                Button(action: { viewStore.send(.stopCleaning) }) {
-                                    Image(systemName: "stop.fill")
-                                }
-                                .padding()
-                            }
-
-                            /* Button(action: { viewStore.send(.pauseCleaning) }) {
-                                Image(systemName: "pause.fill")
-                            }
-                            .disabled(status.inCleaning == 0 && status.inReturning == 0)
-                            .padding()
-
-                            Button(action: { viewStore.send(.fetchMap)}) {
-                                Image(systemName: "map.fill")
-                            }
-                            .padding()
-
-                            Button(action: {
-                                viewStore.send(.selectAll)
-                            }) {
-                                Image(systemName: "list.bullet")
-                            }
-                            .padding()*/
-                        }
-                        Spacer()
+                        ButtonView(store: store)
                     }
-
                     Spacer()
-
-                    if let status = viewStore.api.status {
-                        HStack {
-                            StatusItemView(iconName: viewStore.batteryIcon, label: "Battery", value: status.battery)
-
-                            StatusItemView(iconName: "stopwatch", label: "Clean Time", value: status.cleanTime)
-
-                            StatusItemView(iconName: "square.dashed", label: "Clean Area", value: status.cleanArea)
-                        }
-                        .padding()
-                    }
                 }
             }
-        }.onAppear {
+            .popover(isPresented: viewStore.binding(get: { $0.presentRoomSelection }, send: Home.Action.toggleRoomSelection)){
+                NavigationView {
+                    SegmentList(store: store)
+                        .navigationBarTitle("Select Room", displayMode: .large)
+                        .navigationBarItems(leading: HStack {
+                            Button(action: { viewStore.send(.toggleRoomSelection(false))}) {
+                                Text("Cancel")
+                            }
+                        }, trailing: HStack {
+                            Button(action: {
+                                viewStore.send(.startCleaning)
+                                viewStore.send(.toggleRoomSelection(false))
+                            }) {
+                                Text("Start")
+                            }
+                        })
+                }
+            }
+        }
+        .onAppear {
             let viewStore = ViewStore(store)
             viewStore.send(.fetchStatus)
             viewStore.send(.fetchSegments)
-            // viewStore.send(.fetchMap)
+            viewStore.send(.fetchMap)
         }
     }
 }

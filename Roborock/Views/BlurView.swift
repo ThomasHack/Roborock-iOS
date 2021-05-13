@@ -25,3 +25,22 @@ struct BlurView: UIViewRepresentable {
         uiView.effect = UIBlurEffect(style: self.style)
     }
 }
+
+struct VibrancyView: UIViewRepresentable {
+    typealias UIViewType = UIVisualEffectView
+
+    let style: UIVibrancyEffectStyle
+    let blurEffect = UIBlurEffect(style: .systemChromeMaterial)
+
+    init(style: UIVibrancyEffectStyle = .label) {
+        self.style = style
+    }
+
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        return UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: blurEffect, style: self.style))
+    }
+
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
+        uiView.effect = UIVibrancyEffect(blurEffect: blurEffect, style: self.style)
+    }
+}

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUIVisualEffects
 
 struct StatusItemView: View {
 
@@ -20,10 +21,12 @@ struct StatusItemView: View {
                     Image(systemName: iconName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color("blue"))
                 }
                 .frame(width: 36, height: 36)
-                .padding(.vertical, 16)
+                .padding(.top, 24)
+                .padding(.bottom, 24)
+
                 VStack(spacing: 4) {
                     HStack {
                         Spacer()
@@ -31,28 +34,28 @@ struct StatusItemView: View {
                     HStack(alignment: .lastTextBaseline, spacing: 2) {
                         Text("\(value)")
                             .font(.system(size: 18, weight: .bold, design: .default))
-                            .foregroundColor(.blue)
+                            .foregroundColor(Color("blue"))
                             .fixedSize(horizontal: true, vertical: false)
                         Text("%")
                             .font(.system(size: 14, weight: .bold, design: .default))
-                            .foregroundColor(.blue)
+                            .foregroundColor(Color("blue"))
                     }
                     .fixedSize(horizontal: true, vertical: false)
 
                     Text(label)
-                        .font(.system(size: 14, weight: .light, design: .default))
+                        .font(.system(size: 12, weight: .regular, design: .default))
                         .foregroundColor(Color(.label))
                         .fixedSize(horizontal: true, vertical: false)
+                        .vibrancyEffect()
                 }
                 .padding(.bottom, 16)
             }
         }
-        .background(Color.white.opacity(0.5))
-        .background(BlurView().opacity(0.2))
+        .background(BlurEffect())
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(.systemBackground), lineWidth: 2))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal, 4)
-        .shadow(color: Color.black.opacity(0.05), radius: 20.0, x: 10, y: 10)
+        .shadow(color: Color.black.opacity(0.05), radius: 20.0, x: 15, y: 15)
     }
 }
 

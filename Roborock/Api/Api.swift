@@ -36,6 +36,7 @@ enum Api {
         case pauseCleaning
         case pauseCleaningResponse(Result<Data, ApiClient.Failure>)
         case refreshState(Result<Data, ApiClient.Failure>)
+        case refreshStateAndMap(Result<Data, ApiClient.Failure>)
         case driveHome
     }
     
@@ -105,6 +106,18 @@ enum Api {
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.refreshState)
+        case .refreshStateAndMap(let response):
+            switch response {
+            case .success(_):
+                return .merge(
+                    Effect(value: Action.fetchCurrentStatus),
+                    Effect(value: Action.fetchSimpleMap)
+                )
+                .debounce(id: ApiId(), for: 3.0, scheduler: environment.mainQueue)
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+            return .none
         case .refreshState(let response):
             switch response {
             case .success(_):

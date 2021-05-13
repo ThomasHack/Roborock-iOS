@@ -11,6 +11,7 @@ import ComposableArchitecture
 enum Home {
     struct State: Equatable {
         var rooms: [Int]
+        var presentRoomSelection: Bool = false
     }
     
     enum Action {
@@ -23,6 +24,7 @@ enum Home {
         case pauseCleaning
         case driveHome
         case selectAll
+        case toggleRoomSelection(Bool)
         
         case api(Api.Action)
     }
@@ -61,6 +63,9 @@ enum Home {
                     return .none
                 }
                 state.rooms = []
+                return .none
+            case .toggleRoomSelection(let toggle):
+                state.presentRoomSelection = toggle
                 return .none
             case .api:
                 return .none
