@@ -180,8 +180,10 @@ enum Api {
             case .binary(let data):
                 if data.isGzipped {
                     do {
-                        let decompressed = try data.gunzipped()
-                        extractZtxtPngChunks(data: data)
+                        let fileParser = MapFileParser()
+                        let data = try data.gunzipped()
+                        fileParser.parseMapData(data)
+                        fileParser.drawMap()
                     } catch {
                         print(String(describing: error))
                     }
@@ -212,65 +214,4 @@ enum Api {
         ]
         )
     )
-    
-    struct Chunk {
-        var keyword: String
-        var data: [UInt8]
-    }
-    
-    enum Blocktype: Int {
-        case charger = 1
-        case image = 2
-        case path = 3
-    }
-    
-    static func extractZtxtPngChunks(data: Data) {
-        
-        let array = [UInt8](data)
-        
-        var chargerX: Int?
-        var chargerY: Int?
-        
-        var imgHeight: Int?
-        var imgWidth: Int?
-        var imagesize: Int?
-        
-        var top: Int?
-        var left: Int?
-        var image: Int?
-        
-        let versionMajor = array[8]
-        let versionMinor = array[10]
-        let mapIndex = array[12]
-        let mapSequence = array[14]
-        
-        var nextPos = 20
-        
-        while nextPos < array.count {
-            let header = getBytesInRange(raw: array, position: nextPos, length: 32)
-            let blockType = Blocktype(rawValue: Int(header[4]))
-            
-            switch (blockType) {
-            case .charger:
-                chargerX = Int(header[8])
-                chargerY = Int(header[12])
-                break
-            case .image:
-                break
-            case .path:
-                break
-            case .none:
-                break
-            }
-        }
-    }
-    
-    static func getBytesInRange(raw: [UInt8], position: Int, length: Int) -> [UInt8] {
-        return Array(raw[position..<length])
-    }
-    
-    static func getUInt32LE(bytes: [UInt8], position: Int) {
-        var value = bytes[0 + position] & 0xFF
-        value |= (bytes[1 + position] << 8) & 0xFFFF
-    }
 }
