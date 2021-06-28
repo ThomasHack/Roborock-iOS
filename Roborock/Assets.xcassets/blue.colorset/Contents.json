@@ -13,18 +13,6 @@
       "idiom" : "universal"
     },
     {
-      "color" : {
-        "color-space" : "srgb",
-        "components" : {
-          "alpha" : "1.000",
-          "blue" : "0.800",
-          "green" : "0.206",
-          "red" : "0.198"
-        }
-      },
-      "idiom" : "universal"
-    },
-    {
       "appearances" : [
         {
           "appearance" : "luminosity",

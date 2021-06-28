@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Combine
 
 struct ApiClient {
     var fetchCurrentStatus: (AnyHashable) -> Effect<Status, Failure>
@@ -21,7 +22,7 @@ struct ApiClient {
 }
 
 extension ApiClient {
-    static let baseUrl = "http://roborock/api"
+    static let baseUrl = "http://roborock.home/api"
     static let live = ApiClient(
         fetchCurrentStatus: { id in
             let url = URL(string: "\(baseUrl)/current_status")!
@@ -31,7 +32,8 @@ extension ApiClient {
                 .decode(type: Status.self, decoder: jsonDecoder)
                 .mapError { _ in Failure() }
                 .eraseToEffect()
-        }, fetchSegments: { id in
+        },
+        fetchSegments: { id in
             let url = URL(string: "\(baseUrl)/segment_names")!
             
             return URLSession.shared.dataTaskPublisher(for: url)
@@ -39,14 +41,16 @@ extension ApiClient {
                 .decode(type: Segment.self, decoder: jsonDecoder)
                 .mapError { _ in Failure() }
                 .eraseToEffect()
-        }, fetchMap: { id in
+        },
+        fetchMap: { id in
             let url = URL(string: "\(baseUrl)/simple_map")!
             
             return URLSession.shared.dataTaskPublisher(for: url)
                 .map { data, _ in data }
                 .mapError { _ in Failure() }
                 .eraseToEffect()
-        }, startCleaningSegment: { id, rooms in
+        },
+        startCleaningSegment: { id, rooms in
             let url = URL(string: "\(baseUrl)/start_cleaning_segment")!
             var request = URLRequest(url: url)
             request.httpMethod = "PUT"
@@ -61,7 +65,8 @@ extension ApiClient {
                 .map{ data, _ in data }
                 .mapError{ _ in Failure() }
                 .eraseToEffect()
-        }, stopCleaning: { id in
+        },
+        stopCleaning: { id in
             let url = URL(string: "\(baseUrl)/stop_cleaning")!
             var request = URLRequest(url: url)
             request.httpMethod = "PUT"
@@ -73,7 +78,8 @@ extension ApiClient {
                     return Failure()
                 }
                 .eraseToEffect()
-        }, pauseCleaning: { id in
+        },
+        pauseCleaning: { id in
             let url = URL(string: "\(baseUrl)/pause_cleaning")!
             var request = URLRequest(url: url)
             request.httpMethod = "PUT"

@@ -12,7 +12,8 @@ struct StatusItemView: View {
 
     @State var iconName: String
     @State var label: String
-    @State var value: Int
+    @State var value: String
+    @State var unit: String
 
     var body: some View {
         Button(action: {}) {
@@ -32,11 +33,11 @@ struct StatusItemView: View {
                         Spacer()
                     }
                     HStack(alignment: .lastTextBaseline, spacing: 2) {
-                        Text("\(value)")
+                        Text(value)
                             .font(.system(size: 18, weight: .bold, design: .default))
                             .foregroundColor(Color("blue"))
                             .fixedSize(horizontal: true, vertical: false)
-                        Text("%")
+                        Text(unit)
                             .font(.system(size: 14, weight: .bold, design: .default))
                             .foregroundColor(Color("blue"))
                     }
@@ -51,22 +52,25 @@ struct StatusItemView: View {
                 .padding(.bottom, 16)
             }
         }
-        .background(BlurEffect())
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(.systemBackground), lineWidth: 2))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        // .background(BlurEffect())
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
         .padding(.horizontal, 4)
-        .shadow(color: Color.black.opacity(0.05), radius: 20.0, x: 15, y: 15)
+        .shadow(color: Color.black.opacity(0.05), radius: 10.0, x: 15, y: 15)
+        .shadow(color: Color.white.opacity(0.4), radius: 7.5, x: -5, y: -5)
     }
 }
 
 struct StatusItemView_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
-            StatusItemView(iconName: "battery.100.bolt", label: "Battery", value: 100)
-            StatusItemView(iconName: "stopwatch", label: "Clean Time", value: 52)
-            StatusItemView(iconName: "square.dashed", label: "Clean Area", value: 97)
+            StatusItemView(iconName: "battery.100.bolt", label: "Battery", value: "100", unit: "%")
+            StatusItemView(iconName: "stopwatch", label: "Clean Time", value: "52", unit: "min")
+            StatusItemView(iconName: "square.dashed", label: "Clean Area", value: "97", unit: "qm")
         }
+        .padding(.vertical, 100)
+        .padding(.horizontal, 24)
         .background(Color(UIColor.secondarySystemBackground))
-        .previewLayout(.fixed(width: 320, height: 200))
+        .previewLayout(.fixed(width: 360, height: 280))
     }
 }

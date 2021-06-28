@@ -13,17 +13,20 @@ struct PrimaryButtonStyle: ButtonStyle {
     var disabled = false
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        let backgroundColor = Color("blue")
+        let background = LinearGradient(gradient: Gradient(
+            colors: [Color("blue"), Color("blue-dark")]),
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing)
+        
         let foregroundColor = Color(UIColor.white)
 
         return configuration.label
             .padding(24)
             .foregroundColor(foregroundColor)
-            .background(backgroundColor)
-            .background(BlurView().opacity(active ? 1.0 : 0.2))
-            .overlay(Circle().stroke(Color("blue-light"), lineWidth: 2))
+            .background(background)
             .clipShape(Circle())
-            .shadow(color: Color.black.opacity(0.125), radius: 20, x: 10, y: 10)
+            .shadow(color: Color("blue-dark").opacity(0.125), radius: 20, x: 10, y: 10)
+            .shadow(color: Color.white.opacity(0.4), radius: 7.5, x: -5, y: -5)
     }
 }
 
@@ -32,13 +35,18 @@ struct SecondaryButtonStyle: ButtonStyle {
     var disabled = false
 
     func makeBody(configuration: Self.Configuration) -> some View {
+        let background = LinearGradient(gradient: Gradient(
+                                            colors: [Color.white, Color("blue")]),
+                                           startPoint: .topLeading,
+                                           endPoint: .bottomTrailing).opacity(0.05)
         return configuration.label
             .padding(16)
             .foregroundColor(Color("blue"))
-            .background(BlurEffect())
-            .overlay(Circle().stroke(Color(.systemBackground), lineWidth: 2))
+            .background(background)
+            .background(Color.white)
             .clipShape(Circle())
-            .shadow(color: Color.black.opacity(0.075), radius: 15.0, x: 7.5, y: 7.5)
+            .shadow(color: Color("blue-dark").opacity(0.075), radius: 15.0, x: 7.5, y: 7.5)
+            .shadow(color: Color.white.opacity(0.4), radius: 7.5, x: -5, y: -5)
     }
 }
 
@@ -72,8 +80,12 @@ struct PrimaryButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             PrimaryButton()
+            Spacer(minLength: 40)
             SecondaryButton()
         }
-            .previewLayout(.fixed(width: 80, height: 160))
+        .padding(.vertical, 100)
+        .padding(.horizontal, 100)
+        .background(Color(UIColor.secondarySystemBackground))
+        .previewLayout(.fixed(width: 150, height: 200))
     }
 }

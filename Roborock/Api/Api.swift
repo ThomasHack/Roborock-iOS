@@ -7,17 +7,28 @@
 
 import UIKit
 import ComposableArchitecture
+import Gzip
 
 struct ApiId: Hashable {}
 
+enum ConnectivityState {
+    case connected
+    case connecting
+    case disconnected
+}
+
 enum Api {
     struct State: Equatable {
+        var connectivityState: ConnectivityState = .disconnected
+        
         var status: Status?
         var segments: Segment?
         var mapImage: UIImage?
     }
     
     enum Action: Equatable {
+        case connect(URL)
+        case disconnect
         case fetchCurrentStatus
         case statusResponse(Result<Status, ApiClient.Failure>)
         case fetchConsumableStatus
@@ -38,17 +49,34 @@ enum Api {
         case refreshState(Result<Data, ApiClient.Failure>)
         case refreshStateAndMap(Result<Data, ApiClient.Failure>)
         case driveHome
+        case driveHomeResponse(Result<Data, ApiClient.Failure>)
+        
+        case didConnect
+        case didDisconnect
+        case didUpdateStatus(Status)
+        case didReceiveWebSocketEvent(ApiWebSocketEvent)
     }
     
     typealias Environment = Main.Environment
     
     static let reducer = Reducer<State, Action, Environment> { state, action, environment in
         switch action {
+        case .connect(let url):
+            return environment.websocketClient.connect(ApiId(), url)
+                .receive(on: environment.mainQueue)
+                .eraseToEffect()
+            
+        case .disconnect:
+            return environment.websocketClient.disconnect(ApiId())
+                .receive(on: environment.mainQueue)
+                .eraseToEffect()
+            
         case .fetchCurrentStatus:
             return environment.apiClient.fetchCurrentStatus(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.statusResponse)
+            
         case .statusResponse(let response):
             switch response {
             case .success(let status):
@@ -58,11 +86,13 @@ enum Api {
                 print("error: \(error)")
                 return .none
             }
+            
         case .fetchSegments:
             return environment.apiClient.fetchSegments(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.segmentsResponse)
+            
         case .segmentsResponse(let response):
             switch response {
             case .success(let segments):
@@ -71,11 +101,13 @@ enum Api {
                 print("error: \(error.localizedDescription)")
             }
             return .none
+            
         case .fetchSimpleMap:
             return environment.apiClient.fetchMap(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.mapResponse)
+            
         case .mapResponse(let response):
             switch response {
             case .success(let data):
@@ -90,22 +122,26 @@ enum Api {
             return environment.apiClient.startCleaningSegment(ApiId(), rooms)
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
-                .map(Action.refreshState)
+                .map(Action.startCleaningSegmentResponse)
+            
         case .stopCleaning:
             return environment.apiClient.stopCleaning(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
-                .map(Action.refreshState)
+                .map(Action.stopCleaningResponse)
+            
         case .pauseCleaning:
             return environment.apiClient.pauseCleaning(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
-                .map(Action.refreshState)
+                .map(Action.pauseCleaningResponse)
+            
         case .driveHome:
             return environment.apiClient.driveHome(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
-                .map(Action.refreshState)
+                .map(Action.driveHomeResponse)
+            
         case .refreshStateAndMap(let response):
             switch response {
             case .success(_):
@@ -113,20 +149,48 @@ enum Api {
                     Effect(value: Action.fetchCurrentStatus),
                     Effect(value: Action.fetchSimpleMap)
                 )
-                .debounce(id: ApiId(), for: 3.0, scheduler: environment.mainQueue)
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
             }
             return .none
+            
         case .refreshState(let response):
             switch response {
             case .success(_):
                 return Effect(value: Action.fetchCurrentStatus)
-                    .debounce(id: ApiId(), for: 3.0, scheduler: environment.mainQueue)
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
             }
             return .none
+            
+        case .didConnect:
+            state.connectivityState = .connected
+            return .none
+            
+        case .didDisconnect:
+            state.connectivityState = .disconnected
+            return .none
+            
+        case .didUpdateStatus(let status):
+            state.status = status
+            return .none
+            
+        case .didReceiveWebSocketEvent(let event):
+            switch event {
+            case .binary(let data):
+                if data.isGzipped {
+                    do {
+                        let decompressed = try data.gunzipped()
+                        extractZtxtPngChunks(data: data)
+                    } catch {
+                        print(String(describing: error))
+                    }
+                }
+                return .none
+            default:
+                return .none
+            }
+            
         default:
             return .none
         }
@@ -135,7 +199,7 @@ enum Api {
     static let initialState = State()
     
     static let previewState = State(
-        status: Status(battery: 100, cleanTime: 30, cleanArea: 40, inCleaning: 0, inReturning: 0, humanState: "In Progress"),
+        status: Status(state: 2, otaState: "idle", messageVersion: 3, battery: 94, cleanTime: 4, cleanArea: 0, errorCode: 0, mapPresent: 1, inCleaning: 0, inReturning: 0, inFreshState: 1, waterBoxStatus: 0, fanPower: 101, dndEnabled: 0, mapStatus: 3, mainBrushLife: 84, sideBrushLife: 75, filterLife: 67, stateHumanReadable: "Charger disconnected", model: "roborock.vacuum.s5", errorHumanReadable: "No error"),
         segments: Segment(segment: [
             SegmentValue(id: 16, name: "Arbeitszimmer"),
             SegmentValue(id: 17, name: "Wohnzimmer"),
@@ -148,4 +212,65 @@ enum Api {
         ]
         )
     )
+    
+    struct Chunk {
+        var keyword: String
+        var data: [UInt8]
+    }
+    
+    enum Blocktype: Int {
+        case charger = 1
+        case image = 2
+        case path = 3
+    }
+    
+    static func extractZtxtPngChunks(data: Data) {
+        
+        let array = [UInt8](data)
+        
+        var chargerX: Int?
+        var chargerY: Int?
+        
+        var imgHeight: Int?
+        var imgWidth: Int?
+        var imagesize: Int?
+        
+        var top: Int?
+        var left: Int?
+        var image: Int?
+        
+        let versionMajor = array[8]
+        let versionMinor = array[10]
+        let mapIndex = array[12]
+        let mapSequence = array[14]
+        
+        var nextPos = 20
+        
+        while nextPos < array.count {
+            let header = getBytesInRange(raw: array, position: nextPos, length: 32)
+            let blockType = Blocktype(rawValue: Int(header[4]))
+            
+            switch (blockType) {
+            case .charger:
+                chargerX = Int(header[8])
+                chargerY = Int(header[12])
+                break
+            case .image:
+                break
+            case .path:
+                break
+            case .none:
+                break
+            }
+        }
+    }
+    
+    static func getBytesInRange(raw: [UInt8], position: Int, length: Int) -> [UInt8] {
+        return Array(raw[position..<length])
+    }
+    
+    static func getUInt32LE(bytes: [UInt8], position: Int) {
+        var value = bytes[0 + position] & 0xFF
+        value |= (bytes[1 + position] << 8) & 0xFFFF
+    }
 }

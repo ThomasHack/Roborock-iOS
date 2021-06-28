@@ -32,13 +32,13 @@ struct HomeView: View {
                     .padding(.top, 36)
                     .padding(.bottom, 0)
                     .padding(.horizontal, 16)
-
-                    if let status = viewStore.api.status {
+                    
+                    if viewStore.api.connectivityState == .connected, let status = viewStore.api.status {
 
                         HStack {
                             Text("Status:")
                                 .font(.system(size: 16, weight: .light, design: .default))
-                            Text("\(status.humanState)")
+                            Text("\(status.stateHumanReadable)")
                                 .font(.system(.headline))
                             Spacer()
 
@@ -75,9 +75,8 @@ struct HomeView: View {
         }
         .onAppear {
             let viewStore = ViewStore(store)
-            viewStore.send(.fetchStatus)
             viewStore.send(.fetchSegments)
-            viewStore.send(.fetchMap)
+            //viewStore.send(.fetchMap)
         }
     }
 }

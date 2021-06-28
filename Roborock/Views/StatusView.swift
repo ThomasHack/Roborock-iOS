@@ -15,11 +15,11 @@ struct StatusView: View {
         WithViewStore(self.store) { viewStore in
             if let status = viewStore.api.status {
                 HStack {
-                    StatusItemView(iconName: viewStore.batteryIcon, label: "Battery", value: status.battery)
+                    StatusItemView(iconName: viewStore.batteryIcon, label: "Battery", value: "\(status.battery)", unit: "%")
 
-                    StatusItemView(iconName: "stopwatch", label: "Clean Time", value: status.cleanTime)
+                    StatusItemView(iconName: "stopwatch", label: "Clean Time", value: String(format: "%.2f", status.cleanTime), unit: "min")
 
-                    StatusItemView(iconName: "square.dashed", label: "Clean Area", value: status.cleanArea)
+                    StatusItemView(iconName: "square.dashed", label: "Clean Area", value: String(format: "%.2f", status.cleanArea), unit: "qm")
                 }
                 .padding()
             }

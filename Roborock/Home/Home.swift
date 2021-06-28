@@ -15,6 +15,7 @@ enum Home {
     }
     
     enum Action {
+        case connect
         case fetchStatus
         case fetchSegments
         case fetchMap
@@ -34,6 +35,9 @@ enum Home {
     static let reducer = Reducer<HomeFeatureState, Action, Environment>.combine(
         Reducer { state, action, environment in
             switch action {
+            case .connect:
+                let url = URL(string: "http://roborock/")
+                return Effect(value: Action.api(.connect(url!)))
             case .fetchStatus:
                 return Effect(value: Action.api(.fetchCurrentStatus))
             case .fetchSegments:
