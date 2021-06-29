@@ -182,8 +182,7 @@ enum Api {
                     do {
                         let fileParser = MapFileParser()
                         let data = try data.gunzipped()
-                        fileParser.parseMapData(data)
-                        fileParser.drawMap()
+                        fileParser.parse(data)
                     } catch {
                         print(String(describing: error))
                     }
