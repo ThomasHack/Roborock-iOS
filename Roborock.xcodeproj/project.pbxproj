@@ -18,6 +18,7 @@
 		5211E4EE268B580D0043F55F /* Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4ED268B580D0043F55F /* Path.swift */; };
 		5211E4F0268B594B0043F55F /* GoToTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4EF268B594B0043F55F /* GoToTarget.swift */; };
 		5211E4F2268B79A70043F55F /* rr-map-parser.js in Resources */ = {isa = PBXBuildFile; fileRef = 5211E4F1268B79A70043F55F /* rr-map-parser.js */; };
+		5211E4F4268B7C0F0043F55F /* mapData.json in Resources */ = {isa = PBXBuildFile; fileRef = 5211E4F3268B7C0F0043F55F /* mapData.json */; };
 		5275B1642649919D008B4DC7 /* SwiftUIVisualEffects in Frameworks */ = {isa = PBXBuildFile; productRef = 5275B1632649919D008B4DC7 /* SwiftUIVisualEffects */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
 		52989C81268A3FCF00DF3237 /* UIColor+RGBA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52989C80268A3FCF00DF3237 /* UIColor+RGBA.swift */; };
@@ -60,6 +61,7 @@
 		5211E4ED268B580D0043F55F /* Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Path.swift; sourceTree = "<group>"; };
 		5211E4EF268B594B0043F55F /* GoToTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToTarget.swift; sourceTree = "<group>"; };
 		5211E4F1268B79A70043F55F /* rr-map-parser.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "rr-map-parser.js"; sourceTree = "<group>"; };
+		5211E4F3268B7C0F0043F55F /* mapData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mapData.json; sourceTree = "<group>"; };
 		5275B16526499263008B4DC7 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		52F12B9D268A2D4400C5494E /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				5211E4F3268B7C0F0043F55F /* mapData.json */,
 				5211E4F1268B79A70043F55F /* rr-map-parser.js */,
 				52F12B9E268A2D5400C5494E /* Data+ByteBuffer.swift */,
 				52F12BA0268A2D6B00C5494E /* String+Hexadecimal.swift */,
@@ -295,6 +298,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5211E4F4268B7C0F0043F55F /* mapData.json in Resources */,
 				654289432646B78C009B8BE5 /* Preview Assets.xcassets in Resources */,
 				654289402646B78C009B8BE5 /* Assets.xcassets in Resources */,
 				5211E4F2268B79A70043F55F /* rr-map-parser.js in Resources */,
