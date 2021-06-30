@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 import Combine
 
-struct ApiClient {
+struct ApiRestClient {
     var fetchCurrentStatus: (AnyHashable) -> Effect<Status, Failure>
     var fetchSegments: (AnyHashable) -> Effect<Segment, Failure>
     var fetchMap: (AnyHashable) -> Effect<Data, Failure>
@@ -21,9 +21,9 @@ struct ApiClient {
     struct Failure: Error, Equatable {}
 }
 
-extension ApiClient {
+extension ApiRestClient {
     static let baseUrl = "http://roborock.home/api"
-    static let live = ApiClient(
+    static let live = ApiRestClient(
         fetchCurrentStatus: { id in
             let url = URL(string: "\(baseUrl)/current_status")!
             

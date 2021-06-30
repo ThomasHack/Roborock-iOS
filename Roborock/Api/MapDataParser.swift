@@ -1,5 +1,5 @@
 //
-//  RRFileParser.swift
+//  MapDataParser.swift
 //  Roborock
 //
 //  Created by Hack, Thomas on 28.06.21.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-struct PixelData {
+struct Pixel {
     var r: UInt8
     var g: UInt8
     var b: UInt8
     var a: UInt8 = 255
 }
 
-class MapFileParser {
+class MapDataParser {
 
     static let dimensionPixels = 1024.0
     static let maxBlocks = 32
@@ -43,7 +43,7 @@ class MapFileParser {
         guard data.getUtf8(position: 0) == "r" && data.getUtf8(position: 1) == "r" else { return nil }
 
         // Parse map data
-        let mapData = parseBlock(data, offset: "0x14".hexaToDecimal)
+        let mapData = parseBlock(data, offset: "0x14".decimal)
 
         // Generate map image
         guard let mapImageData: MapData.ImageData = mapData.image else { return nil }
@@ -68,13 +68,13 @@ class MapFileParser {
             return mapData
         }
 
-        guard let _ = block.getBytes(position: "0x00".hexaToDecimal + offset, length: 2) else {
+        guard let _ = block.getBytes(position: "0x00".decimal + offset, length: 2) else {
             print("no block header");
             return mapData
         }
-        let headerLength = block.getInt16(position: "0x02".hexaToDecimal + offset)
-        let blockLength = block.getInt32(position: "0x04".hexaToDecimal + offset)
-        let blockType = Blocktype(rawValue: block.getInt16(position: "0x00".hexaToDecimal + offset))
+        let headerLength = block.getInt16(position: "0x02".decimal + offset)
+        let blockLength = block.getInt32(position: "0x04".decimal + offset)
+        let blockType = Blocktype(rawValue: block.getInt16(position: "0x00".decimal + offset))
 
         var tempMapData = mapData
 
@@ -105,36 +105,36 @@ class MapFileParser {
     }
 
     fileprivate func parseMetaBlock(_ block: Data) -> MapData.Meta {
-        let headerLength = block.getInt16(position: "0x02".hexaToDecimal)
-        let dataLength = block.getInt32(position: "0x04".hexaToDecimal)
-        let majorVersion = block.getInt16(position: "0x08".hexaToDecimal)
-        let minorVersion = block.getInt16(position: "0x0A".hexaToDecimal)
-        let mapIndex = block.getInt32(position: "0x0c".hexaToDecimal)
-        let mapSequence = block.getInt32(position: "0x10".hexaToDecimal)
+        let headerLength = block.getInt16(position: "0x02".decimal)
+        let dataLength = block.getInt32(position: "0x04".decimal)
+        let majorVersion = block.getInt16(position: "0x08".decimal)
+        let minorVersion = block.getInt16(position: "0x0A".decimal)
+        let mapIndex = block.getInt32(position: "0x0c".decimal)
+        let mapSequence = block.getInt32(position: "0x10".decimal)
         let version = MapData.Meta.Version(major: majorVersion, minor: minorVersion)
         return MapData.Meta(headerLength: headerLength, dataLength: dataLength, version: version, mapIndex: mapIndex, mapSequence: mapSequence)
     }
 
     fileprivate func parseRobotPositionBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.RobotPosition {
-        let x = block.getInt32(position: "0x08".hexaToDecimal + offset)
-        let y = block.getInt32(position: "0x0C".hexaToDecimal + offset)
-        let angle = blockLength >= 12 ? block.getInt32(position: "0x10".hexaToDecimal + offset) : nil
+        let x = block.getInt32(position: "0x08".decimal + offset)
+        let y = block.getInt32(position: "0x0C".decimal + offset)
+        let angle = blockLength >= 12 ? block.getInt32(position: "0x10".decimal + offset) : nil
         return MapData.RobotPosition(position: CGPoint(x: x, y: y), angle: angle)
     }
 
     fileprivate func parseChargerLocationBlock(_ block: Data, offset: Int) -> CGPoint {
-        let x = block.getInt32(position: "0x08".hexaToDecimal + offset)
-        let y = block.getInt32(position: "0x0C".hexaToDecimal + offset)
+        let x = block.getInt32(position: "0x08".decimal + offset)
+        let y = block.getInt32(position: "0x0C".decimal + offset)
         return CGPoint(x: x, y: y)
     }
 
     fileprivate func parsePathBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.Path {
         var points: [CGPoint] = []
-        let currentAngle = block.getInt32(position: "0x10".hexaToDecimal + offset)
+        let currentAngle = block.getInt32(position: "0x10".decimal + offset)
 
         for index in 0..<blockLength {
-            let x = Double(block.getInt16(position: "0x14".hexaToDecimal) + offset + index)
-            let y = Double(block.getInt16(position: "0x16".hexaToDecimal) + offset + index)
+            let x = Double(block.getInt16(position: "0x14".decimal) + offset + index)
+            let y = Double(block.getInt16(position: "0x16".decimal) + offset + index)
             points.append(CGPoint(x: x, y: y))
         }
         return MapData.Path(currentAngle: currentAngle, points: points)
@@ -145,16 +145,16 @@ class MapFileParser {
         if headerLength > 24 {
             g3offset = 4
         }
-        let segments = MapData.ImageData.Segments(count: g3offset > 0 ? block.getInt32(position: "0x08".hexaToDecimal + offset) : 0,
+        let segments = MapData.ImageData.Segments(count: g3offset > 0 ? block.getInt32(position: "0x08".decimal + offset) : 0,
                                               center: [:],
                                               borders: [],
                                               neighbours: [:])
 
-        let position = MapData.ImageData.Position(top: block.getInt32(position: "0x08".hexaToDecimal + g3offset + offset),
-                                              left: block.getInt32(position: "0x0c".hexaToDecimal + g3offset + offset))
+        let position = MapData.ImageData.Position(top: block.getInt32(position: "0x08".decimal + g3offset + offset),
+                                              left: block.getInt32(position: "0x0c".decimal + g3offset + offset))
 
-        let dimensions = MapData.ImageData.Dimensions(height: block.getInt32(position: "0x10".hexaToDecimal + g3offset + offset),
-                                                  width: block.getInt32(position: "0x14".hexaToDecimal + g3offset + offset))
+        let dimensions = MapData.ImageData.Dimensions(height: block.getInt32(position: "0x10".decimal + g3offset + offset),
+                                                  width: block.getInt32(position: "0x14".decimal + g3offset + offset))
 
         let box = MapData.ImageData.Box(minX: .infinity, minY: .infinity, maxX: .infinity, maxY: .infinity)
 
@@ -176,28 +176,28 @@ class MapFileParser {
         let floorColor = UIColor(red: 86/255, green: 175/255, blue: 252/255, alpha: 1)
         let obstacleColor = UIColor(red: 161/255, green: 219/255, blue: 255/255, alpha: 1)
 
-        tempImage.position.top = Int(MapFileParser.dimensionPixels) - tempImage.position.top - tempImage.dimensions.height
+        tempImage.position.top = Int(MapDataParser.dimensionPixels) - tempImage.position.top - tempImage.dimensions.height
 
         for index in 0 ..< blockLength {
             let x = Double((index % image.dimensions.width)) + Double(image.position.left)
             let y = Double((image.dimensions.height - 1 - (index / image.dimensions.width))) + Double(image.position.top)
 
-            let type = block.getInt8(position: "0x18".hexaToDecimal + g3offset + offset + index)
+            let type = block.getInt8(position: "0x18".decimal + g3offset + offset + index)
 
             switch type & 0x07 {
             case 0: // Free
-                tempImage.pixels.append(freeColor.toPixelData)
+                tempImage.pixels.append(freeColor.toPixel)
             case 1: // Obstacle
-                tempImage.pixels.append(obstacleColor.toPixelData)
+                tempImage.pixels.append(obstacleColor.toPixel)
                 mapImageData.obstacleStrong.append(CGPoint(x: x, y: y))
             default: // Segment or floor
                 let segmentId = (type & 248) >> 3
                 if segmentId != 0 {
-                    tempImage.pixels.append(floorColor.toPixelData)
+                    tempImage.pixels.append(floorColor.toPixel)
                     mapImageData.floor.append(CGPoint(x: x, y: y))
                     break
                 }
-                tempImage.pixels.append(floorColor.toPixelData)
+                tempImage.pixels.append(floorColor.toPixel)
                 mapImageData.floor.append(CGPoint(x: x, y: y))
             }
         }
@@ -206,7 +206,7 @@ class MapFileParser {
         return tempImage
     }
 
-    fileprivate func drawMapImage(pixels: [PixelData], width: Int, height: Int) -> UIImage? {
+    fileprivate func drawMapImage(pixels: [Pixel], width: Int, height: Int) -> UIImage? {
         guard width > 0 && height > 0 else { return nil }
         guard pixels.count == width * height else { return nil }
 
@@ -216,14 +216,14 @@ class MapFileParser {
         let bitsPerPixel = 32
 
         var data = pixels // Copy to mutable []
-        guard let providerRef = CGDataProvider(data: NSData(bytes: &data, length: data.count * MemoryLayout<PixelData>.size) ) else { return nil }
+        guard let providerRef = CGDataProvider(data: NSData(bytes: &data, length: data.count * MemoryLayout<Pixel>.size) ) else { return nil }
 
         guard let cgim = CGImage(
             width: width,
             height: height,
             bitsPerComponent: bitsPerComponent,
             bitsPerPixel: bitsPerPixel,
-            bytesPerRow: width * MemoryLayout<PixelData>.size,
+            bytesPerRow: width * MemoryLayout<Pixel>.size,
             space: rgbColorSpace,
             bitmapInfo: bitmapInfo,
             provider: providerRef,

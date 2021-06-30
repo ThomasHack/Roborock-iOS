@@ -27,7 +27,7 @@ enum Main {
     
     struct Environment {
         let mainQueue: AnySchedulerOf<DispatchQueue>
-        let apiClient: ApiClient
+        let apiClient: ApiRestClient
         let websocketClient: ApiWebSocketClient
         let defaults: UserDefaults
     }
@@ -67,7 +67,7 @@ enum Main {
         reducer: Home.reducer,
         environment: Main.Environment(
             mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            apiClient: ApiClient.live,
+            apiClient: ApiRestClient.live,
             websocketClient: ApiWebSocketClient.live,
             defaults: UserDefaults.standard
         )
@@ -75,7 +75,7 @@ enum Main {
     
     static let initialEnvironment = Environment(
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-        apiClient: ApiClient.live,
+        apiClient: ApiRestClient.live,
         websocketClient: ApiWebSocketClient.live,
         defaults: UserDefaults.standard
     )

@@ -1,5 +1,5 @@
 //
-//  Image.swift
+//  ImageData.swift
 //  Roborock
 //
 //  Created by Hack, Thomas on 29.06.21.
@@ -14,7 +14,7 @@ extension MapData {
         var dimensions: Dimensions
         var box: Box
         var data: Data?
-        var pixels: [PixelData]
+        var pixels: [Pixel]
 
         struct Data {
             var floor: [CGPoint]
@@ -23,8 +23,7 @@ extension MapData {
         }
 
         struct Center {
-            var x: Double
-            var y: Double
+            var position: CGPoint
             var count: Int
         }
 

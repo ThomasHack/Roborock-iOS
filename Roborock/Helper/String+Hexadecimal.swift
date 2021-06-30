@@ -8,6 +8,11 @@
 import Foundation
 
 extension StringProtocol {
-    func dropping<S: StringProtocol>(prefix: S) -> SubSequence { hasPrefix(prefix) ? dropFirst(prefix.count) : self[...] }
-    var hexaToDecimal: Int { Int(dropping(prefix: "0x"), radix: 16) ?? 0 }
+    func dropping<S: StringProtocol>(prefix: S) -> SubSequence {
+        hasPrefix(prefix) ? dropFirst(prefix.count) : self[...]
+    }
+
+    var decimal: Int {
+        Int(dropping(prefix: "0x"), radix: 16) ?? 0
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  MapData.swift
+//  Version.swift
 //  Roborock
 //
 //  Created by Hack, Thomas on 29.06.21.

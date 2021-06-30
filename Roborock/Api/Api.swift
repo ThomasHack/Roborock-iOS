@@ -30,26 +30,26 @@ enum Api {
         case connect(URL)
         case disconnect
         case fetchCurrentStatus
-        case statusResponse(Result<Status, ApiClient.Failure>)
+        case statusResponse(Result<Status, ApiRestClient.Failure>)
         case fetchConsumableStatus
         case fetchWifiStatus
         case fetchSpots
         case fetchZones
         case fetchSegments
-        case segmentsResponse(Result<Segment, ApiClient.Failure>)
+        case segmentsResponse(Result<Segment, ApiRestClient.Failure>)
         case fetchSimpleMap
-        case mapResponse(Result<Data, ApiClient.Failure>)
+        case mapResponse(Result<Data, ApiRestClient.Failure>)
         case fetchMapData
         case startCleaningSegment([Int])
-        case startCleaningSegmentResponse(Result<Data, ApiClient.Failure>)
+        case startCleaningSegmentResponse(Result<Data, ApiRestClient.Failure>)
         case stopCleaning
-        case stopCleaningResponse(Result<Data, ApiClient.Failure>)
+        case stopCleaningResponse(Result<Data, ApiRestClient.Failure>)
         case pauseCleaning
-        case pauseCleaningResponse(Result<Data, ApiClient.Failure>)
-        case refreshState(Result<Data, ApiClient.Failure>)
-        case refreshStateAndMap(Result<Data, ApiClient.Failure>)
+        case pauseCleaningResponse(Result<Data, ApiRestClient.Failure>)
+        case refreshState(Result<Data, ApiRestClient.Failure>)
+        case refreshStateAndMap(Result<Data, ApiRestClient.Failure>)
         case driveHome
-        case driveHomeResponse(Result<Data, ApiClient.Failure>)
+        case driveHomeResponse(Result<Data, ApiRestClient.Failure>)
         
         case didConnect
         case didDisconnect
@@ -180,7 +180,7 @@ enum Api {
             case .binary(let data):
                 if data.isGzipped {
                     do {
-                        let fileParser = MapFileParser()
+                        let fileParser = MapDataParser()
                         let data = try data.gunzipped()
                         let image = fileParser.parse(data)
                         state.mapImage = image
