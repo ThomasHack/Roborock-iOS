@@ -6,15 +6,15 @@
 //
 
 import UIKit
-
-struct Pixel {
-    var r: UInt8
-    var g: UInt8
-    var b: UInt8
-    var a: UInt8 = 255
-}
+import Gzip
 
 class MapDataParser {
+    
+    enum MapDataError: Error {
+        case gzipError
+        case parsingError
+        case unexpected
+    }
 
     static let dimensionPixels = 1024.0
     static let maxBlocks = 32
@@ -36,33 +36,62 @@ class MapDataParser {
         case digest = 1024
     }
 
-    fileprivate var mapData: MapData?
+    fileprivate var data: Data?
+    fileprivate var mapData: MapData = MapData()
+    
+    
+    /// Unzip and parse data from Websocket
+    /// - Parameter data: Gzipped binary data array
+    /// - Returns: Image with map, robot, paths, etc.
+    public func parse(_ data: Data) -> MapData {
+        if data.isGzipped {
+            do {
+                self.data = try data.gunzipped()
+                self.mapData = parseBlocks()
+            } catch {
+                print(String(describing: error))
+            }
+        }
+        return self.mapData
+    }
 
-    public func parse(_ data: Data) -> UIImage? {
+    
+    /// Parse response data from Websocket
+    /// - Parameter data: Binary array
+    /// - Returns: Image with map, robot, paths, etc.
+    public func parseBlocks() -> MapData {
         // Check for valid RR map format
-        guard data.getUtf8(position: 0) == "r" && data.getUtf8(position: 1) == "r" else { return nil }
+        guard let data = self.data, data.getUtf8(position: 0) == "r"
+                && data.getUtf8(position: 1) == "r" else { return self.mapData }
 
         // Parse map data
         let mapData = parseBlock(data, offset: "0x14".decimal)
 
         // Generate map image
-        guard let mapImageData: MapData.ImageData = mapData.image else { return nil }
-        let mapImage = drawMapImage(pixels: mapImageData.pixels, width: mapImageData.dimensions.width, height: mapImageData.dimensions.height)
+        guard let mapImageData: MapData.ImageData = mapData.imageData else { return self.mapData }
 
-        if let mapImage = mapImage,
-            let paths = mapData.gotoPath,
-            let pathImage = drawMapPaths(image: mapImage, path: paths) {
-            return pathImage
+        // Draw map
+        self.mapData.image =  drawMapImage(pixels: mapImageData.pixels, width: mapImageData.dimensions.width, height: mapImageData.dimensions.height)
+        
+        // Draw robot on map
+        if let robot = mapData.robotPosition {
+            self.mapData.image = drawRobot(image: self.mapData.image, robot: robot)
         }
-        return mapImage
+        
+        // Draw vaccum path on map
+        if let paths = mapData.gotoPath {
+            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths)
+        }
+                
+        return self.mapData
     }
-
-    /**
-     * Parse map data blocks
-     * @param block: Data - Binary data
-     * @param offset: Int - Current offset
-     * @param mapData: MapData - Current map data object
-     */
+    
+    /// Parse binary data block
+    /// - Parameters:
+    ///   - block: Data binary array
+    ///   - offset: Current offset, increments per block
+    ///   - mapData: Map data result object
+    /// - Returns: Parsed Map data
     fileprivate func parseBlock(_ block: Data, offset: Int, mapData: MapData = MapData()) -> MapData {
         if block.count <= offset {
             return mapData
@@ -86,7 +115,7 @@ class MapDataParser {
         case .chargerLocation:
             tempMapData.chargerLocation = parseChargerLocationBlock(block, offset: offset)
         case .image:
-            tempMapData.image = parseImageBlock(block, headerLength: headerLength, blockLength: blockLength, offset: offset)
+            tempMapData.imageData = parseImageBlock(block, headerLength: headerLength, blockLength: blockLength, offset: offset)
         case .path:
             tempMapData.vacuumPath = parsePathBlock(block, blockLength: blockLength, offset: offset)
         case .gotoPath:
@@ -104,6 +133,10 @@ class MapDataParser {
         return parseBlock(block, offset: offset + headerLength + blockLength, mapData: tempMapData)
     }
 
+    
+    /// Parse first meta block in binary array
+    /// - Parameter block: Data block that contains block header and data
+    /// - Returns: MapData.Meta Block meta information
     fileprivate func parseMetaBlock(_ block: Data) -> MapData.Meta {
         let headerLength = block.getInt16(position: "0x02".decimal)
         let dataLength = block.getInt32(position: "0x04".decimal)
@@ -115,6 +148,13 @@ class MapDataParser {
         return MapData.Meta(headerLength: headerLength, dataLength: dataLength, version: version, mapIndex: mapIndex, mapSequence: mapSequence)
     }
 
+    
+    /// Parse robot position block
+    /// - Parameters:
+    ///   - block: Data block that contains block header and data
+    ///   - blockLength: Int length of current data block (not including header)
+    ///   - offset: Int current offset, increments per block
+    /// - Returns: MapData.Robotposition coordinates and angle of robot
     fileprivate func parseRobotPositionBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.RobotPosition {
         let x = block.getInt32(position: "0x08".decimal + offset)
         let y = block.getInt32(position: "0x0C".decimal + offset)
@@ -122,12 +162,25 @@ class MapDataParser {
         return MapData.RobotPosition(position: CGPoint(x: x, y: y), angle: angle)
     }
 
+    
+    /// Parse charger location block
+    /// - Parameters:
+    ///   - block: Data block that contains block header and data
+    ///   - offset: Int current offset, increments per block
+    /// - Returns: CGPoint charger coordinates
     fileprivate func parseChargerLocationBlock(_ block: Data, offset: Int) -> CGPoint {
         let x = block.getInt32(position: "0x08".decimal + offset)
         let y = block.getInt32(position: "0x0C".decimal + offset)
         return CGPoint(x: x, y: y)
     }
 
+    
+    /// Parse vacuum paths
+    /// - Parameters:
+    ///   - block: Data block that contains block header and data
+    ///   - blockLength: Length of current data block (not including header)
+    ///   - offset: Current offset, increments per block
+    /// - Returns: Current angle and array of driven paths from vacuum
     fileprivate func parsePathBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.Path {
         var points: [CGPoint] = []
         let currentAngle = block.getInt32(position: "0x10".decimal + offset)
@@ -140,6 +193,14 @@ class MapDataParser {
         return MapData.Path(currentAngle: currentAngle, points: points)
     }
 
+    
+    /// Parse image block with all information including segments, dimensions, positions and pixel information
+    /// - Parameters:
+    ///   - block: Data block that contains block header and data
+    ///   - headerLength: Length of header of current block as this might have differences between versions
+    ///   - blockLength: Length of current data block (not including header)
+    ///   - offset: Current offset, increments per block
+    /// - Returns: Parsed image data from binary array with segments, dimensions, pixel array, etc.
     fileprivate func parseImageBlock(_ block: Data, headerLength: Int, blockLength: Int, offset: Int) -> MapData.ImageData {
         var g3offset = 0
         if headerLength > 24 {
@@ -168,6 +229,15 @@ class MapDataParser {
         return image
     }
 
+    
+    /// Parse pixel array block from binary data of map image
+    /// - Parameters:
+    ///   - block: Data block that contains block header and data
+    ///   - blockLength: Length of current data block (not including header)
+    ///   - image: Parsed image data from binary array with segments, dimensions, pixel array, etc.
+    ///   - offset: Current offset, increments per block
+    ///   - g3offset: Specific offset for generation 3+ vacuums and map version >= 1.1 as block header is 4 bytes longer
+    /// - Returns: Parsed image data from binary array with pixel array (width*height) in rgba
     fileprivate func parseImagePixelBlock(_ block: Data, blockLength: Int, image: MapData.ImageData, offset: Int, g3offset: Int) -> MapData.ImageData {
         var tempImage = image
         var mapImageData = MapData.ImageData.Data(floor: [], obstacleWeak: [], obstacleStrong: [])
@@ -206,7 +276,14 @@ class MapDataParser {
         return tempImage
     }
 
-    fileprivate func drawMapImage(pixels: [Pixel], width: Int, height: Int) -> UIImage? {
+    
+    /// Draw actual map image from pixel array
+    /// - Parameters:
+    ///   - pixels: Pixel array containing rgba information for every pixel
+    ///   - width: Width of map image from vacuum
+    ///   - height: Height of map image from vacuum
+    /// - Returns: Image with floor, walls, obstacles and segments
+    fileprivate func drawMapImage(pixels: [MapData.Pixel], width: Int, height: Int) -> UIImage? {
         guard width > 0 && height > 0 else { return nil }
         guard pixels.count == width * height else { return nil }
 
@@ -216,14 +293,14 @@ class MapDataParser {
         let bitsPerPixel = 32
 
         var data = pixels // Copy to mutable []
-        guard let providerRef = CGDataProvider(data: NSData(bytes: &data, length: data.count * MemoryLayout<Pixel>.size) ) else { return nil }
+        guard let providerRef = CGDataProvider(data: NSData(bytes: &data, length: data.count * MemoryLayout<MapData.Pixel>.size) ) else { return nil }
 
-        guard let cgim = CGImage(
+        guard let cgImage = CGImage(
             width: width,
             height: height,
             bitsPerComponent: bitsPerComponent,
             bitsPerPixel: bitsPerPixel,
-            bytesPerRow: width * MemoryLayout<Pixel>.size,
+            bytesPerRow: width * MemoryLayout<MapData.Pixel>.size,
             space: rgbColorSpace,
             bitmapInfo: bitmapInfo,
             provider: providerRef,
@@ -231,11 +308,18 @@ class MapDataParser {
             shouldInterpolate: true,
             intent: .defaultIntent
         ) else { return nil }
-
-        return UIImage(cgImage: cgim)
+        
+        return UIImage(cgImage: cgImage)
     }
 
-    fileprivate func drawMapPaths(image: UIImage, path: MapData.Path) -> UIImage? {
+    
+    /// Draw vacuum paths onto map image
+    /// - Parameters:
+    ///   - image: Source image to draw on
+    ///   - path: Path object containing angle and point array
+    /// - Returns: Map image including paths
+    fileprivate func drawMapPaths(image: UIImage?, path: MapData.Path) -> UIImage? {
+        guard let image = image else { return nil }
         UIGraphicsBeginImageContext(image.size)
         image.draw(at: CGPoint.zero)
 
@@ -251,6 +335,30 @@ class MapDataParser {
                 context.strokePath()
             }
         }
+        let tempImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return tempImage
+    }
+    
+    
+    /// Draw vacuum robot onto map image
+    /// - Parameters:
+    ///   - image: Source image to draw on
+    ///   - robot: Robot object containing angle and coordinates
+    /// - Returns: Map image including robot
+    fileprivate func drawRobot(image: UIImage?, robot: MapData.RobotPosition) -> UIImage? {
+        guard let image = image else { return nil }
+        
+        UIGraphicsBeginImageContext(image.size)
+        image.draw(at: CGPoint.zero)
+
+        let context = UIGraphicsGetCurrentContext()!
+        context.setStrokeColor(UIColor.green.cgColor)
+        context.setLineWidth(5.0)
+        context.addEllipse(in: CGRect(x: 320, y: 275, width: 24, height: 24))
+        context.drawPath(using: .stroke) // or .fillStroke if need filling
+        
         let tempImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 

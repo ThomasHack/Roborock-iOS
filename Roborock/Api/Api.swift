@@ -7,7 +7,6 @@
 
 import UIKit
 import ComposableArchitecture
-import Gzip
 
 struct ApiId: Hashable {}
 
@@ -23,6 +22,7 @@ enum Api {
         
         var status: Status?
         var segments: Segment?
+        var mapData: MapData?
         var mapImage: UIImage?
     }
     
@@ -178,15 +178,10 @@ enum Api {
         case .didReceiveWebSocketEvent(let event):
             switch event {
             case .binary(let data):
-                if data.isGzipped {
-                    do {
-                        let fileParser = MapDataParser()
-                        let data = try data.gunzipped()
-                        let image = fileParser.parse(data)
-                        state.mapImage = image
-                    } catch {
-                        print(String(describing: error))
-                    }
+                let parser = MapDataParser()
+                state.mapData = parser.parse(data)
+                if let mapImage = state.mapData?.image {
+                    state.mapImage = mapImage
                 }
                 return .none
             default:

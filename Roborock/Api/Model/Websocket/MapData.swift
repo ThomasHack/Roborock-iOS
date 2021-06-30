@@ -7,11 +7,12 @@
 
 import UIKit
 
-struct MapData {
+struct MapData: Equatable {
     var meta: Meta?
     var robotPosition: RobotPosition?
     var chargerLocation: CGPoint?
-    var image: ImageData?
+    var image: UIImage?
+    var imageData: ImageData?
     var vacuumPath: Path?
     var gotoPath: Path?
     var gotoPredictedPath: Path?

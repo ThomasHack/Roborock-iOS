@@ -8,14 +8,14 @@
 import Foundation
 
 extension MapData {
-    struct Meta {
+    struct Meta: Equatable {
         var headerLength: Int
         var dataLength: Int
         var version: Version
         var mapIndex: Int
         var mapSequence: Int
 
-        struct Version {
+        struct Version: Equatable {
             var major: Int
             var minor: Int
         }

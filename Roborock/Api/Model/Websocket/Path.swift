@@ -8,7 +8,7 @@
 import UIKit
 
 extension MapData {
-    struct Path {
+    struct Path: Equatable {
         var currentAngle: Int
         var points: [CGPoint]
     }

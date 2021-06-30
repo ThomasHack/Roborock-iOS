@@ -8,7 +8,7 @@
 import UIKit
 
 extension MapData {
-    struct ImageData {
+    struct ImageData: Equatable {
         var segments: Segments
         var position: Position
         var dimensions: Dimensions
@@ -16,35 +16,35 @@ extension MapData {
         var data: Data?
         var pixels: [Pixel]
 
-        struct Data {
+        struct Data: Equatable {
             var floor: [CGPoint]
             var obstacleWeak: [CGPoint]
             var obstacleStrong: [CGPoint]
         }
 
-        struct Center {
+        struct Center: Equatable {
             var position: CGPoint
             var count: Int
         }
 
-        struct Segments {
+        struct Segments: Equatable {
             var count: Int
             var center: [Int: Center]
             var borders: [Double]
             var neighbours: [Int: Bool]
         }
 
-        struct Position {
+        struct Position: Equatable {
             var top: Int
             var left: Int
         }
 
-        struct Dimensions {
+        struct Dimensions: Equatable {
             var height: Int
             var width: Int
         }
 
-        struct Box {
+        struct Box: Equatable {
             var minX: Double
             var minY: Double
             var maxX: Double
