@@ -11,19 +11,19 @@ extension MapData {
     struct ImageData: Equatable {
         var segments: Segments
         var position: Position
-        var dimensions: Dimensions
+        var dimensions: Size
         var box: Box
         var data: Data?
         var pixels: [Pixel]
 
         struct Data: Equatable {
-            var floor: [CGPoint]
-            var obstacleWeak: [CGPoint]
-            var obstacleStrong: [CGPoint]
+            var floor: [Point]
+            var obstacleWeak: [Point]
+            var obstacleStrong: [Point]
         }
 
         struct Center: Equatable {
-            var position: CGPoint
+            var position: Point
             var count: Int
         }
 
@@ -32,16 +32,6 @@ extension MapData {
             var center: [Int: Center]
             var borders: [Double]
             var neighbours: [Int: Bool]
-        }
-
-        struct Position: Equatable {
-            var top: Int
-            var left: Int
-        }
-
-        struct Dimensions: Equatable {
-            var height: Int
-            var width: Int
         }
 
         struct Box: Equatable {

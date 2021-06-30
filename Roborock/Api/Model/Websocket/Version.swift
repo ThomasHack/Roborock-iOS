@@ -8,7 +8,7 @@
 import Foundation
 
 extension MapData {
-    struct Version {
+    struct Version: Equatable {
         var major: Int
         var minor: Int
     }

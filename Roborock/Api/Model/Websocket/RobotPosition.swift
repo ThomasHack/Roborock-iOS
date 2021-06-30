@@ -9,7 +9,7 @@ import UIKit
 
 extension MapData {
     struct RobotPosition: Equatable {
-        var position: CGPoint
+        var position: Point
         var angle: Int?
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 struct MapData: Equatable {
     var meta: Meta?
     var robotPosition: RobotPosition?
-    var chargerLocation: CGPoint?
+    var chargerLocation: Point?
     var image: UIImage?
     var imageData: ImageData?
     var vacuumPath: Path?

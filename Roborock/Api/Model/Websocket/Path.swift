@@ -10,6 +10,6 @@ import UIKit
 extension MapData {
     struct Path: Equatable {
         var currentAngle: Int
-        var points: [CGPoint]
+        var points: [Point]
     }
 }

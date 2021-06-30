@@ -44,6 +44,9 @@
 		654289682646E884009B8BE5 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289672646E884009B8BE5 /* MainView.swift */; };
 		6542896A2646EE53009B8BE5 /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289692646EE53009B8BE5 /* Segment.swift */; };
 		6542896C264725F1009B8BE5 /* SegmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542896B264725F1009B8BE5 /* SegmentList.swift */; };
+		65766E45268D10220081724F /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65766E44268D10220081724F /* Position.swift */; };
+		65766E47268D10530081724F /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65766E46268D10530081724F /* Point.swift */; };
+		65766E49268D10EE0081724F /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65766E48268D10EE0081724F /* Size.swift */; };
 		65B531D3268CF463005F9036 /* Pixel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B531D2268CF463005F9036 /* Pixel.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +86,9 @@
 		654289672646E884009B8BE5 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		654289692646EE53009B8BE5 /* Segment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
 		6542896B264725F1009B8BE5 /* SegmentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentList.swift; sourceTree = "<group>"; };
+		65766E44268D10220081724F /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		65766E46268D10530081724F /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		65766E48268D10EE0081724F /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		65B531D2268CF463005F9036 /* Pixel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pixel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,14 +120,17 @@
 		52397678268CD1B400F291E4 /* Websocket */ = {
 			isa = PBXGroup;
 			children = (
+				652FA91B264D2D0A007C67F6 /* ApiWebSocketEvent.swift */,
 				5211E4E3268B3E680043F55F /* ImageData.swift */,
 				5211E4E5268B406F0043F55F /* MapData.swift */,
 				52F3C87C268CA3B10085BC2C /* Meta.swift */,
 				5211E4ED268B580D0043F55F /* Path.swift */,
+				65B531D2268CF463005F9036 /* Pixel.swift */,
+				65766E46268D10530081724F /* Point.swift */,
+				65766E44268D10220081724F /* Position.swift */,
 				5211E4EB268B434B0043F55F /* RobotPosition.swift */,
 				5211E4E7268B409E0043F55F /* Version.swift */,
-				652FA91B264D2D0A007C67F6 /* ApiWebSocketEvent.swift */,
-				65B531D2268CF463005F9036 /* Pixel.swift */,
+				65766E48268D10EE0081724F /* Size.swift */,
 			);
 			path = Websocket;
 			sourceTree = "<group>";
@@ -329,6 +338,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5211E4E8268B409E0043F55F /* Version.swift in Sources */,
+				65766E49268D10EE0081724F /* Size.swift in Sources */,
 				6542895D2646C4F4009B8BE5 /* ApiRestClient.swift in Sources */,
 				52046F2926494DC400E1C041 /* BlurView.swift in Sources */,
 				52F12B9A2689BF4300C5494E /* MapDataParser.swift in Sources */,
@@ -339,6 +349,7 @@
 				65B531D3268CF463005F9036 /* Pixel.swift in Sources */,
 				6542896A2646EE53009B8BE5 /* Segment.swift in Sources */,
 				652FA91A264D2CC6007C67F6 /* ApiWebSocketDelegate.swift in Sources */,
+				65766E45268D10220081724F /* Position.swift in Sources */,
 				52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */,
 				652FA91E264D2D36007C67F6 /* Response.swift in Sources */,
 				654289682646E884009B8BE5 /* MainView.swift in Sources */,
@@ -351,6 +362,7 @@
 				6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */,
 				5211E4EE268B580D0043F55F /* Path.swift in Sources */,
 				654289642646E631009B8BE5 /* HomeView.swift in Sources */,
+				65766E47268D10530081724F /* Point.swift in Sources */,
 				52F12BA1268A2D6B00C5494E /* String+Hexadecimal.swift in Sources */,
 				52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */,
 				52F3C87D268CA3B20085BC2C /* Meta.swift in Sources */,
