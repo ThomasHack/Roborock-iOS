@@ -59,10 +59,9 @@ class MapDataParser {
     /// Parse response data from Websocket
     /// - Parameter data: Binary array
     /// - Returns: Image with map, robot, paths, etc.
-    public func parseBlocks() -> MapData {
+    fileprivate func parseBlocks() -> MapData {
         // Check for valid RR map format
-        guard let data = self.data, data.getUtf8(position: 0) == "r"
-                && data.getUtf8(position: 1) == "r" else { return self.mapData }
+        guard let data = self.data, data[0] == 0x72 && data[1] == 0x72 else { return self.mapData }
         
         // Parse map data
         let mapData = parseBlock(data, offset: 0x14)
@@ -71,7 +70,7 @@ class MapDataParser {
         guard let mapImageData: MapData.ImageData = mapData.imageData else { return self.mapData }
         
         // Draw map
-        self.mapData.image =  drawMapImage(pixels: mapImageData.pixels, width: mapImageData.dimensions.width, height: mapImageData.dimensions.height)
+        self.mapData.image =  drawMapImage(pixels: mapImageData.pixels, size: mapImageData.dimensions)
         
         // Draw robot on map
         if let robot = mapData.robotPosition {
@@ -285,9 +284,9 @@ class MapDataParser {
     ///   - width: Width of map image from vacuum
     ///   - height: Height of map image from vacuum
     /// - Returns: Image with floor, walls, obstacles and segments
-    fileprivate func drawMapImage(pixels: [MapData.Pixel], width: Int, height: Int) -> UIImage? {
-        guard width > 0 && height > 0 else { return nil }
-        guard pixels.count == width * height else { return nil }
+    fileprivate func drawMapImage(pixels: [MapData.Pixel], size: MapData.Size) -> UIImage? {
+        guard size.width > 0 && size.height > 0 else { return nil }
+        guard pixels.count == size.width * size.height else { return nil }
         
         let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
@@ -298,11 +297,11 @@ class MapDataParser {
         guard let providerRef = CGDataProvider(data: NSData(bytes: &data, length: data.count * MemoryLayout<MapData.Pixel>.size) ) else { return nil }
         
         guard let cgImage = CGImage(
-            width: width,
-            height: height,
+            width: size.width,
+            height: size.height,
             bitsPerComponent: bitsPerComponent,
             bitsPerPixel: bitsPerPixel,
-            bytesPerRow: width * MemoryLayout<MapData.Pixel>.size,
+            bytesPerRow: size.width * MemoryLayout<MapData.Pixel>.size,
             space: rgbColorSpace,
             bitmapInfo: bitmapInfo,
             provider: providerRef,
