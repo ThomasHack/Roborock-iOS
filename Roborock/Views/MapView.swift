@@ -13,21 +13,19 @@ struct MapView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            if let mapImage = viewStore.api.mapImage {
-                Image(uiImage: mapImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .clipShape(RoundedRectangle(cornerRadius: 20.0))
-                    .padding()
-            } else {
-                Image("map")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .clipShape(RoundedRectangle(cornerRadius: 20.0))
-                    .padding()
+            VStack(spacing: 0) {
+                if let mapImage = viewStore.api.mapImage {
+                    Image(uiImage: mapImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } else {
+                    ProgressView()
+                        .foregroundColor(Color.primary)
+                        .padding(32)
+                }
             }
+            .padding(.top, 16)
+            .padding(.bottom, 8)
         }
     }
 }

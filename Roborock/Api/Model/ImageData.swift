@@ -5,26 +5,33 @@
 //  Created by Hack, Thomas on 29.06.21.
 //
 
-import Foundation
+import UIKit
 
 extension MapData {
-    struct Image {
+    struct ImageData {
         var segments: Segments
         var position: Position
         var dimensions: Dimensions
         var box: Box
-        var pixels: [Int: Int]
+        var data: Data?
+        var pixels: [PixelData]
+
+        struct Data {
+            var floor: [CGPoint]
+            var obstacleWeak: [CGPoint]
+            var obstacleStrong: [CGPoint]
+        }
 
         struct Center {
-            var x: Int
-            var y: Int
+            var x: Double
+            var y: Double
             var count: Int
         }
 
         struct Segments {
             var count: Int
             var center: [Int: Center]
-            var borders: [Int]
+            var borders: [Double]
             var neighbours: [Int: Bool]
         }
 
@@ -39,10 +46,10 @@ extension MapData {
         }
 
         struct Box {
-            var minX: Int
-            var minY: Int
-            var maxX: Int
-            var maxY: Int
+            var minX: Double
+            var minY: Double
+            var maxX: Double
+            var maxY: Double
         }
     }
 

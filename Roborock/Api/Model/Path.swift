@@ -5,11 +5,11 @@
 //  Created by Hack, Thomas on 29.06.21.
 //
 
-import Foundation
+import UIKit
 
 extension MapData {
     struct Path {
         var currentAngle: Int
-        var points: [Int]
+        var points: [CGPoint]
     }
 }

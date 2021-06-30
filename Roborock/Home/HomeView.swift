@@ -18,7 +18,7 @@ struct HomeView: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.all)
 
-                VStack {
+                VStack(spacing: 0) {
 
                     HStack {
                         Text("Roborock")
@@ -76,7 +76,6 @@ struct HomeView: View {
         .onAppear {
             let viewStore = ViewStore(store)
             viewStore.send(.fetchSegments)
-            //viewStore.send(.fetchMap)
         }
     }
 }
