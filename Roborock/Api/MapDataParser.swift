@@ -16,9 +16,9 @@ class MapDataParser {
         case unexpected
     }
     
-    static let dimensionPixels: Int = 1024
+    static let dimensionPixels = 1024
     static let maxBlocks = 32
-    static let dimensionMm = 50.0 * 1024.0
+    static let dimensionMm = 50 * 1024
     
     enum Blocktype: Int {
         case chargerLocation = 1
@@ -70,7 +70,7 @@ class MapDataParser {
         guard let mapImageData: MapData.ImageData = mapData.imageData else { return self.mapData }
         
         // Draw map
-        self.mapData.image =  drawMapImage(pixels: mapImageData.pixels, size: mapImageData.dimensions)
+        self.mapData.image = drawMapImage(pixels: mapImageData.pixels, size: mapImageData.dimensions)
         
         // Draw robot on map
         if let robot = mapData.robotPosition {
