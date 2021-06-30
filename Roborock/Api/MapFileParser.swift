@@ -20,11 +20,6 @@ class MapFileParser {
     static let maxBlocks = 32
     static let dimensionMm = 50.0 * 1024.0
 
-    struct Chunk {
-        var keyword: String
-        var data: [UInt8]
-    }
-
     enum Blocktype: Int {
         case chargerLocation = 1
         case image = 2
@@ -41,16 +36,7 @@ class MapFileParser {
         case digest = 1024
     }
 
-
     fileprivate var mapData: MapData?
-    fileprivate var mapImageData: MapData.ImageData?
-
-
-    fileprivate var setPointLength: Int?
-    fileprivate var setPointSize: Int?
-    fileprivate var setAngle: Int?
-
-    fileprivate var roboPath: [CGPoint] = []
 
     public func parse(_ data: Data) -> UIImage? {
         // Check for valid RR map format
