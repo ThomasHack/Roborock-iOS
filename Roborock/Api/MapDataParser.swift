@@ -64,7 +64,7 @@ class MapDataParser {
         guard let data = self.data, data[0] == 0x72 && data[1] == 0x72 else { return self.mapData }
         
         // Parse map data
-        let mapData = parseBlock(data, offset: 0x14)
+        self.mapData = parseBlock(data, offset: 0x14)
         
         // Generate map image
         guard let mapImageData: MapData.ImageData = mapData.imageData else { return self.mapData }
@@ -74,12 +74,12 @@ class MapDataParser {
         
         // Draw robot on map
         if let robot = mapData.robotPosition {
-            self.mapData.image = drawRobot(image: self.mapData.image, robot: robot)
+            self.mapData.image = drawRobot(image: self.mapData.image, robot: robot, size: mapImageData.dimensions)
         }
         
         // Draw vaccum path on map
         if let paths = mapData.gotoPath {
-            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths)
+            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions)
         }
         
         return self.mapData
@@ -319,7 +319,7 @@ class MapDataParser {
     ///   - image: Source image to draw on
     ///   - path: Path object containing angle and point array
     /// - Returns: Map image including paths
-    fileprivate func drawMapPaths(image: UIImage?, path: MapData.Path) -> UIImage? {
+    fileprivate func drawMapPaths(image: UIImage?, path: MapData.Path, size: MapData.Size) -> UIImage? {
         guard let image = image else { return nil }
         UIGraphicsBeginImageContext(image.size)
         image.draw(at: CGPoint.zero)
@@ -348,7 +348,7 @@ class MapDataParser {
     ///   - image: Source image to draw on
     ///   - robot: Robot object containing angle and coordinates
     /// - Returns: Map image including robot
-    fileprivate func drawRobot(image: UIImage?, robot: MapData.RobotPosition) -> UIImage? {
+    fileprivate func drawRobot(image: UIImage?, robot: MapData.RobotPosition, size: MapData.Size) -> UIImage? {
         guard let image = image else { return nil }
         
         UIGraphicsBeginImageContext(image.size)
