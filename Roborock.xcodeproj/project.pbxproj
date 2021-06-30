@@ -10,7 +10,7 @@
 		52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2226494C0000E1C041 /* StatusItemView.swift */; };
 		52046F2626494DA100E1C041 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2526494DA100E1C041 /* ButtonStyles.swift */; };
 		52046F2926494DC400E1C041 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2826494DC400E1C041 /* BlurView.swift */; };
-		5211E4E4268B3E680043F55F /* MapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4E3268B3E680043F55F /* MapImage.swift */; };
+		5211E4E4268B3E680043F55F /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4E3268B3E680043F55F /* Image.swift */; };
 		5211E4E6268B406F0043F55F /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4E5268B406F0043F55F /* MapData.swift */; };
 		5211E4E8268B409E0043F55F /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4E7268B409E0043F55F /* Version.swift */; };
 		5211E4EA268B432D0043F55F /* ChargerLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4E9268B432D0043F55F /* ChargerLocation.swift */; };
@@ -53,7 +53,7 @@
 		52046F2226494C0000E1C041 /* StatusItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemView.swift; sourceTree = "<group>"; };
 		52046F2526494DA100E1C041 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		52046F2826494DC400E1C041 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		5211E4E3268B3E680043F55F /* MapImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapImage.swift; sourceTree = "<group>"; };
+		5211E4E3268B3E680043F55F /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		5211E4E5268B406F0043F55F /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
 		5211E4E7268B409E0043F55F /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		5211E4E9268B432D0043F55F /* ChargerLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargerLocation.swift; sourceTree = "<group>"; };
@@ -218,7 +218,7 @@
 				654289692646EE53009B8BE5 /* Segments.swift */,
 				652FA91B264D2D0A007C67F6 /* WebSocketEvent.swift */,
 				652FA91D264D2D36007C67F6 /* Response.swift */,
-				5211E4E3268B3E680043F55F /* MapImage.swift */,
+				5211E4E3268B3E680043F55F /* Image.swift */,
 				5211E4E5268B406F0043F55F /* MapData.swift */,
 				5211E4E9268B432D0043F55F /* ChargerLocation.swift */,
 				5211E4EB268B434B0043F55F /* RobotPosition.swift */,
@@ -318,7 +318,7 @@
 				52F12B9A2689BF4300C5494E /* MapFileParser.swift in Sources */,
 				5211E4EC268B434B0043F55F /* RobotPosition.swift in Sources */,
 				6510E8DF2688AD02001E9230 /* ButtonView.swift in Sources */,
-				5211E4E4268B3E680043F55F /* MapImage.swift in Sources */,
+				5211E4E4268B3E680043F55F /* Image.swift in Sources */,
 				652FA920264D2EE1007C67F6 /* ApiWebSocketClient.swift in Sources */,
 				6542896A2646EE53009B8BE5 /* Segments.swift in Sources */,
 				652FA91A264D2CC6007C67F6 /* ApiWebSocketDelegate.swift in Sources */,

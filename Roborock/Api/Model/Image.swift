@@ -1,5 +1,5 @@
 //
-//  MapData.swift
+//  Image.swift
 //  Roborock
 //
 //  Created by Hack, Thomas on 29.06.21.
@@ -8,7 +8,7 @@
 import Foundation
 
 extension MapData {
-    struct MapImage {
+    struct Image {
         var segments: Segments
         var position: Position
         var dimensions: Dimensions

@@ -18,6 +18,6 @@ struct MapMetaData {
 struct MapData {
     var robotPosition: RobotPosition?
     var chargerLocation: ChargerLocation?
-    var image: MapImage?
+    var image: Image?
     var gotoPredictedPath: Path?
 }

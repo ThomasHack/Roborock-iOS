@@ -8,6 +8,13 @@
 import Foundation
 import UIKit
 
+struct PixelData {
+    var r: UInt8
+    var g: UInt8
+    var b: UInt8
+    var a: UInt8 = 255
+}
+
 class MapFileParser {
 
     static let dimensionPixels = 1024
@@ -37,7 +44,7 @@ class MapFileParser {
 
 
     fileprivate var mapData: MapData?
-    fileprivate var mapImageData: MapData.MapImage?
+    fileprivate var mapImageData: MapData.Image?
 
 
     fileprivate var setPointLength: Int?
@@ -53,10 +60,80 @@ class MapFileParser {
         }
 
         let mapData = parseBlock(data, offset: "0x14".hexaToDecimal)
-        print("\(mapData)")
+        guard let mapImage = mapData.image else { return }
+        print("pixel count: \(mapImage.pixels.count)") // 13405
+        // let pixels = generatePixelData(mapData)
+        // let image = drawMapImage(pixels: pixels, width: mapData.dimensions.width, height: mapData.dimensions.height)
+        // print("\(image)")
+    }
+    
+    fileprivate func generatePixelData(_ image: MapData.Image) -> [PixelData] {
+        let freeColor = UIColor.green.toRgba
+        let occupiedColor = UIColor.red.toRgba
+        let segmentBorderColor = UIColor.darkGray.toRgba
+        var segmentColor = UIColor.gray.toRgba
+        
+        var imageData: [PixelData] = []
+        
+        if !image.pixels.isEmpty {
+            var color: (r: UInt8, g: UInt8, b: UInt8, a: UInt8)
+            if image.segments.count < 2 {
+                segmentColor = freeColor
+            }
+            for (key, value) in image.pixels {
+                switch value {
+                case 1:
+                    color = freeColor
+                case 0:
+                    color = occupiedColor
+                default:
+                    // if (image.segments.borders.contains(key)) {
+                    //     color = segmentBorderColor
+                    //     break
+                    // }
+                    color = segmentColor
+                }
+                imageData.append(PixelData(r: color.r, g: color.g, b: color.b, a: color.a))
+            }
+            return imageData
+        }
+        return []
+    }
+    
+    fileprivate func drawMapImage(pixels: [PixelData], width: Int, height: Int) -> UIImage? {
+        guard width > 0 && height > 0 else { return nil }
+            // guard pixels.count == width * height else { return nil }
+
+            let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+            let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
+            let bitsPerComponent = 8
+            let bitsPerPixel = 32
+
+            var data = pixels // Copy to mutable []
+            guard let providerRef = CGDataProvider(data: NSData(bytes: &data,
+                                    length: data.count * MemoryLayout<PixelData>.size)
+                )
+                else { return nil }
+
+            guard let cgim = CGImage(
+                width: width,
+                height: height,
+                bitsPerComponent: bitsPerComponent,
+                bitsPerPixel: bitsPerPixel,
+                bytesPerRow: width * MemoryLayout<PixelData>.size,
+                space: rgbColorSpace,
+                bitmapInfo: bitmapInfo,
+                provider: providerRef,
+                decode: nil,
+                shouldInterpolate: true,
+                intent: .defaultIntent
+                )
+                else { return nil }
+
+            return UIImage(cgImage: cgim)
     }
 
-    public func parseBlock(_ block: Data, offset: Int, mapData: MapData = MapData()) -> MapData {
+    fileprivate func parseBlock(_ block: Data, offset: Int, mapData: MapData = MapData()) -> MapData {
         if block.count <= offset {
             return mapData
         }
@@ -67,7 +144,7 @@ class MapFileParser {
         }
         let headerLength = block.getInt16(position: "0x02".hexaToDecimal + offset)
         let blockLength = block.getInt32(position: "0x04".hexaToDecimal + offset)
-        let blockType = Blocktype(rawValue: blockTypeHeader.getInt16(position: "0x00".hexaToDecimal))
+        let blockType = Blocktype(rawValue: block.getInt16(position: "0x00".hexaToDecimal + offset))
 
         var tempMapData = mapData
 
@@ -110,44 +187,44 @@ class MapFileParser {
         return parseBlock(block, offset: offset + headerLength + blockLength, mapData: tempMapData)
     }
 
-    public func parseRobotPositionBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.RobotPosition {
+    fileprivate func parseRobotPositionBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.RobotPosition {
         let x = block.getInt32(position: "0x08".hexaToDecimal + offset)
         let y = block.getInt32(position: "0x0C".hexaToDecimal + offset)
         let angle = blockLength >= 12 ? block.getInt32(position: "0x10".hexaToDecimal + offset) : nil
         return MapData.RobotPosition(x: x, y: y, angle: angle)
     }
 
-    public func parseChargerLocationBlock(_ block: Data, offset: Int) -> MapData.ChargerLocation {
+    fileprivate func parseChargerLocationBlock(_ block: Data, offset: Int) -> MapData.ChargerLocation {
         let x = block.getInt32(position: "0x08".hexaToDecimal + offset)
         let y = block.getInt32(position: "0x0C".hexaToDecimal + offset)
         return MapData.ChargerLocation(x: x, y: y)
     }
 
-    public func parseImageBlock(_ block: Data, headerLength: Int, blockLength: Int, offset: Int) -> MapData.MapImage {
-        let segments = MapData.MapImage.Segments(count: block.getInt32(position: "0x08".hexaToDecimal),
+    fileprivate func parseImageBlock(_ block: Data, headerLength: Int, blockLength: Int, offset: Int) -> MapData.Image {
+        let segments = MapData.Image.Segments(count: block.getInt32(position: "0x08".hexaToDecimal + offset),
                                                  center: [:],
                                                  borders: [],
                                                  neighbours: [:])
 
-        let position = MapData.MapImage.Position(top: block.getInt32(position: "0x08".hexaToDecimal),
-                                                 left: block.getInt32(position: "0x0C".hexaToDecimal))
+        let position = MapData.Image.Position(top: block.getInt32(position: "0x08".hexaToDecimal + offset),
+                                                 left: block.getInt32(position: "0x0C".hexaToDecimal + offset))
 
-        let dimensions = MapData.MapImage.Dimensions(height: block.getInt32(position: "0x10".hexaToDecimal),
-                                                     width: block.getInt32(position: "0x14".hexaToDecimal))
+        let dimensions = MapData.Image.Dimensions(height: block.getInt32(position: "0x10".hexaToDecimal + offset),
+                                                     width: block.getInt32(position: "0x14".hexaToDecimal + offset))
 
-        let box = MapData.MapImage.Box(minX: .max, minY: .max, maxX: .max, maxY: .max)
+        let box = MapData.Image.Box(minX: .max, minY: .max, maxX: .max, maxY: .max)
 
-        var image = MapData.MapImage(segments: segments, position: position, dimensions: dimensions, box: box, pixels: [:])
+        var image = MapData.Image(segments: segments, position: position, dimensions: dimensions, box: box, pixels: [:])
 
         if dimensions.width > 0 && dimensions.height > 0 {
             image = parseImagePixelBlock(block, blockLength: blockLength, image: image, offset: offset)
         } else {
-            image.box = MapData.MapImage.Box(minX: 0, minY: 0, maxX: 100, maxY: 100)
+            image.box = MapData.Image.Box(minX: 0, minY: 0, maxX: 100, maxY: 100)
         }
         return image
     }
 
-    public func parseImagePixelBlock(_ block: Data, blockLength: Int, image: MapData.MapImage, offset: Int) -> MapData.MapImage {
+    fileprivate func parseImagePixelBlock(_ block: Data, blockLength: Int, image: MapData.Image, offset: Int) -> MapData.Image {
         var x: Int
         var y: Int
         var v: Int
@@ -158,14 +235,16 @@ class MapFileParser {
 
         var tempImage = image
 
-        // tempImage.position.top = MapFileParser.dimensionPixels - tempImage.position.top - tempImage.dimensions.height
+        tempImage.position.top = MapFileParser.dimensionPixels - tempImage.position.top - tempImage.dimensions.height
 
         for index in 0..<blockLength {
-            x = (index % tempImage.dimensions.width) + tempImage.position.left
-            y = (tempImage.dimensions.height - 1 - (index/tempImage.dimensions.width)) + tempImage.position.top
+            x = (index/MapFileParser.dimensionPixels) + 0
+            y = (MapFileParser.dimensionPixels - (index/MapFileParser.dimensionPixels)) + 0
             k = y * MapFileParser.dimensionPixels + x
+            
+            print("\(k)")
 
-            let blockType = block.getInt8(position: "0x00".hexaToDecimal + index)
+            let blockType = block.getInt8(position: "0x00".hexaToDecimal + offset + index)
 
             switch blockType {
             case 0:
@@ -176,12 +255,12 @@ class MapFileParser {
                 break
             default:
                 v = 1 // floor
-                s = (blockType)
+                s = (blockType & 248) >> 31
                 if s != 0 {
                     v = (s << 1) //segment
                     // centers
                     if tempImage.segments.center[s] == nil {
-                        tempImage.segments.center[s] = MapData.MapImage.Center(x: 0, y: 0, count: 0)
+                        tempImage.segments.center[s] = MapData.Image.Center(x: 0, y: 0, count: 0)
                     }
                     tempImage.segments.center[s]?.x += x
                     tempImage.segments.center[s]?.y += y
@@ -207,6 +286,9 @@ class MapFileParser {
                 }
                 break
             }
+            if v < 0 {
+                continue
+            }
             if tempImage.box.minX > x {
                 tempImage.box.minX = x
             }
@@ -224,7 +306,7 @@ class MapFileParser {
         return tempImage
     }
 
-    public func parseGoToPredictedPathBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.Path {
+    private func parseGoToPredictedPathBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.Path {
         var points: [Int] = []
         let currentAngle = block.getInt32(position: "0x10".hexaToDecimal + offset)
 
