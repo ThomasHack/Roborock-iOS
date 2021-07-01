@@ -15,26 +15,10 @@ class MapDataParser {
         case parsingError
         case unexpected
     }
-    
+
     static let dimensionPixels = 1024
     static let maxBlocks = 32
-    static let dimensionMm = 50 * 1024
-    
-    enum Blocktype: Int {
-        case chargerLocation = 1
-        case image = 2
-        case path = 3
-        case gotoPath = 4
-        case gotoPredictedPath = 5
-        case currentlyCleanedZones = 6
-        case gotoTarget = 7
-        case robotPosition = 8
-        case forbiddenZones = 9
-        case virtualWalls = 10
-        case currentlyCleanedBlocks = 11
-        case forbiddenMopZones = 12
-        case digest = 1024
-    }
+    static let dimensionMm = 50.0 * 1024.0
     
     fileprivate var data: Data?
     fileprivate var mapData: MapData = MapData()
@@ -47,7 +31,7 @@ class MapDataParser {
         if data.isGzipped {
             do {
                 self.data = try data.gunzipped()
-                self.mapData = parseBlocks()
+                parseBlocks()
             } catch {
                 print(String(describing: error))
             }
@@ -59,19 +43,19 @@ class MapDataParser {
     /// Parse response data from Websocket
     /// - Parameter data: Binary array
     /// - Returns: Image with map, robot, paths, etc.
-    fileprivate func parseBlocks() -> MapData {
+    fileprivate func parseBlocks() {
         // Check for valid RR map format
-        guard let data = self.data, data[0] == 0x72 && data[1] == 0x72 else { return self.mapData }
+        guard let data = self.data, data[0] == 0x72 && data[1] == 0x72 else { return }
         
         // Parse map data
-        self.mapData = parseBlock(data, offset: 0x14)
+        parseBlock(data, offset: 0x14)
         
         // Generate map image
-        guard let mapImageData: MapData.ImageData = mapData.imageData else { return self.mapData }
-        
+        guard let mapImageData: MapData.ImageData = mapData.imageData else { return }
+
         // Draw map
         self.mapData.image = drawMapImage(pixels: mapImageData.pixels, size: mapImageData.dimensions)
-        
+
         // Draw robot on map
         if let robot = mapData.robotPosition {
             self.mapData.image = drawRobot(image: self.mapData.image, robot: robot, size: mapImageData.dimensions)
@@ -81,8 +65,6 @@ class MapDataParser {
         if let paths = mapData.gotoPath {
             self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions)
         }
-        
-        return self.mapData
     }
     
     /// Parse binary data block
@@ -91,45 +73,41 @@ class MapDataParser {
     ///   - offset: Current offset, increments per block
     ///   - mapData: Map data result object
     /// - Returns: Parsed Map data
-    fileprivate func parseBlock(_ block: Data, offset: Int, mapData: MapData = MapData()) -> MapData {
-        if block.count <= offset {
-            return mapData
+    fileprivate func parseBlock(_ data: Data, offset: Int, mapData: MapData = MapData()) {
+        if data.count <= offset {
+            return
         }
-        
-        guard let _ = block.getBytes(position: 0x00 + offset, length: 2) else {
-            print("no block header");
-            return mapData
+
+        guard let blockType = MapData.Blocktype(rawValue: data.getInt16(position: 0x00 + offset)) else {
+            print("no block header")
+            return
         }
-        let headerLength = block.getInt16(position: 0x02 + offset)
-        let blockLength = block.getInt32(position: 0x04 + offset)
-        let blockType = Blocktype(rawValue: block.getInt16(position: 0x00 + offset))
-        
-        var tempMapData = mapData
-        
-        tempMapData.meta = parseMetaBlock(block)
+
+        let headerLength = data.getInt16(position: 0x02 + offset)
+        let blockLength = data.getInt32(position: 0x04 + offset)
+
+        self.mapData.meta = parseMetaBlock(data)
+        self.mapData.blocks[blockType] = data.getBytes(position: 0x00 + offset, length: headerLength + blockLength)
         
         switch blockType {
         case .robotPosition:
-            tempMapData.robotPosition = parseRobotPositionBlock(block, blockLength: blockLength, offset: offset)
+            self.mapData.robotPosition = parseRobotPositionBlock(data, blockLength: blockLength, offset: offset)
         case .chargerLocation:
-            tempMapData.chargerLocation = parseChargerLocationBlock(block, offset: offset)
+            self.mapData.chargerLocation = parseChargerLocationBlock(data, offset: offset)
         case .image:
-            tempMapData.imageData = parseImageBlock(block, headerLength: headerLength, blockLength: blockLength, offset: offset)
+            self.mapData.imageData = parseImageBlock(data, headerLength: headerLength, blockLength: blockLength, offset: offset)
         case .path:
-            tempMapData.vacuumPath = parsePathBlock(block, blockLength: blockLength, offset: offset)
+            self.mapData.vacuumPath = parsePathBlock(data, blockLength: blockLength, offset: offset)
         case .gotoPath:
-            tempMapData.gotoPath = parsePathBlock(block, blockLength: blockLength, offset: offset)
+            self.mapData.gotoPath = parsePathBlock(data, blockLength: blockLength, offset: offset)
         case .gotoPredictedPath:
-            tempMapData.gotoPredictedPath = parsePathBlock(block, blockLength: blockLength, offset: offset)
+            self.mapData.gotoPredictedPath = parsePathBlock(data, blockLength: blockLength, offset: offset)
         case .gotoTarget, .currentlyCleanedZones, .currentlyCleanedBlocks, .forbiddenZones, .forbiddenMopZones, .virtualWalls:
             break
         case .digest:
             break
-        default:
-            print("Error: Unknown blocktype")
-            break
         }
-        return parseBlock(block, offset: offset + headerLength + blockLength, mapData: tempMapData)
+        return parseBlock(data, offset: offset + headerLength + blockLength, mapData: self.mapData)
     }
     
     
@@ -247,7 +225,7 @@ class MapDataParser {
         let floorColor = UIColor(red: 86/255, green: 175/255, blue: 252/255, alpha: 1)
         let obstacleColor = UIColor(red: 161/255, green: 219/255, blue: 255/255, alpha: 1)
         
-        tempImage.position.top = MapDataParser.dimensionPixels - tempImage.position.top - tempImage.dimensions.height
+        // tempImage.position.top = MapDataParser.dimensionPixels - tempImage.position.top - tempImage.dimensions.height
         
         for index in 0 ..< blockLength {
             let x = (index % image.dimensions.width) + image.position.left
@@ -285,34 +263,23 @@ class MapDataParser {
     ///   - height: Height of map image from vacuum
     /// - Returns: Image with floor, walls, obstacles and segments
     fileprivate func drawMapImage(pixels: [MapData.Pixel], size: MapData.Size) -> UIImage? {
-        guard size.width > 0 && size.height > 0 else { return nil }
-        guard pixels.count == size.width * size.height else { return nil }
-        
-        let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-        let bitsPerComponent = 8
-        let bitsPerPixel = 32
-        
-        var data = pixels // Copy to mutable []
-        guard let providerRef = CGDataProvider(data: NSData(bytes: &data, length: data.count * MemoryLayout<MapData.Pixel>.size) ) else { return nil }
-        
-        guard let cgImage = CGImage(
-            width: size.width,
-            height: size.height,
-            bitsPerComponent: bitsPerComponent,
-            bitsPerPixel: bitsPerPixel,
-            bytesPerRow: size.width * MemoryLayout<MapData.Pixel>.size,
-            space: rgbColorSpace,
-            bitmapInfo: bitmapInfo,
-            provider: providerRef,
-            decode: nil,
-            shouldInterpolate: true,
-            intent: .defaultIntent
-        ) else { return nil }
-        
-        return UIImage(cgImage: cgImage)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        var data = pixels
+        let context = data.withUnsafeMutableBytes { pixelsPointer in
+            return CGContext(data: pixelsPointer.baseAddress,
+                        width: size.width,
+                        height: size.height,
+                        bitsPerComponent: 8,
+                        bytesPerRow: size.width * MemoryLayout<MapData.Pixel>.size,
+                        space: colorSpace,
+                        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+        }
+
+        guard let image = context?.makeImage() else { return nil }
+        // return UIImage(cgImage: image, scale: 1, orientation: .downMirrored)
+        return UIImage(cgImage: image)
+
     }
-    
     
     /// Draw vacuum paths onto map image
     /// - Parameters:
@@ -329,10 +296,14 @@ class MapDataParser {
         context.setStrokeColor(UIColor.red.cgColor)
         
         for (index, point) in path.points.enumerated() {
+
+            let x = positionToCanvasPath(point.x, path: size.width)
+            let y = positionToCanvasPath(point.y, path: size.height)
+
             if index == 0 {
-                context.move(to: CGPoint(x: point.x, y: point.y))
+                context.move(to: CGPoint(x: x, y: y))
             } else {
-                // context.addLine(to: CGPoint(x: point.x / (50 * image.size.width), y: point.y / (50 * image.size.height)))
+                context.addLine(to: CGPoint(x: x, y: y))
                 context.strokePath()
             }
         }
@@ -340,6 +311,10 @@ class MapDataParser {
         UIGraphicsEndImageContext()
         
         return tempImage
+    }
+
+    fileprivate func positionToCanvasPath(_ position: Int, path: Int) -> Int {
+        return Int(Double(position) / (MapDataParser.dimensionMm * Double(path)))
     }
     
     
@@ -349,15 +324,23 @@ class MapDataParser {
     ///   - robot: Robot object containing angle and coordinates
     /// - Returns: Map image including robot
     fileprivate func drawRobot(image: UIImage?, robot: MapData.RobotPosition, size: MapData.Size) -> UIImage? {
-        guard let image = image else { return nil }
-        
+        guard let image = image, let imageData = self.mapData.imageData else { return nil }
+
+        let canvasX = positionToCanvasPath(robot.position.x, path: size.width)
+        let canvasY = positionToCanvasPath(robot.position.y, path: size.height)
+
+        print("x: \(canvasX), y: \(canvasY)")
+
+        let x = canvasY // size.width - canvasX // 125
+        let y = canvasX// imageData.position.left - size.height - canvasY // 245
+
         UIGraphicsBeginImageContext(image.size)
         image.draw(at: CGPoint.zero)
         
         let context = UIGraphicsGetCurrentContext()!
         context.setStrokeColor(UIColor.green.cgColor)
         context.setLineWidth(5.0)
-        context.addEllipse(in: CGRect(x: 320, y: 275, width: 24, height: 24))
+        context.addEllipse(in: CGRect(x: x, y: y, width: 24, height: 24))
         context.drawPath(using: .stroke) // or .fillStroke if need filling
         
         let tempImage = UIGraphicsGetImageFromCurrentImageContext()

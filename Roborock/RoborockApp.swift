@@ -31,10 +31,8 @@ struct RoborockApp: App {
         .onChange(of: scenePhase) { phase in
                     switch phase {
                     case .active:
-                        print("sceneDidChange: active")
                         connect()
                     case .background:
-                        print("sceneDidChange: background")
                         disconnect()
                     default:
                         break

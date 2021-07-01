@@ -9,6 +9,7 @@ import UIKit
 
 struct MapData: Equatable {
     var meta: Meta?
+    var blocks: [Blocktype: Data] = [:]
     var robotPosition: RobotPosition?
     var chargerLocation: Point?
     var image: UIImage?

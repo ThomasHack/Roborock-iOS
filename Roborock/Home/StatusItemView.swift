@@ -25,8 +25,8 @@ struct StatusItemView: View {
                         .foregroundColor(Color("blue"))
                 }
                 .frame(width: 36, height: 36)
-                .padding(.top, 24)
-                .padding(.bottom, 24)
+                .padding(.top, 16)
+                .padding(.bottom, 16)
 
                 VStack(spacing: 4) {
                     HStack {
