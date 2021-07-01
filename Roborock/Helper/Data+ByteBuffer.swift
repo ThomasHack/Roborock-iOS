@@ -28,6 +28,6 @@ extension Data {
     }
 
     public func getInt32(position: Int) -> Int {
-        return Int(self.subdata(in: position..<position + MemoryLayout<UInt32>.size).withUnsafeBytes { $0.load(as:  UInt32.self) }.littleEndian )
+        return Int(self.subdata(in: position..<position + MemoryLayout<Int32>.size).withUnsafeBytes { $0.load(as:  UInt32.self) }.littleEndian )
     }
 }

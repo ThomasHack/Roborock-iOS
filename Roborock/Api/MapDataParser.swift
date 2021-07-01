@@ -55,15 +55,29 @@ class MapDataParser {
 
         // Draw map
         self.mapData.image = drawMapImage(pixels: mapImageData.pixels, size: mapImageData.dimensions)
-
+        
+        // Draw charger on map
+        if let charger = mapData.chargerLocation {
+            self.mapData.image = drawCharger(image: self.mapData.image, charger: charger, size: mapImageData.dimensions)
+        }
+        
+        // Draw vaccum path on map
+        if let paths = mapData.vacuumPath {
+            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions, position: mapImageData.position)
+        }
+        
+        // Draw vaccum path on map
+        if let paths = mapData.gotoPath {
+            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions, position: mapImageData.position)
+        }
+        
         // Draw robot on map
         if let robot = mapData.robotPosition {
             self.mapData.image = drawRobot(image: self.mapData.image, robot: robot, size: mapImageData.dimensions)
         }
         
-        // Draw vaccum path on map
-        if let paths = mapData.gotoPath {
-            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions)
+        if let cgImage = self.mapData.image?.cgImage {
+            self.mapData.image = UIImage(cgImage: cgImage, scale: 1.0, orientation: .downMirrored)
         }
     }
     
@@ -135,7 +149,7 @@ class MapDataParser {
     fileprivate func parseRobotPositionBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.RobotPosition {
         let x = block.getInt32(position: 0x08 + offset)
         let y = block.getInt32(position: 0x0C + offset)
-        let angle = blockLength >= 12 ? block.getInt32(position: 0x10 + offset) : nil
+        let angle = block.getInt32(position: 0x10 + offset)
         return MapData.RobotPosition(position: MapData.Point(x: x, y: y), angle: angle)
     }
     
@@ -162,9 +176,9 @@ class MapDataParser {
         var points: [MapData.Point] = []
         let currentAngle = block.getInt32(position: 0x10 + offset)
         
-        for index in 0..<blockLength {
-            let x = block.getInt16(position: 0x14) + offset + index
-            let y = block.getInt16(position: 0x16) + offset + index
+        for index in stride(from: 0, through: blockLength, by: 4) {
+            let x = block.getInt16(position: 0x14 + offset + index)
+            let y = block.getInt16(position: 0x14 + offset + index + 2)
             points.append(MapData.Point(x: x, y: y))
         }
         return MapData.Path(currentAngle: currentAngle, points: points)
@@ -276,9 +290,12 @@ class MapDataParser {
         }
 
         guard let image = context?.makeImage() else { return nil }
-        // return UIImage(cgImage: image, scale: 1, orientation: .downMirrored)
         return UIImage(cgImage: image)
 
+    }
+    
+    fileprivate func convertToMapCoordinate(_ coordinate: Int, offset: Int) -> Int {
+        return Int(Double(coordinate) / 50.0 - Double(offset))
     }
     
     /// Draw vacuum paths onto map image
@@ -286,25 +303,33 @@ class MapDataParser {
     ///   - image: Source image to draw on
     ///   - path: Path object containing angle and point array
     /// - Returns: Map image including paths
-    fileprivate func drawMapPaths(image: UIImage?, path: MapData.Path, size: MapData.Size) -> UIImage? {
+    fileprivate func drawMapPaths(image: UIImage?, path: MapData.Path, size: MapData.Size, position: MapData.Position) -> UIImage? {
         guard let image = image else { return nil }
         UIGraphicsBeginImageContext(image.size)
         image.draw(at: CGPoint.zero)
         
         let context = UIGraphicsGetCurrentContext()!
-        context.setLineWidth(2.0)
-        context.setStrokeColor(UIColor.red.cgColor)
-        
-        for (index, point) in path.points.enumerated() {
+        context.setLineWidth(1.0)
+        context.setStrokeColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0.8).cgColor)
+                
+        for index in 0..<path.points.count - 1 {
+            if index != 0 {
+                let point = path.points[index]
+                let x = convertToMapCoordinate(point.x, offset: position.left)
+                let y = convertToMapCoordinate(point.y, offset: position.top)
 
-            let x = positionToCanvasPath(point.x, path: size.width)
-            let y = positionToCanvasPath(point.y, path: size.height)
+                let previousPoint = path.points[index - 1]
+                let prevX = convertToMapCoordinate(previousPoint.x, offset: position.left)
+                let prevY = convertToMapCoordinate(previousPoint.y, offset: position.top)
 
-            if index == 0 {
-                context.move(to: CGPoint(x: x, y: y))
-            } else {
+                context.move(to: CGPoint(x: prevX, y: prevY))
                 context.addLine(to: CGPoint(x: x, y: y))
                 context.strokePath()
+            } else {
+                let point = path.points[index]
+                let x = convertToMapCoordinate(point.x, offset: position.left)
+                let y = convertToMapCoordinate(point.y, offset: position.top)
+                context.move(to: CGPoint(x: x, y: y))
             }
         }
         let tempImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -312,11 +337,6 @@ class MapDataParser {
         
         return tempImage
     }
-
-    fileprivate func positionToCanvasPath(_ position: Int, path: Int) -> Int {
-        return Int(Double(position) / (MapDataParser.dimensionMm * Double(path)))
-    }
-    
     
     /// Draw vacuum robot onto map image
     /// - Parameters:
@@ -326,22 +346,38 @@ class MapDataParser {
     fileprivate func drawRobot(image: UIImage?, robot: MapData.RobotPosition, size: MapData.Size) -> UIImage? {
         guard let image = image, let imageData = self.mapData.imageData else { return nil }
 
-        let canvasX = positionToCanvasPath(robot.position.x, path: size.width)
-        let canvasY = positionToCanvasPath(robot.position.y, path: size.height)
-
-        print("x: \(canvasX), y: \(canvasY)")
-
-        let x = canvasY // size.width - canvasX // 125
-        let y = canvasX// imageData.position.left - size.height - canvasY // 245
-
-        UIGraphicsBeginImageContext(image.size)
-        image.draw(at: CGPoint.zero)
+        let x = (robot.position.x/50) - imageData.position.left;
+        let y = (robot.position.y/50) - imageData.position.top
         
-        let context = UIGraphicsGetCurrentContext()!
-        context.setStrokeColor(UIColor.green.cgColor)
-        context.setLineWidth(5.0)
-        context.addEllipse(in: CGRect(x: x, y: y, width: 24, height: 24))
-        context.drawPath(using: .stroke) // or .fillStroke if need filling
+        guard let angle = robot.angle,
+              let robotImage = UIImage(named: "robot")?.rotate(radians: Float(angle + 90)) else { return nil }
+        
+        UIGraphicsBeginImageContext(image.size)
+        image.draw(in: CGRect(origin: .zero, size: image.size))
+        robotImage.draw(in: CGRect(origin: CGPoint(x: x - 10, y: y - 10), size: CGSize(width: 20, height: 20)))
+        
+        let tempImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return tempImage
+    }
+    
+    /// Draw vacuum charger onto map image
+    /// - Parameters:
+    ///   - image: Source image to draw on
+    ///   - charger: Charger coordinates
+    /// - Returns: Map image including robot
+    fileprivate func drawCharger(image: UIImage?, charger: MapData.Point, size: MapData.Size) -> UIImage? {
+        guard let image = image, let imageData = self.mapData.imageData else { return nil }
+
+        let x = (charger.x/50) - imageData.position.left;
+        let y = (charger.y/50) - imageData.position.top
+        
+        let chargerImage = UIImage(named: "charger")!
+        
+        UIGraphicsBeginImageContext(image.size)
+        image.draw(in: CGRect(origin: .zero, size: image.size))
+        chargerImage.draw(in: CGRect(origin: CGPoint(x: x - 10, y: y - 10), size: CGSize(width: 20, height: 20)))
         
         let tempImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

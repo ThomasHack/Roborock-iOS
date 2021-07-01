@@ -17,25 +17,46 @@ struct ButtonView: View {
                 HStack(spacing: 16) {
                     Button(action: { viewStore.send(.driveHome) }) {
                         Image(systemName: "house.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
                     }
                     .buttonStyle(SecondaryButtonStyle())
 
                     if status.inCleaning == 0 && status.inReturning == 0 {
                         Button(action: { viewStore.send(.toggleRoomSelection(true)) }) {
                             Image(systemName: "play.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
                         }
                         .buttonStyle(PrimaryButtonStyle())
                     } else {
                         Button(action: { viewStore.send(.stopCleaning) }) {
                             Image(systemName: "stop.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
                         }
                         .buttonStyle(PrimaryButtonStyle())
                     }
 
-                    Button(action: { viewStore.send(.pauseCleaning) }) {
-                        Image(systemName: "pause.fill")
+                    if status.inCleaning != 0 && status.inReturning != 0 {
+                        Button(action: { viewStore.send(.pauseCleaning) }) {
+                            Image(systemName: "pause.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                        }
+                        .buttonStyle(SecondaryButtonStyle())
                     }
-                    .disabled(status.inCleaning == 0 && status.inReturning == 0)
+                    
+                    Button(action: { }) {
+                        Image(systemName: "gear")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
+                    }
                     .buttonStyle(SecondaryButtonStyle())
                 }
                 .padding()

@@ -10,9 +10,7 @@ import ComposableArchitecture
 import Combine
 
 struct ApiRestClient {
-    var fetchCurrentStatus: (AnyHashable) -> Effect<Status, Failure>
     var fetchSegments: (AnyHashable) -> Effect<Segment, Failure>
-    var fetchMap: (AnyHashable) -> Effect<Data, Failure>
     var startCleaningSegment: (AnyHashable, [Int]) -> Effect<Data, Failure>
     var stopCleaning: (AnyHashable) -> Effect<Data, Failure>
     var pauseCleaning: (AnyHashable) -> Effect<Data, Failure>
@@ -24,29 +22,12 @@ struct ApiRestClient {
 extension ApiRestClient {
     static let baseUrl = "http://roborock.home/api"
     static let live = ApiRestClient(
-        fetchCurrentStatus: { id in
-            let url = URL(string: "\(baseUrl)/current_status")!
-            
-            return URLSession.shared.dataTaskPublisher(for: url)
-                .map { data, _ in data }
-                .decode(type: Status.self, decoder: jsonDecoder)
-                .mapError { _ in Failure() }
-                .eraseToEffect()
-        },
         fetchSegments: { id in
             let url = URL(string: "\(baseUrl)/segment_names")!
             
             return URLSession.shared.dataTaskPublisher(for: url)
                 .map { data, _ in data }
                 .decode(type: Segment.self, decoder: jsonDecoder)
-                .mapError { _ in Failure() }
-                .eraseToEffect()
-        },
-        fetchMap: { id in
-            let url = URL(string: "\(baseUrl)/simple_map")!
-            
-            return URLSession.shared.dataTaskPublisher(for: url)
-                .map { data, _ in data }
                 .mapError { _ in Failure() }
                 .eraseToEffect()
         },

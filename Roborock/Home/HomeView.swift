@@ -24,10 +24,6 @@ struct HomeView: View {
                         Text("Roborock")
                             .font(.system(size: 42, weight: .bold, design: .default))
                         Spacer()
-                        Button(action: { viewStore.send(.fetchStatus) }) {
-                            Image(systemName: "arrow.clockwise")
-                        }
-                        .buttonStyle(SecondaryButtonStyle())
                     }
                     .padding(.top, 36)
                     .padding(.bottom, 0)

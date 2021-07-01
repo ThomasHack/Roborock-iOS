@@ -27,32 +27,29 @@ enum Api {
     }
     
     enum Action: Equatable {
+        case didConnect
         case connect(URL)
+        case didDisconnect
         case disconnect
-        case fetchCurrentStatus
-        case statusResponse(Result<Status, ApiRestClient.Failure>)
+        
         case fetchConsumableStatus
         case fetchWifiStatus
         case fetchSpots
         case fetchZones
+        
         case fetchSegments
         case segmentsResponse(Result<Segment, ApiRestClient.Failure>)
-        case fetchSimpleMap
-        case mapResponse(Result<Data, ApiRestClient.Failure>)
-        case fetchMapData
+        
         case startCleaningSegment([Int])
         case startCleaningSegmentResponse(Result<Data, ApiRestClient.Failure>)
         case stopCleaning
         case stopCleaningResponse(Result<Data, ApiRestClient.Failure>)
         case pauseCleaning
         case pauseCleaningResponse(Result<Data, ApiRestClient.Failure>)
-        case refreshState(Result<Data, ApiRestClient.Failure>)
-        case refreshStateAndMap(Result<Data, ApiRestClient.Failure>)
+        
         case driveHome
         case driveHomeResponse(Result<Data, ApiRestClient.Failure>)
         
-        case didConnect
-        case didDisconnect
         case didUpdateStatus(Status)
         case didReceiveWebSocketEvent(ApiWebSocketEvent)
     }
@@ -71,22 +68,6 @@ enum Api {
                 .receive(on: environment.mainQueue)
                 .eraseToEffect()
             
-        case .fetchCurrentStatus:
-            return environment.apiClient.fetchCurrentStatus(ApiId())
-                .receive(on: environment.mainQueue)
-                .catchToEffect()
-                .map(Action.statusResponse)
-            
-        case .statusResponse(let response):
-            switch response {
-            case .success(let status):
-                state.status = status
-                return .none
-            case .failure(let error):
-                print("error: \(error)")
-                return .none
-            }
-            
         case .fetchSegments:
             return environment.apiClient.fetchSegments(ApiId())
                 .receive(on: environment.mainQueue)
@@ -102,22 +83,6 @@ enum Api {
             }
             return .none
             
-        case .fetchSimpleMap:
-            return environment.apiClient.fetchMap(ApiId())
-                .receive(on: environment.mainQueue)
-                .catchToEffect()
-                .map(Action.mapResponse)
-            
-        case .mapResponse(let response):
-            switch response {
-            case .success(let data):
-                if let image = UIImage(data: data) {
-                    state.mapImage = image
-                }
-            case .failure(let error):
-                print("error: \(error.localizedDescription)")
-            }
-            return .none
         case .startCleaningSegment(let rooms):
             return environment.apiClient.startCleaningSegment(ApiId(), rooms)
                 .receive(on: environment.mainQueue)
@@ -141,27 +106,6 @@ enum Api {
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.driveHomeResponse)
-            
-        case .refreshStateAndMap(let response):
-            switch response {
-            case .success(_):
-                return .merge(
-                    Effect(value: Action.fetchCurrentStatus),
-                    Effect(value: Action.fetchSimpleMap)
-                )
-            case .failure(let error):
-                print("Error: \(error.localizedDescription)")
-            }
-            return .none
-            
-        case .refreshState(let response):
-            switch response {
-            case .success(_):
-                return Effect(value: Action.fetchCurrentStatus)
-            case .failure(let error):
-                print("Error: \(error.localizedDescription)")
-            }
-            return .none
             
         case .didConnect:
             state.connectivityState = .connected

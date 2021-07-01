@@ -16,9 +16,7 @@ enum Home {
     
     enum Action {
         case connect
-        case fetchStatus
         case fetchSegments
-        case fetchMap
         case toggleRoom(Int)
         case startCleaning
         case stopCleaning
@@ -38,12 +36,10 @@ enum Home {
             case .connect:
                 let url = URL(string: "http://roborock/")
                 return Effect(value: Action.api(.connect(url!)))
-            case .fetchStatus:
-                return Effect(value: Action.api(.fetchCurrentStatus))
+
             case .fetchSegments:
                 return Effect(value: Action.api(.fetchSegments))
-            case .fetchMap:
-                return Effect(value: Action.api(.fetchSimpleMap))
+
             case .toggleRoom(let roomId):
                 if let index = state.rooms.firstIndex(of: roomId) {
                     state.rooms.remove(at: index)
@@ -51,14 +47,19 @@ enum Home {
                     state.rooms.append(roomId)
                 }
                 return .none
+
             case .startCleaning:
                 return Effect(value: Action.api(.startCleaningSegment(state.rooms)))
+
             case .stopCleaning:
                 return Effect(value: Action.api(.stopCleaning))
+
             case .pauseCleaning:
                 return Effect(value: Action.api(.pauseCleaning))
+
             case .driveHome:
                 return Effect(value: Action.api(.driveHome))
+
             case .selectAll:
                 if state.rooms.isEmpty {
                     guard let segments = state.api.segments else { return .none }
@@ -68,9 +69,11 @@ enum Home {
                 }
                 state.rooms = []
                 return .none
+
             case .toggleRoomSelection(let toggle):
                 state.presentRoomSelection = toggle
                 return .none
+
             case .api:
                 return .none
             }

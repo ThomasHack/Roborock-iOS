@@ -16,7 +16,6 @@
 		5211E4EC268B434B0043F55F /* RobotPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4EB268B434B0043F55F /* RobotPosition.swift */; };
 		5211E4EE268B580D0043F55F /* Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4ED268B580D0043F55F /* Path.swift */; };
 		5264819C268DE7770061D2FB /* Blocktype.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264819B268DE7770061D2FB /* Blocktype.swift */; };
-		5264819E268E307E0061D2FB /* image_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5264819D268E307E0061D2FB /* image_2.jpg */; };
 		5275B1642649919D008B4DC7 /* SwiftUIVisualEffects in Frameworks */ = {isa = PBXBuildFile; productRef = 5275B1632649919D008B4DC7 /* SwiftUIVisualEffects */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
 		52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */; };
@@ -61,8 +60,6 @@
 		5211E4EB268B434B0043F55F /* RobotPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotPosition.swift; sourceTree = "<group>"; };
 		5211E4ED268B580D0043F55F /* Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Path.swift; sourceTree = "<group>"; };
 		5264819B268DE7770061D2FB /* Blocktype.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blocktype.swift; sourceTree = "<group>"; };
-		5264819D268E307E0061D2FB /* image_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image_2.jpg; sourceTree = "<group>"; };
-		5264819F268E30920061D2FB /* Mappe1.xlsx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Mappe1.xlsx; sourceTree = "<group>"; };
 		5275B16526499263008B4DC7 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -115,7 +112,6 @@
 			children = (
 				52046F2826494DC400E1C041 /* BlurView.swift */,
 				52046F2526494DA100E1C041 /* ButtonStyles.swift */,
-				5275B169264999D1008B4DC7 /* ButtonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -194,8 +190,6 @@
 		6542893A2646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXGroup;
 			children = (
-				5264819D268E307E0061D2FB /* image_2.jpg */,
-				5264819F268E30920061D2FB /* Mappe1.xlsx */,
 				52F12B9D268A2D4400C5494E /* Helper */,
 				52046F2126494BF100E1C041 /* Views */,
 				654289592646C438009B8BE5 /* Main */,
@@ -232,6 +226,7 @@
 		654289562646C402009B8BE5 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				5275B169264999D1008B4DC7 /* ButtonView.swift */,
 				654289572646C40F009B8BE5 /* Home.swift */,
 				654289652646E6DF009B8BE5 /* Home+HomeFeature.swift */,
 				654289632646E631009B8BE5 /* HomeView.swift */,
@@ -332,7 +327,6 @@
 			files = (
 				654289432646B78C009B8BE5 /* Preview Assets.xcassets in Resources */,
 				654289402646B78C009B8BE5 /* Assets.xcassets in Resources */,
-				5264819E268E307E0061D2FB /* image_2.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

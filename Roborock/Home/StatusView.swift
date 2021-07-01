@@ -19,7 +19,7 @@ struct StatusView: View {
 
                     StatusItemView(iconName: "stopwatch", label: "Clean Time", value: String(format: "%.2f", status.cleanTime), unit: "min")
 
-                    StatusItemView(iconName: "square.dashed", label: "Clean Area", value: String(format: "%.2f", status.cleanArea), unit: "qm")
+                    StatusItemView(iconName: "square.dashed", label: "Clean Area", value: String(format: "%.2f", round(Double(status.cleanArea)/10000)), unit: "qm")
                 }
                 .padding()
             }

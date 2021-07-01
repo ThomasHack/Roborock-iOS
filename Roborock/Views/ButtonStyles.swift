@@ -21,7 +21,7 @@ struct PrimaryButtonStyle: ButtonStyle {
         let foregroundColor = Color(UIColor.white)
 
         return configuration.label
-            .padding(24)
+            .padding(16)
             .foregroundColor(foregroundColor)
             .background(background)
             .clipShape(Circle())
