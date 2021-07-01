@@ -3,7 +3,7 @@
 //  Roborock
 //
 //  Created by Hack, Thomas on 28.06.21.
-//
+//  https://github.com/marcelrv/XiaomiRobotVacuumProtocol/blob/master/RRMapFile/RRFileFormat.md
 
 import UIKit
 import Gzip
