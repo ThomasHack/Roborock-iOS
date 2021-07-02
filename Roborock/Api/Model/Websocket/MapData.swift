@@ -17,4 +17,5 @@ struct MapData: Equatable {
     var vacuumPath: Path?
     var gotoPath: Path?
     var gotoPredictedPath: Path?
+    var forbiddenZones: ForbiddenZones?
 }

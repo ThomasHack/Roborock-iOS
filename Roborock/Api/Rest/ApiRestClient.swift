@@ -15,6 +15,7 @@ struct ApiRestClient {
     var stopCleaning: (AnyHashable) -> Effect<Data, Failure>
     var pauseCleaning: (AnyHashable) -> Effect<Data, Failure>
     var driveHome: (AnyHashable) -> Effect<Data, Failure>
+    var setFanspeed: (AnyHashable, Int) -> Effect<Data, Failure>
     
     struct Failure: Error, Equatable {}
 }
@@ -69,10 +70,28 @@ extension ApiRestClient {
                 .map { data, _ in data }
                 .mapError { _ in Failure() }
                 .eraseToEffect()
-        }, driveHome: { id in
+        },
+        driveHome: { id in
             let url = URL(string: "\(baseUrl)/drive_home")!
             var request = URLRequest(url: url)
             request.httpMethod = "PUT"
+
+            return URLSession.shared.dataTaskPublisher(for: request)
+                .map { data, _ in data }
+                .mapError { _ in Failure() }
+                .eraseToEffect()
+        },
+        setFanspeed: { id, fanspeed in
+            let url = URL(string: "\(baseUrl)/fanspeed")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "PUT"
+
+            let requestData = ["speed": fanspeed]
+            request.httpBody = try! JSONSerialization.data(withJSONObject: requestData, options: .fragmentsAllowed)
+            request.allHTTPHeaderFields = [
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            ]
 
             return URLSession.shared.dataTaskPublisher(for: request)
                 .map { data, _ in data }

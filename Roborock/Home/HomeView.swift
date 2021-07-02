@@ -14,8 +14,10 @@ struct HomeView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             ZStack {
-                Image("background")
-                    .resizable()
+//                Image("background")
+//                    .resizable()
+//                    .edgesIgnoringSafeArea(.all)
+                Color(UIColor.secondarySystemBackground)
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 0) {
@@ -24,33 +26,36 @@ struct HomeView: View {
                         Text("Roborock")
                             .font(.system(size: 42, weight: .bold, design: .default))
                         Spacer()
+                        Button(action: { }) {
+                            Image(systemName: "gear")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                        }
+                        .buttonStyle(SecondaryButtonStyle())
                     }
                     .padding(.top, 36)
                     .padding(.bottom, 0)
-                    .padding(.horizontal, 16)
-                    
-                    if viewStore.api.connectivityState == .connected, let status = viewStore.api.status {
+                    .padding(.horizontal, 20)
 
-                        HStack {
-                            Text("Status:")
-                                .font(.system(size: 16, weight: .light, design: .default))
-                            Text("\(status.stateHumanReadable)")
-                                .font(.system(.headline))
-                            Spacer()
+                    HStack {
+                        Text("Status:")
+                            .font(.system(size: 16, weight: .light, design: .default))
+                        Text(viewStore.api.status?.stateHumanReadable ?? (viewStore.api.connectivityState == .connected ? "Connected" : "Disconnected"))
+                            .font(.system(.headline))
+                        Spacer()
 
-                        }
-                        .padding(.horizontal)
-
-                        MapView(store: store)
-
-                        StatusView(store: store)
-
-                        ButtonView(store: store)
                     }
-                    Spacer()
+                    .padding(.horizontal, 20)
+
+                    MapView(store: store)
+
+                    StatusView(store: store)
+
+                    ButtonView(store: store)
                 }
             }
-            .popover(isPresented: viewStore.binding(get: { $0.presentRoomSelection }, send: Home.Action.toggleRoomSelection)){
+            .sheet(isPresented: viewStore.binding(get: { $0.presentRoomSelection }, send: Home.Action.toggleRoomSelection)){
                 NavigationView {
                     SegmentList(store: store)
                         .navigationBarTitle("Select Room", displayMode: .large)
@@ -79,5 +84,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(store: Main.previewStoreHome)
+            .preferredColorScheme(.dark)
     }
 }

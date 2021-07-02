@@ -52,6 +52,12 @@ enum Api {
         
         case didUpdateStatus(Status)
         case didReceiveWebSocketEvent(ApiWebSocketEvent)
+
+        case setMapData(Result<MapData, MapDataParser.MapDataError>)
+        case setMapImage(UIImage)
+
+        case setFanspeed(Int)
+        case setFanspeedResponse(Result<Data, ApiRestClient.Failure>)
     }
     
     typealias Environment = Main.Environment
@@ -122,15 +128,37 @@ enum Api {
         case .didReceiveWebSocketEvent(let event):
             switch event {
             case .binary(let data):
-                let parser = MapDataParser()
-                state.mapData = parser.parse(data)
-                if let mapImage = state.mapData?.image {
-                    state.mapImage = mapImage
-                }
-                return .none
+                return environment.mapDataParser.parse(data)
+                    .receive(on: environment.mainQueue)
+                    .catchToEffect()
+                    .map(Action.setMapData)
             default:
                 return .none
             }
+        case .setMapData(let result):
+            switch result {
+            case .success(let mapData):
+                state.mapData = mapData
+                if let image = mapData.image {
+                    return Effect(value: .setMapImage(image))
+                }
+            case .failure(let error):
+                print("\(error.localizedDescription)")
+            }
+            return .none
+
+        case .setMapImage(let image):
+            state.mapImage = image
+            return .none
+
+        case .setFanspeed(let fanspeed):
+            return environment.apiClient.setFanspeed(ApiId(), fanspeed)
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setFanspeedResponse)
+
+        case .setFanspeedResponse:
+            return .none
             
         default:
             return .none
@@ -139,18 +167,18 @@ enum Api {
     
     static let initialState = State()
     
-    static let previewState = State(
-        status: Status(state: 2, otaState: "idle", messageVersion: 3, battery: 94, cleanTime: 4, cleanArea: 0, errorCode: 0, mapPresent: 1, inCleaning: 0, inReturning: 0, inFreshState: 1, waterBoxStatus: 0, fanPower: 101, dndEnabled: 0, mapStatus: 3, mainBrushLife: 84, sideBrushLife: 75, filterLife: 67, stateHumanReadable: "Charger disconnected", model: "roborock.vacuum.s5", errorHumanReadable: "No error"),
-        segments: Segment(segment: [
-            SegmentValue(id: 16, name: "Arbeitszimmer"),
-            SegmentValue(id: 17, name: "Wohnzimmer"),
-            SegmentValue(id: 18, name: "Vorrat"),
-            SegmentValue(id: 19, name: "Badezimmer"),
-            SegmentValue(id: 20, name: "Gästebad"),
-            SegmentValue(id: 21, name: "Schlafzimmer"),
-            SegmentValue(id: 22, name: "Flur"),
-            SegmentValue(id: 23, name: "Küche")
-        ]
-        )
-    )
+    static let previewState = State()
+//        status: Status(state: 2, otaState: "idle", messageVersion: 3, battery: 94, cleanTime: 4, cleanArea: 0, errorCode: 0, mapPresent: 1, inCleaning: 0, inReturning: 0, inFreshState: 1, waterBoxStatus: 0, fanPower: 101, dndEnabled: 0, mapStatus: 3, mainBrushLife: 84, sideBrushLife: 75, filterLife: 67, stateHumanReadable: "Charger disconnected", model: "roborock.vacuum.s5", errorHumanReadable: "No error"),
+//        segments: Segment(segment: [
+//            SegmentValue(id: 16, name: "Arbeitszimmer"),
+//            SegmentValue(id: 17, name: "Wohnzimmer"),
+//            SegmentValue(id: 18, name: "Vorrat"),
+//            SegmentValue(id: 19, name: "Badezimmer"),
+//            SegmentValue(id: 20, name: "Gästebad"),
+//            SegmentValue(id: 21, name: "Schlafzimmer"),
+//            SegmentValue(id: 22, name: "Flur"),
+//            SegmentValue(id: 23, name: "Küche")
+//        ]
+//        )
+//    )
 }

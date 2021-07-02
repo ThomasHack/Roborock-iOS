@@ -35,10 +35,10 @@ extension MapData {
         }
 
         struct Box: Equatable {
-            var minX: Double
-            var minY: Double
-            var maxX: Double
-            var maxY: Double
+            var minX: Int
+            var minY: Int
+            var maxX: Int
+            var maxY: Int
         }
     }
 

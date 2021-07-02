@@ -11,6 +11,8 @@ import ComposableArchitecture
 struct ButtonView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
 
+    @State private var showingPopover = false
+
     var body: some View {
         WithViewStore(self.store) { viewStore in
             if let status = viewStore.api.status {
@@ -29,6 +31,7 @@ struct ButtonView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 20, height: 20)
+                                .offset(x: 2, y: 0)
                         }
                         .buttonStyle(PrimaryButtonStyle())
                     } else {
@@ -50,14 +53,28 @@ struct ButtonView: View {
                         }
                         .buttonStyle(SecondaryButtonStyle())
                     }
-                    
-                    Button(action: { }) {
-                        Image(systemName: "gear")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 20, height: 20)
-                    }
-                    .buttonStyle(SecondaryButtonStyle())
+
+                    Menu(content: {
+                        ForEach(Fanspeed.allCases.reversed(), id: \.self) { value in
+                            Button(action: { viewStore.send(.api(.setFanspeed(value.rawValue))) }) {
+                                HStack {
+                                    Text(value.label)
+                                    Spacer()
+                                    if viewStore.state.api.status?.fanPower == value.rawValue {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+                            }                        }
+                    }, label: {
+                        Button(action: { showingPopover = true }) {
+                            Image(systemName: "speedometer")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                        }
+                        .buttonStyle(SecondaryButtonStyle())
+                    })
                 }
                 .padding()
             }

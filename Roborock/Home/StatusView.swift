@@ -13,16 +13,23 @@ struct StatusView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            if let status = viewStore.api.status {
-                HStack {
-                    StatusItemView(iconName: viewStore.batteryIcon, label: "Battery", value: "\(status.battery)", unit: "%")
+            HStack {
+                StatusItemView(iconName: viewStore.batteryIcon,
+                               label: "Battery",
+                               value: "\(viewStore.api.status?.battery ?? 0)",
+                               unit: "%")
 
-                    StatusItemView(iconName: "stopwatch", label: "Clean Time", value: String(format: "%.2f", status.cleanTime), unit: "min")
+                StatusItemView(iconName: "stopwatch",
+                               label: "Clean Time",
+                               value: String(format: "%.2f", viewStore.api.status?.cleanTime ?? 0),
+                               unit: "min")
 
-                    StatusItemView(iconName: "square.dashed", label: "Clean Area", value: String(format: "%.2f", round(Double(status.cleanArea)/10000)), unit: "qm")
-                }
-                .padding()
+                StatusItemView(iconName: "square.dashed",
+                               label: "Clean Area",
+                               value: String(format: "%.2f", round(Double(viewStore.api.status?.cleanArea ?? 0)/10000)),
+                               unit: "qm")
             }
+            .padding()
         }
     }
 }

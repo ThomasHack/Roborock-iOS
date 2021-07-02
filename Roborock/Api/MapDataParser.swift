@@ -6,13 +6,16 @@
 //  https://github.com/marcelrv/XiaomiRobotVacuumProtocol/blob/master/RRMapFile/RRFileFormat.md
 
 import UIKit
+import Combine
 import Gzip
+import SwiftUI
 
 class MapDataParser {
     
     enum MapDataError: Error {
         case gzipError
         case parsingError
+        case imageGeneration
         case unexpected
     }
 
@@ -20,14 +23,21 @@ class MapDataParser {
     static let maxBlocks = 32
     static let dimensionMm = 50.0 * 1024.0
     
-    fileprivate var data: Data?
-    fileprivate var mapData: MapData = MapData()
-    
+    private var data: Data?
+    private var mapData: MapData = MapData()
+
+    public func parse(_ data: Data) -> AnyPublisher<MapData, MapDataError> {
+        Future { promise in
+            self.parseData(data)
+            promise(.success(self.mapData))
+        }
+        .eraseToAnyPublisher()
+    }
     
     /// Unzip and parse data from Websocket
     /// - Parameter data: Gzipped binary data array
     /// - Returns: Image with map, robot, paths, etc.
-    public func parse(_ data: Data) -> MapData {
+    private func parseData(_ data: Data) {
         if data.isGzipped {
             do {
                 self.data = try data.gunzipped()
@@ -36,49 +46,19 @@ class MapDataParser {
                 print(String(describing: error))
             }
         }
-        return self.mapData
     }
     
     
     /// Parse response data from Websocket
     /// - Parameter data: Binary array
     /// - Returns: Image with map, robot, paths, etc.
-    fileprivate func parseBlocks() {
+    private func parseBlocks() {
         // Check for valid RR map format
         guard let data = self.data, data[0] == 0x72 && data[1] == 0x72 else { return }
         
         // Parse map data
         parseBlock(data, offset: 0x14)
-        
-        // Generate map image
-        guard let mapImageData: MapData.ImageData = mapData.imageData else { return }
-
-        // Draw map
-        self.mapData.image = drawMapImage(pixels: mapImageData.pixels, size: mapImageData.dimensions)
-        
-        // Draw charger on map
-        if let charger = mapData.chargerLocation {
-            self.mapData.image = drawCharger(image: self.mapData.image, charger: charger, size: mapImageData.dimensions)
-        }
-        
-        // Draw vaccum path on map
-        if let paths = mapData.vacuumPath {
-            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions, position: mapImageData.position)
-        }
-        
-        // Draw vaccum path on map
-        if let paths = mapData.gotoPath {
-            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions, position: mapImageData.position)
-        }
-        
-        // Draw robot on map
-        if let robot = mapData.robotPosition {
-            self.mapData.image = drawRobot(image: self.mapData.image, robot: robot, size: mapImageData.dimensions)
-        }
-        
-        if let cgImage = self.mapData.image?.cgImage {
-            self.mapData.image = UIImage(cgImage: cgImage, scale: 1.0, orientation: .downMirrored)
-        }
+        drawMapImage()
     }
     
     /// Parse binary data block
@@ -87,7 +67,7 @@ class MapDataParser {
     ///   - offset: Current offset, increments per block
     ///   - mapData: Map data result object
     /// - Returns: Parsed Map data
-    fileprivate func parseBlock(_ data: Data, offset: Int, mapData: MapData = MapData()) {
+    private func parseBlock(_ data: Data, offset: Int, mapData: MapData = MapData()) {
         if data.count <= offset {
             return
         }
@@ -111,12 +91,14 @@ class MapDataParser {
         case .image:
             self.mapData.imageData = parseImageBlock(data, headerLength: headerLength, blockLength: blockLength, offset: offset)
         case .path:
-            self.mapData.vacuumPath = parsePathBlock(data, blockLength: blockLength, offset: offset)
+            self.mapData.vacuumPath = parsePathBlock(data, blockLength: blockLength, offset: offset, type: .vacuum)
         case .gotoPath:
-            self.mapData.gotoPath = parsePathBlock(data, blockLength: blockLength, offset: offset)
+            self.mapData.gotoPath = parsePathBlock(data, blockLength: blockLength, offset: offset, type: .goto)
         case .gotoPredictedPath:
-            self.mapData.gotoPredictedPath = parsePathBlock(data, blockLength: blockLength, offset: offset)
-        case .gotoTarget, .currentlyCleanedZones, .currentlyCleanedBlocks, .forbiddenZones, .forbiddenMopZones, .virtualWalls:
+            self.mapData.gotoPredictedPath = parsePathBlock(data, blockLength: blockLength, offset: offset, type: .predicted)
+        case .forbiddenZones:
+            self.mapData.forbiddenZones = parseForbiddenZones(data, blockLength: blockLength, offset: offset)
+        case .gotoTarget, .currentlyCleanedZones, .currentlyCleanedBlocks, .forbiddenMopZones, .virtualWalls:
             break
         case .digest:
             break
@@ -128,7 +110,7 @@ class MapDataParser {
     /// Parse first meta block in binary array
     /// - Parameter block: Data block that contains block header and data
     /// - Returns: MapData.Meta Block meta information
-    fileprivate func parseMetaBlock(_ block: Data) -> MapData.Meta {
+    private func parseMetaBlock(_ block: Data) -> MapData.Meta {
         let headerLength = block.getInt16(position: 0x02)
         let dataLength = block.getInt32(position: 0x04)
         let majorVersion = block.getInt16(position: 0x08)
@@ -146,7 +128,7 @@ class MapDataParser {
     ///   - blockLength: Int length of current data block (not including header)
     ///   - offset: Int current offset, increments per block
     /// - Returns: MapData.Robotposition coordinates and angle of robot
-    fileprivate func parseRobotPositionBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.RobotPosition {
+    private func parseRobotPositionBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.RobotPosition {
         let x = block.getInt32(position: 0x08 + offset)
         let y = block.getInt32(position: 0x0C + offset)
         let angle = block.getInt32(position: 0x10 + offset)
@@ -159,7 +141,7 @@ class MapDataParser {
     ///   - block: Data block that contains block header and data
     ///   - offset: Int current offset, increments per block
     /// - Returns: Charger coordinates
-    fileprivate func parseChargerLocationBlock(_ block: Data, offset: Int) -> MapData.Point {
+    private func parseChargerLocationBlock(_ block: Data, offset: Int) -> MapData.Point {
         let x = block.getInt32(position: 0x08 + offset)
         let y = block.getInt32(position: 0x0C + offset)
         return MapData.Point(x: x, y: y)
@@ -172,7 +154,7 @@ class MapDataParser {
     ///   - blockLength: Length of current data block (not including header)
     ///   - offset: Current offset, increments per block
     /// - Returns: Current angle and array of driven paths from vacuum
-    fileprivate func parsePathBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.Path {
+    private func parsePathBlock(_ block: Data, blockLength: Int, offset: Int, type: MapData.Path.PathType) -> MapData.Path {
         var points: [MapData.Point] = []
         let currentAngle = block.getInt32(position: 0x10 + offset)
         
@@ -181,7 +163,21 @@ class MapDataParser {
             let y = block.getInt16(position: 0x14 + offset + index + 2)
             points.append(MapData.Point(x: x, y: y))
         }
-        return MapData.Path(currentAngle: currentAngle, points: points)
+        return MapData.Path(currentAngle: currentAngle, points: points, type: type)
+    }
+
+    private func parseForbiddenZones(_ block: Data, blockLength: Int, offset: Int) -> MapData.ForbiddenZones {
+        var zones: [[MapData.Point]] = []
+        let count = block.getInt32(position: 0x08 + offset)
+
+        for index in stride(from: 0, through: blockLength, by: 16) {
+            let a = MapData.Point(x: block.getInt16(position: 0x0C + offset + index), y: block.getInt16(position: 0x0C + offset + index + 2))
+            let b = MapData.Point(x: block.getInt16(position: 0x0C + offset + index + 4), y: block.getInt16(position: 0x0C + offset + index + 6))
+            let c = MapData.Point(x: block.getInt16(position: 0x0C + offset + index + 8), y: block.getInt16(position: 0x0C + offset + index + 10))
+            let d = MapData.Point(x: block.getInt16(position: 0x0C + offset + index + 12), y: block.getInt16(position: 0x0C + offset + index + 14))
+            zones.append(contentsOf: [[a, b, c, d]])
+        }
+        return MapData.ForbiddenZones(count: count, zones: zones)
     }
     
     
@@ -192,7 +188,7 @@ class MapDataParser {
     ///   - blockLength: Length of current data block (not including header)
     ///   - offset: Current offset, increments per block
     /// - Returns: Parsed image data from binary array with segments, dimensions, pixel array, etc.
-    fileprivate func parseImageBlock(_ block: Data, headerLength: Int, blockLength: Int, offset: Int) -> MapData.ImageData {
+    private func parseImageBlock(_ block: Data, headerLength: Int, blockLength: Int, offset: Int) -> MapData.ImageData {
         var g3offset = 0
         if headerLength > 24 {
             g3offset = 4
@@ -208,7 +204,7 @@ class MapDataParser {
         let dimensions = MapData.Size(width: block.getInt32(position: 0x14 + g3offset + offset),
                                       height: block.getInt32(position: 0x10 + g3offset + offset))
         
-        let box = MapData.ImageData.Box(minX: .infinity, minY: .infinity, maxX: .infinity, maxY: .infinity)
+        let box = MapData.ImageData.Box(minX: 0, minY: 0, maxX: 0, maxY: 0)
         
         var image = MapData.ImageData(segments: segments, position: position, dimensions: dimensions, box: box, pixels: [])
         
@@ -229,18 +225,16 @@ class MapDataParser {
     ///   - offset: Current offset, increments per block
     ///   - g3offset: Specific offset for generation 3+ vacuums and map version >= 1.1 as block header is 4 bytes longer
     /// - Returns: Parsed image data from binary array with pixel array (width*height) in rgba
-    fileprivate func parseImagePixelBlock(_ block: Data, blockLength: Int, image: MapData.ImageData, offset: Int, g3offset: Int) -> MapData.ImageData {
+    private func parseImagePixelBlock(_ block: Data, blockLength: Int, image: MapData.ImageData, offset: Int, g3offset: Int) -> MapData.ImageData {
         var tempImage = image
         var mapImageData = MapData.ImageData.Data(floor: [],
                                                   obstacleWeak: [],
                                                   obstacleStrong: [])
         
-        let freeColor = UIColor(red: 57/255, green: 127/255, blue: 224/255, alpha: 1)
+        let freeColor = UIColor.clear//(red: 57/255, green: 127/255, blue: 224/255, alpha: 1)
         let floorColor = UIColor(red: 86/255, green: 175/255, blue: 252/255, alpha: 1)
         let obstacleColor = UIColor(red: 161/255, green: 219/255, blue: 255/255, alpha: 1)
-        
-        // tempImage.position.top = MapDataParser.dimensionPixels - tempImage.position.top - tempImage.dimensions.height
-        
+
         for index in 0 ..< blockLength {
             let x = (index % image.dimensions.width) + image.position.left
             let y = image.dimensions.height - 1 - (index / image.dimensions.width) + image.position.top
@@ -256,17 +250,111 @@ class MapDataParser {
             default: // Segment or floor
                 let segmentId = (type & 248) >> 3
                 if segmentId != 0 {
-                    tempImage.pixels.append(floorColor.toPixel)
+                    let color = colorForSegmentId(segment: Segment(rawValue: segmentId))
+                    tempImage.pixels.append(color.toPixel)
                     mapImageData.floor.append(MapData.Point(x: x, y: y))
                     break
                 }
                 tempImage.pixels.append(floorColor.toPixel)
                 mapImageData.floor.append(MapData.Point(x: x, y: y))
             }
+
+            if (image.box.minX > x) { tempImage.box.minX = x }
+            if (image.box.maxX < x) { tempImage.box.maxX = x }
+            if (image.box.minY > y) { tempImage.box.minY = y }
+            if (image.box.maxY < y) { tempImage.box.maxY = y }
         }
         
         tempImage.data = mapImageData
         return tempImage
+    }
+
+    enum Segment: Int {
+        case studio = 16
+        case bath = 19
+        case bedroom = 21
+        case corridor = 22
+        case kitchen = 23
+        case livingroom = 17
+        case toilet = 20
+        case supply = 18
+    }
+
+    private func colorForSegmentId(segment: Segment?) -> UIColor {
+        switch segment {
+        case .studio:
+            return UIColor(hexString: "#046CD4")
+        case .bath:
+            return UIColor(hexString: "#045FBA")
+        case .bedroom:
+            return UIColor(hexString: "#56B4FC")
+        case .corridor:
+            return UIColor(hexString: "#4DB4E3")
+        case .kitchen:
+            return UIColor(hexString: "#448BC9")
+        case .livingroom:
+            return UIColor(hexString: "#046CD4")
+        case .toilet:
+            return UIColor(hexString: "#4D9DE3")
+        case .supply:
+            return UIColor(hexString: "0352A1")
+        default:
+            return UIColor(hexString: "#56AFFC")
+        }
+    }
+
+
+    /// Convert coordinate to map space
+    /// - Parameters:
+    ///   - coordinate: Axis coordinate
+    ///   - offset: Map offset
+    /// - Returns: Coordinate in map space
+    private func convertToMapCoordinate(_ coordinate: Int, offset: Int) -> Int {
+        return Int(Double(coordinate) / 50.0 - Double(offset))
+    }
+
+
+    /// Draw map image
+    private func drawMapImage() {
+        // Generate map image
+        guard let mapImageData: MapData.ImageData = mapData.imageData else { return }
+
+        // Draw map
+        self.mapData.image = drawMapImage(pixels: mapImageData.pixels, size: mapImageData.dimensions)
+
+
+        if let forbiddenZones = mapData.forbiddenZones {
+            self.mapData.image = drawForbiddenZones(image: self.mapData.image, zones: forbiddenZones, size: mapImageData.dimensions, position: mapImageData.position)
+        }
+
+        // Draw charger on map
+        if let charger = mapData.chargerLocation {
+            self.mapData.image = drawCharger(image: self.mapData.image, charger: charger, size: mapImageData.dimensions)
+        }
+
+        // Draw vaccum path on map
+        if let paths = mapData.vacuumPath {
+            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions, position: mapImageData.position)
+        }
+
+        // Draw vaccum path on map
+        if let paths = mapData.gotoPredictedPath {
+            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions, position: mapImageData.position)
+        }
+
+        // Draw vaccum path on map
+        if let paths = mapData.gotoPath {
+            self.mapData.image = drawMapPaths(image: self.mapData.image, path: paths, size: mapImageData.dimensions, position: mapImageData.position)
+        }
+
+        // Draw robot on map
+        if let robot = mapData.robotPosition {
+            self.mapData.image = drawRobot(image: self.mapData.image, robot: robot, size: mapImageData.dimensions)
+        }
+
+        if let cgImage = self.mapData.image?.cgImage {
+            self.mapData.image = UIImage(cgImage: cgImage.cropping(to: CGRect(x: 50, y:  -15, width: mapImageData.dimensions.width - 100, height: mapImageData.dimensions.height - 60))!, scale: 1.2, orientation: .downMirrored)
+        }
     }
     
     
@@ -276,7 +364,7 @@ class MapDataParser {
     ///   - width: Width of map image from vacuum
     ///   - height: Height of map image from vacuum
     /// - Returns: Image with floor, walls, obstacles and segments
-    fileprivate func drawMapImage(pixels: [MapData.Pixel], size: MapData.Size) -> UIImage? {
+    private func drawMapImage(pixels: [MapData.Pixel], size: MapData.Size) -> UIImage? {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         var data = pixels
         let context = data.withUnsafeMutableBytes { pixelsPointer in
@@ -293,25 +381,34 @@ class MapDataParser {
         return UIImage(cgImage: image)
 
     }
-    
-    fileprivate func convertToMapCoordinate(_ coordinate: Int, offset: Int) -> Int {
-        return Int(Double(coordinate) / 50.0 - Double(offset))
-    }
-    
+
     /// Draw vacuum paths onto map image
     /// - Parameters:
     ///   - image: Source image to draw on
     ///   - path: Path object containing angle and point array
     /// - Returns: Map image including paths
-    fileprivate func drawMapPaths(image: UIImage?, path: MapData.Path, size: MapData.Size, position: MapData.Position) -> UIImage? {
+    private func drawMapPaths(image: UIImage?, path: MapData.Path, size: MapData.Size, position: MapData.Position) -> UIImage? {
         guard let image = image else { return nil }
         UIGraphicsBeginImageContext(image.size)
         image.draw(at: CGPoint.zero)
-        
+
+        var color: UIColor
+
         let context = UIGraphicsGetCurrentContext()!
         context.setLineWidth(1.0)
-        context.setStrokeColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0.8).cgColor)
-                
+
+        switch path.type {
+        case .vacuum:
+            color = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        case .predicted:
+            color = UIColor(red: 1, green: 0, blue: 0, alpha: 0.8)
+            context.setLineDash(phase: 0, lengths: [4, 2])
+        case .goto:
+            color = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+        }
+
+        context.setStrokeColor(color.cgColor)
+
         for index in 0..<path.points.count - 1 {
             if index != 0 {
                 let point = path.points[index]
@@ -337,13 +434,39 @@ class MapDataParser {
         
         return tempImage
     }
+
+    private func drawForbiddenZones(image: UIImage?, zones: MapData.ForbiddenZones, size: MapData.Size, position: MapData.Position) -> UIImage? {
+        guard let image = image else { return nil }
+        UIGraphicsBeginImageContext(image.size)
+        image.draw(at: CGPoint.zero)
+
+        let context = UIGraphicsGetCurrentContext()!
+        context.setLineWidth(1.0)
+        context.setStrokeColor(UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor)
+        context.setFillColor(UIColor(red: 1, green: 0, blue: 0, alpha: 0.5).cgColor)
+
+        for zone in zones.zones {
+            context.move(to: CGPoint(x: convertToMapCoordinate(zone[0].x, offset: position.left), y: convertToMapCoordinate(zone[0].y, offset: position.top)))
+            context.addLine(to: CGPoint(x: convertToMapCoordinate(zone[1].x, offset: position.left), y: convertToMapCoordinate(zone[1].y, offset: position.top)))
+            context.addLine(to: CGPoint(x: convertToMapCoordinate(zone[2].x, offset: position.left), y: convertToMapCoordinate(zone[2].y, offset: position.top)))
+            context.addLine(to: CGPoint(x: convertToMapCoordinate(zone[3].x, offset: position.left), y: convertToMapCoordinate(zone[3].y, offset: position.top)))
+            context.addLine(to: CGPoint(x: convertToMapCoordinate(zone[0].x, offset: position.left), y: convertToMapCoordinate(zone[0].y, offset: position.top)))
+            context.fillPath()
+            context.strokePath()
+        }
+
+        let tempImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return tempImage
+    }
     
     /// Draw vacuum robot onto map image
     /// - Parameters:
     ///   - image: Source image to draw on
     ///   - robot: Robot object containing angle and coordinates
     /// - Returns: Map image including robot
-    fileprivate func drawRobot(image: UIImage?, robot: MapData.RobotPosition, size: MapData.Size) -> UIImage? {
+    private func drawRobot(image: UIImage?, robot: MapData.RobotPosition, size: MapData.Size) -> UIImage? {
         guard let image = image, let imageData = self.mapData.imageData else { return nil }
 
         let x = (robot.position.x/50) - imageData.position.left;
@@ -367,7 +490,7 @@ class MapDataParser {
     ///   - image: Source image to draw on
     ///   - charger: Charger coordinates
     /// - Returns: Map image including robot
-    fileprivate func drawCharger(image: UIImage?, charger: MapData.Point, size: MapData.Size) -> UIImage? {
+    private func drawCharger(image: UIImage?, charger: MapData.Point, size: MapData.Size) -> UIImage? {
         guard let image = image, let imageData = self.mapData.imageData else { return nil }
 
         let x = (charger.x/50) - imageData.position.left;

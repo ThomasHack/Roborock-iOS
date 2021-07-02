@@ -18,12 +18,19 @@ struct MapView: View {
                     Image(uiImage: mapImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .padding()
+
                 } else {
                     ProgressView()
-                        .foregroundColor(Color.primary)
+                        .foregroundColor(Color(UIColor.label))
                         .padding(32)
                 }
             }
+            .frame(height: 320)
+            .frame(maxWidth: .infinity)
+            .background(LinearGradient(colors: [Color(red: 0.2, green: 0.6314, blue: 0.9608), Color(red: 0.0157, green: 0.4235, blue: 0.8314)],
+                                       startPoint: .top,
+                                       endPoint: .bottom))
             .padding(.top, 16)
             .padding(.bottom, 8)
         }

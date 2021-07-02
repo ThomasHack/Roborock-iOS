@@ -53,11 +53,9 @@ struct StatusItemView: View {
             }
         }
         // .background(BlurEffect())
-        .background(Color.white)
+        .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .padding(.horizontal, 4)
-        .shadow(color: Color.black.opacity(0.05), radius: 10.0, x: 15, y: 15)
-        .shadow(color: Color.white.opacity(0.4), radius: 7.5, x: -5, y: -5)
     }
 }
 
