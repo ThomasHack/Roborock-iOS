@@ -10,51 +10,63 @@ import ComposableArchitecture
 
 struct HomeView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
-
+    
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            ZStack {
-//                Image("background")
-//                    .resizable()
-//                    .edgesIgnoringSafeArea(.all)
+            ZStack(alignment: .top) {
+                
                 Color(UIColor.secondarySystemBackground)
                     .edgesIgnoringSafeArea(.all)
-
+                
+                MapView(store: store)
+                
                 VStack(spacing: 0) {
-
-                    HStack {
-                        Text("Roborock")
-                            .font(.system(size: 42, weight: .bold, design: .default))
-                        Spacer()
-                        Button(action: { }) {
-                            Image(systemName: "gear")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
+                    Spacer(minLength: 425)
+                    VStack(spacing: 0) {
+                        VStack(spacing: 0) {
+                            HStack {
+                                Text("Roborock")
+                                    .font(.system(size: 42, weight: .bold, design: .default))
+                                
+                                Spacer()
+                                
+                                Button(action: { }) {
+                                    Image(systemName: "gear")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 20, height: 20)
+                                }
+                                .buttonStyle(SecondaryButtonStyle())
+                            }
+                            
+                            HStack {
+                                Text("Status:")
+                                    .font(.system(size: 16, weight: .light, design: .default))
+                                Text(viewStore.api.status?.stateHumanReadable ?? (viewStore.api.connectivityState == .connected ? "Connected" : "Disconnected"))
+                                    .font(.system(.headline))
+                                Spacer()
+                                
+                            }
                         }
-                        .buttonStyle(SecondaryButtonStyle())
+                        .padding(.horizontal)
+                        .padding(.bottom, 32)
+                        
+                        StatusView(store: store)
+                            .padding(.horizontal)
+                            .padding(.bottom, 32)
+                        
+                        ButtonView(store: store)
+                            .padding(.horizontal)
+                            .padding(.bottom, 32)
+                        
+                        Spacer(minLength: 100)
                     }
-                    .padding(.top, 36)
-                    .padding(.bottom, 0)
-                    .padding(.horizontal, 20)
-
-                    HStack {
-                        Text("Status:")
-                            .font(.system(size: 16, weight: .light, design: .default))
-                        Text(viewStore.api.status?.stateHumanReadable ?? (viewStore.api.connectivityState == .connected ? "Connected" : "Disconnected"))
-                            .font(.system(.headline))
-                        Spacer()
-
-                    }
-                    .padding(.horizontal, 20)
-
-                    MapView(store: store)
-
-                    StatusView(store: store)
-
-                    ButtonView(store: store)
+                    .padding(.vertical, 16)
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(15)
                 }
             }
+            .edgesIgnoringSafeArea(.top)
             .sheet(isPresented: viewStore.binding(get: { $0.presentRoomSelection }, send: Home.Action.toggleRoomSelection)){
                 NavigationView {
                     SegmentList(store: store)

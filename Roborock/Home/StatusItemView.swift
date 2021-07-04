@@ -8,12 +8,17 @@
 import SwiftUI
 import SwiftUIVisualEffects
 
-struct StatusItemView: View {
+enum StatusItemValue {
+    case int(Int)
+    case double(Double)
+}
 
+struct StatusItemView: View {
     @State var iconName: String
     @State var label: String
-    @State var value: String
     @State var unit: String
+    
+    @Binding var value: String
 
     var body: some View {
         Button(action: {}) {
@@ -62,9 +67,9 @@ struct StatusItemView: View {
 struct StatusItemView_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
-            StatusItemView(iconName: "battery.100.bolt", label: "Battery", value: "100", unit: "%")
-            StatusItemView(iconName: "stopwatch", label: "Clean Time", value: "52", unit: "min")
-            StatusItemView(iconName: "square.dashed", label: "Clean Area", value: "97", unit: "qm")
+            // StatusItemView(iconName: "battery.100.bolt", label: "Battery", value: 100, unit: "%")
+            // StatusItemView(iconName: "stopwatch", label: "Clean Time", value: 52, unit: "min")
+            // StatusItemView(iconName: "square.dashed", label: "Clean Area", value: 56.8, unit: "qm")
         }
         .padding(.vertical, 100)
         .padding(.horizontal, 24)

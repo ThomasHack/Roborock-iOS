@@ -13,17 +13,17 @@ struct PrimaryButtonStyle: ButtonStyle {
     var disabled = false
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        let background = LinearGradient(gradient: Gradient(
+        /*let background = LinearGradient(gradient: Gradient(
             colors: [Color("blue"), Color("blue-dark")]),
             startPoint: .topLeading,
-            endPoint: .bottomTrailing)
+            endPoint: .bottomTrailing)*/
         
         let foregroundColor = Color(.systemBackground)
 
         return configuration.label
             .padding(24)
             .foregroundColor(foregroundColor)
-            .background(background)
+            .background(disabled ? Color.red : Color("blue"))
             .clipShape(Circle())
     }
 }

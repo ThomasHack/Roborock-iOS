@@ -27,6 +27,7 @@
 		52F12B9A2689BF4300C5494E /* MapDataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F12B992689BF4300C5494E /* MapDataParser.swift */; };
 		52F12B9F268A2D5400C5494E /* Data+ByteBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F12B9E268A2D5400C5494E /* Data+ByteBuffer.swift */; };
 		52F3C87D268CA3B20085BC2C /* Meta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F3C87C268CA3B10085BC2C /* Meta.swift */; };
+		6506A7192690CDD000412028 /* SegmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6506A7182690CDD000412028 /* SegmentType.swift */; };
 		6510E8DD268888B9001E9230 /* NWWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = 6510E8DC268888B9001E9230 /* NWWebSocket */; };
 		6510E8DF2688AD02001E9230 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B169264999D1008B4DC7 /* ButtonView.swift */; };
 		6510E8E02688AF15001E9230 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16526499263008B4DC7 /* StatusView.swift */; };
@@ -77,6 +78,7 @@
 		52F12B992689BF4300C5494E /* MapDataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDataParser.swift; sourceTree = "<group>"; };
 		52F12B9E268A2D5400C5494E /* Data+ByteBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+ByteBuffer.swift"; sourceTree = "<group>"; };
 		52F3C87C268CA3B10085BC2C /* Meta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meta.swift; sourceTree = "<group>"; };
+		6506A7182690CDD000412028 /* SegmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentType.swift; sourceTree = "<group>"; };
 		652FA919264D2CC6007C67F6 /* ApiWebSocketDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiWebSocketDelegate.swift; sourceTree = "<group>"; };
 		652FA91B264D2D0A007C67F6 /* ApiWebSocketEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiWebSocketEvent.swift; sourceTree = "<group>"; };
 		652FA91D264D2D36007C67F6 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				65766E48268D10EE0081724F /* Size.swift */,
 				654289612646C728009B8BE5 /* Status.swift */,
 				5211E4E7268B409E0043F55F /* Version.swift */,
+				6506A7182690CDD000412028 /* SegmentType.swift */,
 			);
 			path = Websocket;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				65766E49268D10EE0081724F /* Size.swift in Sources */,
 				6542895D2646C4F4009B8BE5 /* ApiRestClient.swift in Sources */,
 				52046F2926494DC400E1C041 /* BlurView.swift in Sources */,
+				6506A7192690CDD000412028 /* SegmentType.swift in Sources */,
 				525079D6268F891D000F7095 /* Fanspeed.swift in Sources */,
 				52F12B9A2689BF4300C5494E /* MapDataParser.swift in Sources */,
 				5211E4EC268B434B0043F55F /* RobotPosition.swift in Sources */,

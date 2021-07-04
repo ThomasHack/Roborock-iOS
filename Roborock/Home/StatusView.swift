@@ -16,20 +16,19 @@ struct StatusView: View {
             HStack {
                 StatusItemView(iconName: viewStore.batteryIcon,
                                label: "Battery",
-                               value: "\(viewStore.api.status?.battery ?? 0)",
-                               unit: "%")
+                               unit: "%",
+                               value: viewStore.binding(get: { $0.api.battery }, send: Home.Action.api(.none)))
 
                 StatusItemView(iconName: "stopwatch",
                                label: "Clean Time",
-                               value: String(format: "%.2f", viewStore.api.status?.cleanTime ?? 0),
-                               unit: "min")
+                               unit: "min",
+                               value: viewStore.binding(get: { $0.api.cleanTime }, send: Home.Action.api(.none)))
 
                 StatusItemView(iconName: "square.dashed",
                                label: "Clean Area",
-                               value: String(format: "%.2f", round(Double(viewStore.api.status?.cleanArea ?? 0)/10000)),
-                               unit: "qm")
+                               unit: "qm",
+                               value: viewStore.binding(get: { $0.api.cleanArea }, send: Home.Action.api(.none)))
             }
-            .padding()
         }
     }
 }

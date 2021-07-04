@@ -57,7 +57,6 @@ public class ApiWebSocketDelegate: WebSocketConnectionDelegate {
     }
 
     public func webSocketDidReceiveMessage(connection: WebSocketConnection, data: Data) {
-        print("didReceiveData: \(data)")
         self.didReceiveWebSocketEvent(.binary(data))
     }
 

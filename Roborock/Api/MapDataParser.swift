@@ -25,6 +25,8 @@ class MapDataParser {
     
     private var data: Data?
     private var mapData: MapData = MapData()
+    
+    public var segments: [Int] = []
 
     public func parse(_ data: Data) -> AnyPublisher<MapData, MapDataError> {
         Future { promise in
@@ -58,7 +60,7 @@ class MapDataParser {
         
         // Parse map data
         parseBlock(data, offset: 0x14)
-        drawMapImage()
+        drawMapImageLayers()
     }
     
     /// Parse binary data block
@@ -98,7 +100,7 @@ class MapDataParser {
             self.mapData.gotoPredictedPath = parsePathBlock(data, blockLength: blockLength, offset: offset, type: .predicted)
         case .forbiddenZones:
             self.mapData.forbiddenZones = parseForbiddenZones(data, blockLength: blockLength, offset: offset)
-        case .gotoTarget, .currentlyCleanedZones, .currentlyCleanedBlocks, .forbiddenMopZones, .virtualWalls:
+        case .currentlyCleanedZones, .currentlyCleanedBlocks, .gotoTarget, .forbiddenMopZones, .virtualWalls:
             break
         case .digest:
             break
@@ -131,7 +133,7 @@ class MapDataParser {
     private func parseRobotPositionBlock(_ block: Data, blockLength: Int, offset: Int) -> MapData.RobotPosition {
         let x = block.getInt32(position: 0x08 + offset)
         let y = block.getInt32(position: 0x0C + offset)
-        let angle = block.getInt32(position: 0x10 + offset)
+        let angle = block.getInt8(position: 0x10 + offset)
         return MapData.RobotPosition(position: MapData.Point(x: x, y: y), angle: angle)
     }
     
@@ -166,6 +168,13 @@ class MapDataParser {
         return MapData.Path(currentAngle: currentAngle, points: points, type: type)
     }
 
+    
+    /// Parse forbidden zones
+    /// - Parameters:
+    ///   - block: Data block that contains block header and data
+    ///   - blockLength: Length of current data block (not including header)
+    ///   - offset: Current offset, increments per block
+    /// - Returns: Array of forbidden zone coordinates with 4 points
     private func parseForbiddenZones(_ block: Data, blockLength: Int, offset: Int) -> MapData.ForbiddenZones {
         var zones: [[MapData.Point]] = []
         let count = block.getInt32(position: 0x08 + offset)
@@ -234,6 +243,7 @@ class MapDataParser {
         let freeColor = UIColor.clear//(red: 57/255, green: 127/255, blue: 224/255, alpha: 1)
         let floorColor = UIColor(red: 86/255, green: 175/255, blue: 252/255, alpha: 1)
         let obstacleColor = UIColor(red: 161/255, green: 219/255, blue: 255/255, alpha: 1)
+        let selectedColor = UIColor(red: 121/255, green: 196/255, blue: 189/255, alpha: 1)
 
         for index in 0 ..< blockLength {
             let x = (index % image.dimensions.width) + image.position.left
@@ -250,7 +260,10 @@ class MapDataParser {
             default: // Segment or floor
                 let segmentId = (type & 248) >> 3
                 if segmentId != 0 {
-                    let color = colorForSegmentId(segment: Segment(rawValue: segmentId))
+                    var color = colorForSegmentId(segment: SegmentType(rawValue: segmentId))
+                    if segments.contains(segmentId) {
+                        color = selectedColor
+                    }
                     tempImage.pixels.append(color.toPixel)
                     mapImageData.floor.append(MapData.Point(x: x, y: y))
                     break
@@ -269,20 +282,9 @@ class MapDataParser {
         return tempImage
     }
 
-    enum Segment: Int {
-        case studio = 16
-        case bath = 19
-        case bedroom = 21
-        case corridor = 22
-        case kitchen = 23
-        case livingroom = 17
-        case toilet = 20
-        case supply = 18
-    }
-
-    private func colorForSegmentId(segment: Segment?) -> UIColor {
+    private func colorForSegmentId(segment: SegmentType?) -> UIColor {
         switch segment {
-        case .studio:
+        /*case .studio:
             return UIColor(hexString: "#046CD4")
         case .bath:
             return UIColor(hexString: "#045FBA")
@@ -297,7 +299,7 @@ class MapDataParser {
         case .toilet:
             return UIColor(hexString: "#4D9DE3")
         case .supply:
-            return UIColor(hexString: "0352A1")
+            return UIColor(hexString: "0352A1")*/
         default:
             return UIColor(hexString: "#56AFFC")
         }
@@ -313,9 +315,18 @@ class MapDataParser {
         return Int(Double(coordinate) / 50.0 - Double(offset))
     }
 
+    
+    public func redraw() -> AnyPublisher<MapData, MapDataError> {
+        Future { promise in
+            self.parseBlocks()
+            promise(.success(self.mapData))
+        }
+        .eraseToAnyPublisher()
+    }
+
 
     /// Draw map image
-    private func drawMapImage() {
+    private func drawMapImageLayers() {
         // Generate map image
         guard let mapImageData: MapData.ImageData = mapData.imageData else { return }
 
@@ -365,20 +376,30 @@ class MapDataParser {
     ///   - height: Height of map image from vacuum
     /// - Returns: Image with floor, walls, obstacles and segments
     private func drawMapImage(pixels: [MapData.Pixel], size: MapData.Size) -> UIImage? {
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        var data = pixels
-        let context = data.withUnsafeMutableBytes { pixelsPointer in
-            return CGContext(data: pixelsPointer.baseAddress,
-                        width: size.width,
-                        height: size.height,
-                        bitsPerComponent: 8,
-                        bytesPerRow: size.width * MemoryLayout<MapData.Pixel>.size,
-                        space: colorSpace,
-                        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
-        }
-
-        guard let image = context?.makeImage() else { return nil }
-        return UIImage(cgImage: image)
+        let alphaInfo = CGImageAlphaInfo.premultipliedLast
+        let bytesPerPixel = MemoryLayout<MapData.Pixel>.size
+        let bytesPerRow = size.width * bytesPerPixel
+        
+        guard let providerRef = CGDataProvider(data: Data(bytes: pixels, count: size.height * bytesPerRow) as CFData) else {
+                    return nil
+                }
+        
+        guard let cgImage = CGImage(
+                    width: size.width,
+                    height: size.height,
+                    bitsPerComponent: 8,
+                    bitsPerPixel: bytesPerPixel * 8,
+                    bytesPerRow: bytesPerRow,
+                    space: CGColorSpaceCreateDeviceRGB(),
+                    bitmapInfo: CGBitmapInfo(rawValue: alphaInfo.rawValue),
+                    provider: providerRef,
+                    decode: nil,
+                    shouldInterpolate: false,
+                    intent: .defaultIntent
+                ) else {
+                    return nil
+                }
+        return UIImage(cgImage: cgImage)
 
     }
 
@@ -473,7 +494,8 @@ class MapDataParser {
         let y = (robot.position.y/50) - imageData.position.top
         
         guard let angle = robot.angle,
-              let robotImage = UIImage(named: "robot")?.rotate(radians: Float(angle + 90)) else { return nil }
+              let robotImage = UIImage(named: "robot")?.withHorizontallyFlippedOrientation().rotate(angle: Float(angle + 90))
+        else { return nil }
         
         UIGraphicsBeginImageContext(image.size)
         image.draw(in: CGRect(origin: .zero, size: image.size))

@@ -10,14 +10,12 @@ import ComposableArchitecture
 
 enum Home {
     struct State: Equatable {
-        var rooms: [Int]
         var presentRoomSelection: Bool = false
     }
     
     enum Action {
         case connect
         case fetchSegments
-        case toggleRoom(Int)
         case startCleaning
         case stopCleaning
         case pauseCleaning
@@ -40,16 +38,8 @@ enum Home {
             case .fetchSegments:
                 return Effect(value: Action.api(.fetchSegments))
 
-            case .toggleRoom(let roomId):
-                if let index = state.rooms.firstIndex(of: roomId) {
-                    state.rooms.remove(at: index)
-                } else {
-                    state.rooms.append(roomId)
-                }
-                return .none
-
             case .startCleaning:
-                return Effect(value: Action.api(.startCleaningSegment(state.rooms)))
+                return Effect(value: Action.api(.startCleaningSegment))
 
             case .stopCleaning:
                 return Effect(value: Action.api(.stopCleaning))
@@ -85,5 +75,5 @@ enum Home {
         )
     )
     
-    static let initialState = State(rooms: [])
+    static let initialState = State()
 }

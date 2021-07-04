@@ -20,10 +20,58 @@ enum Api {
     struct State: Equatable {
         var connectivityState: ConnectivityState = .disconnected
         
-        var status: Status?
+        var status: Status? {
+            willSet {
+                if self.inCleaning && newValue?.inCleaning == 0 {
+                    let viewStore = ViewStore(Store(initialState: self, reducer: Api.reducer, environment: Main.initialEnvironment))
+                    viewStore.send(.resetRooms)
+                }
+            }
+        }
         var segments: Segment?
         var mapData: MapData?
         var mapImage: UIImage?
+        
+        var isConnected: Bool {
+            return connectivityState == .connected
+        }
+        
+        var inCleaning: Bool {
+            guard let status = status else {
+                return false
+            }
+            return status.inCleaning != 0
+        }
+        
+        var inReturning: Bool {
+            guard let status = status else {
+                return false
+            }
+            return status.inReturning != 0
+        }
+        
+        var battery: String {
+            guard let status = status else {
+                return "-"
+            }
+            return "\(status.battery)"
+        }
+        
+        var cleanTime: String {
+            guard let status = status else {
+                return "-"
+            }
+            return "\((status.cleanTime % 3600)/60):\((status.cleanTime % 3600) % 60)"
+        }
+        
+        var cleanArea: String {
+            guard let status = status else {
+                return "-"
+            }
+            return String(format: "%.2f", Double(status.cleanArea)/1000000)
+        }
+        
+        var rooms: [Int] = []
     }
     
     enum Action: Equatable {
@@ -40,7 +88,7 @@ enum Api {
         case fetchSegments
         case segmentsResponse(Result<Segment, ApiRestClient.Failure>)
         
-        case startCleaningSegment([Int])
+        case startCleaningSegment
         case startCleaningSegmentResponse(Result<Data, ApiRestClient.Failure>)
         case stopCleaning
         case stopCleaningResponse(Result<Data, ApiRestClient.Failure>)
@@ -55,9 +103,15 @@ enum Api {
 
         case setMapData(Result<MapData, MapDataParser.MapDataError>)
         case setMapImage(UIImage)
+        case refreshMapImage
 
         case setFanspeed(Int)
         case setFanspeedResponse(Result<Data, ApiRestClient.Failure>)
+        
+        case toggleRoom(Int)
+        case resetRooms
+        
+        case none
     }
     
     typealias Environment = Main.Environment
@@ -89,17 +143,35 @@ enum Api {
             }
             return .none
             
-        case .startCleaningSegment(let rooms):
-            return environment.apiClient.startCleaningSegment(ApiId(), rooms)
+        case .startCleaningSegment:
+            return environment.apiClient.startCleaningSegment(ApiId(), state.rooms)
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.startCleaningSegmentResponse)
+            
+        case .startCleaningSegmentResponse(let result):
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            return .none
             
         case .stopCleaning:
             return environment.apiClient.stopCleaning(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.stopCleaningResponse)
+            
+        case .stopCleaningResponse(let result):
+            switch result {
+            case .success:
+                return Effect(value: .resetRooms)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            return .none
             
         case .pauseCleaning:
             return environment.apiClient.pauseCleaning(ApiId())
@@ -115,15 +187,12 @@ enum Api {
             
         case .didConnect:
             state.connectivityState = .connected
-            return .none
             
         case .didDisconnect:
             state.connectivityState = .disconnected
-            return .none
             
         case .didUpdateStatus(let status):
             state.status = status
-            return .none
             
         case .didReceiveWebSocketEvent(let event):
             switch event {
@@ -133,7 +202,7 @@ enum Api {
                     .catchToEffect()
                     .map(Action.setMapData)
             default:
-                return .none
+                break
             }
         case .setMapData(let result):
             switch result {
@@ -145,24 +214,46 @@ enum Api {
             case .failure(let error):
                 print("\(error.localizedDescription)")
             }
-            return .none
-
+        
         case .setMapImage(let image):
             state.mapImage = image
-            return .none
+            
+        case .refreshMapImage:
+            return environment.mapDataParser.redraw()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setMapData)
 
         case .setFanspeed(let fanspeed):
             return environment.apiClient.setFanspeed(ApiId(), fanspeed)
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.setFanspeedResponse)
-
-        case .setFanspeedResponse:
-            return .none
             
+        case .toggleRoom(let roomId):
+            if let index = state.rooms.firstIndex(of: roomId) {
+                state.rooms.remove(at: index)
+            } else {
+                state.rooms.append(roomId)
+            }
+            environment.mapDataParser.segments = state.rooms
+            return Effect(value: .refreshMapImage)
+            
+        case .resetRooms:
+            state.rooms = []
+            environment.mapDataParser.segments = state.rooms
+            return environment.mapDataParser.redraw()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setMapData)
+            
+        case .none:
+        break
+
         default:
-            return .none
+            break
         }
+        return .none
     }
     
     static let initialState = State()

@@ -88,4 +88,8 @@ extension Store where State == Main.State, Action == Main.Action {
     var home: Store<Home.HomeFeatureState, Home.Action> {
         scope(state: \.homeFeature, action: Main.Action.home)
     }
+    
+    var api: Store<Api.State, Api.Action> {
+        scope(state: \.api, action: Main.Action.api)
+    }
 }

@@ -37,7 +37,7 @@ extension Home {
     }
     
     static let previewState = HomeFeatureState(
-        home: Home.State(rooms: []),
+        home: Home.State(),
         api: Api.previewState
     )
 }

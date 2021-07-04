@@ -18,12 +18,12 @@ struct SegmentList: View {
                     ForEach(segments, id: \.self) { segment in
                         if let name = segment.name, let id = segment.id {
                             Button(action: {
-                                viewStore.send(.toggleRoom(id))
+                                viewStore.send(.api(.toggleRoom(id)))
                             }) {
                                 HStack {
                                     Text(name)
                                     Spacer()
-                                    if let _ = viewStore.home.rooms.firstIndex(of: id) {
+                                    if let _ = viewStore.api.rooms.firstIndex(of: id) {
                                         Image(systemName: "checkmark.circle.fill")
                                             .foregroundColor(.blue)
                                     }

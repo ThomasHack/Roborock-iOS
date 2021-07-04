@@ -10,29 +10,27 @@ import ComposableArchitecture
 
 struct MapView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
-
+    let gradient = Gradient(colors: [Color(red: 0.2, green: 0.6314, blue: 0.9608), Color(red: 0.0157, green: 0.4235, blue: 0.8314)])
+    
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack(spacing: 0) {
                 if let mapImage = viewStore.api.mapImage {
-                    Image(uiImage: mapImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .padding()
-
+                    GeometryReader { geometry in
+                        Image(uiImage: mapImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: geometry.size.width, height: 425)
+                    }.padding(.top, 32)
                 } else {
                     ProgressView()
                         .foregroundColor(Color(UIColor.label))
-                        .padding(32)
                 }
             }
-            .frame(height: 320)
+            .frame(height: 425)
             .frame(maxWidth: .infinity)
-            .background(LinearGradient(colors: [Color(red: 0.2, green: 0.6314, blue: 0.9608), Color(red: 0.0157, green: 0.4235, blue: 0.8314)],
-                                       startPoint: .top,
-                                       endPoint: .bottom))
-            .padding(.top, 16)
-            .padding(.bottom, 8)
+            .padding(.vertical, 16)
+            .background(LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom))
         }
     }
 }
