@@ -1,12 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "robot.png",
+      "filename" : "Roborock-4.pdf",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "auto-scaling" : "auto",
+    "preserves-vector-representation" : true
   }
 }
