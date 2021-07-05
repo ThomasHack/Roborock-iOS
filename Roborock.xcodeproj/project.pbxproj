@@ -533,7 +533,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
-				DEVELOPMENT_TEAM = RSH2FX9LFY;
+				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Roborock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -541,7 +541,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.deloittedigital.Roborock;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -555,7 +555,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
-				DEVELOPMENT_TEAM = RSH2FX9LFY;
+				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Roborock/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -563,7 +563,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.deloittedigital.Roborock;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

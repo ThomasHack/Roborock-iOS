@@ -21,7 +21,7 @@ struct HomeView: View {
                 MapView(store: store)
                 
                 VStack(spacing: 0) {
-                    Spacer(minLength: 425)
+                    Spacer(minLength: 500)
                     VStack(spacing: 0) {
                         VStack(spacing: 0) {
                             HStack {

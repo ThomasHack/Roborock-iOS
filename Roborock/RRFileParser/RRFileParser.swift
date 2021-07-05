@@ -49,7 +49,7 @@ class RRFileParser {
         guard let size = mapData.imageData?.dimensions else {
             return CGSize.zero
         }
-        return CGSize(width: size.width * 2, height: size.height)
+        return CGSize(width: size.width * 2, height: size.height * 2)
     }
 
     // MARK: - Public methods
@@ -387,7 +387,7 @@ class RRFileParser {
     ///   - offset: Map offset
     /// - Returns: Coordinate in map space
     private func convertToMapCoordinate(_ coordinate: Int, offset: Int) -> Int {
-        return Int(Double(coordinate) / 50.0 - Double(offset))
+        return Int(Double(coordinate * 2) / 50.0 - Double(offset * 2))
     }
 
     private func drawMap(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
@@ -467,9 +467,7 @@ class RRFileParser {
         let bytesPerRow = Int(imageSize.width) * bytesPerPixel
         let count = Int(imageSize.height) * bytesPerRow
 
-        guard let providerRef = CGDataProvider(data: Data(bytes: pixels, count: count) as CFData) else {
-                    return nil
-                }
+        guard let providerRef = CGDataProvider(data: Data(bytes: pixels, count: count) as CFData) else { return nil }
 
         guard let cgImage = CGImage(
                     width: Int(imageSize.width),
@@ -482,11 +480,20 @@ class RRFileParser {
                     provider: providerRef,
                     decode: nil,
                     shouldInterpolate: false,
-                    intent: .defaultIntent
-                ) else {
-                    return nil
-                }
-        return UIImage(cgImage: cgImage, scale: 0.5, orientation: .up)
+                    intent: .defaultIntent) else { return nil }
+                
+        let size = CGSize(width: imageSize.width * 2, height: imageSize.height * 2)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        
+        let context = UIGraphicsGetCurrentContext()!
+        context.interpolationQuality = .none
+        context.draw(cgImage, in: CGRect(origin: .zero, size: size))
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        guard let cgImage = image?.cgImage else { return nil }
+        return UIImage(cgImage: cgImage, scale: 0, orientation: .downMirrored)
     }
 
     /// Draw vacuum paths onto map image
@@ -547,7 +554,7 @@ class RRFileParser {
     /// - Parameter zones: Forbidden zones objects
     /// - Returns: Image containing zones
     private func drawForbiddenZones(zones: MapData.ForbiddenZones) -> UIImage? {
-        UIGraphicsBeginImageContext(imageSize)
+        UIGraphicsBeginImageContext(retinaImageSize)
 
         let context = UIGraphicsGetCurrentContext()!
         context.setLineWidth(1.0)
@@ -575,18 +582,19 @@ class RRFileParser {
     ///   - robot: Robot object containing angle and coordinates
     /// - Returns: Image containing robot
     private func drawRobot(robot: MapData.RobotPosition) -> UIImage? {
-        guard let imageData = self.mapData.imageData else { return nil }
-
-        let x = (robot.position.x/50) - imageData.position.left;
-        let y = (robot.position.y/50) - imageData.position.top
+        let x = convertToMapCoordinate(robot.position.x, offset: imagePosition.left)
+        let y = convertToMapCoordinate(robot.position.y, offset: imagePosition.top)
 
         guard let angle = robot.angle,
-              let robotImage = UIImage(named: "robot")?.withHorizontallyFlippedOrientation().rotate(angle: Float(angle + 90))?.cgImage
+              let robotImage = UIImage(named: "robot")?
+                .withHorizontallyFlippedOrientation()
+                .rotate(angle: Float(angle + 90))?
+                .cgImage
         else { return nil }
 
-        UIGraphicsBeginImageContext(imageSize)
+        UIGraphicsBeginImageContext(retinaImageSize)
         let context = UIGraphicsGetCurrentContext()!
-        context.draw(robotImage, in: CGRect(origin: CGPoint(x: x - 8, y: y - 8), size: CGSize(width: 16, height: 16)))
+        context.draw(robotImage, in: CGRect(origin: CGPoint(x: x - 16, y: y - 16), size: CGSize(width: 32, height: 32)))
 
         let tempImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -599,16 +607,14 @@ class RRFileParser {
     ///   - charger: Charger coordinates
     /// - Returns: Image containing robot
     private func drawCharger(charger: MapData.Point) -> UIImage? {
-        guard let imageData = self.mapData.imageData else { return nil }
-
-        let x = (charger.x/50) - imageData.position.left;
-        let y = (charger.y/50) - imageData.position.top
+        let x = convertToMapCoordinate(charger.x, offset: imagePosition.left)
+        let y = convertToMapCoordinate(charger.y, offset: imagePosition.top)
 
         guard let chargerImage = UIImage(named: "charger")?.cgImage else { return nil }
 
-        UIGraphicsBeginImageContext(imageSize)
+        UIGraphicsBeginImageContext(retinaImageSize)
         let context = UIGraphicsGetCurrentContext()!
-        context.draw(chargerImage, in: CGRect(origin: CGPoint(x: x - 5, y: y - 5), size: CGSize(width: 10, height: 10)))
+        context.draw(chargerImage, in: CGRect(origin: CGPoint(x: x - 4, y: y - 12), size: CGSize(width: 24, height: 24)))
 
         let tempImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
