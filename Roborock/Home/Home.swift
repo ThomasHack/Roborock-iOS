@@ -24,6 +24,7 @@ enum Home {
         case toggleRoomSelection(Bool)
         
         case api(Api.Action)
+        case none
     }
     
     typealias Environment = Main.Environment
@@ -64,7 +65,7 @@ enum Home {
                 state.presentRoomSelection = toggle
                 return .none
 
-            case .api:
+            case .api, .none:
                 return .none
             }
         },

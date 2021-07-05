@@ -19,19 +19,24 @@ enum ConnectivityState {
 enum Api {
     struct State: Equatable {
         var connectivityState: ConnectivityState = .disconnected
-        
+
+        var segments: Segment?
+        var mapData: MapData?
+
+        var mapImage: UIImage?
+        var pathImage: UIImage?
+        var forbiddenZonesImage: UIImage?
+        var robotImage: UIImage?
+        var chargerImage: UIImage?
+
         var status: Status? {
             willSet {
                 if self.inCleaning && newValue?.inCleaning == 0 {
-                    let viewStore = ViewStore(Store(initialState: self, reducer: Api.reducer, environment: Main.initialEnvironment))
-                    viewStore.send(.resetRooms)
+                    ViewStore(Main.store.api).send(.resetRooms)
                 }
             }
         }
-        var segments: Segment?
-        var mapData: MapData?
-        var mapImage: UIImage?
-        
+
         var isConnected: Bool {
             return connectivityState == .connected
         }
@@ -75,18 +80,16 @@ enum Api {
     }
     
     enum Action: Equatable {
-        case didConnect
         case connect(URL)
-        case didDisconnect
+        case didConnect
         case disconnect
-        
-        case fetchConsumableStatus
-        case fetchWifiStatus
-        case fetchSpots
-        case fetchZones
-        
+        case didDisconnect
+        case didReceiveWebSocketEvent(ApiWebSocketEvent)
+        case didUpdateStatus(Status)
+
         case fetchSegments
-        case segmentsResponse(Result<Segment, ApiRestClient.Failure>)
+
+        case fetchSegmentsResponse(Result<Segment, ApiRestClient.Failure>)
         
         case startCleaningSegment
         case startCleaningSegmentResponse(Result<Data, ApiRestClient.Failure>)
@@ -97,12 +100,7 @@ enum Api {
         
         case driveHome
         case driveHomeResponse(Result<Data, ApiRestClient.Failure>)
-        
-        case didUpdateStatus(Status)
-        case didReceiveWebSocketEvent(ApiWebSocketEvent)
 
-        case setMapData(Result<MapData, MapDataParser.MapDataError>)
-        case setMapImage(UIImage)
         case refreshMapImage
 
         case setFanspeed(Int)
@@ -110,8 +108,19 @@ enum Api {
         
         case toggleRoom(Int)
         case resetRooms
-        
-        case none
+
+        case generateMapImage
+        case generatePathImage
+        case generateForbiddenZones
+        case generateRobotImage
+        case generateChargerImage
+
+        case setMapData(Result<MapData, ParsingError>)
+        case setMapImage(Result<UIImage, ImageGenerationError>)
+        case setPathImage(Result<UIImage, ImageGenerationError>)
+        case setForbiddenZonesImage(Result<UIImage, ImageGenerationError>)
+        case setRobotImage(Result<UIImage, ImageGenerationError>)
+        case setChargerImage(Result<UIImage, ImageGenerationError>)
     }
     
     typealias Environment = Main.Environment
@@ -122,19 +131,39 @@ enum Api {
             return environment.websocketClient.connect(ApiId(), url)
                 .receive(on: environment.mainQueue)
                 .eraseToEffect()
-            
+
+        case .didConnect:
+            state.connectivityState = .connected
+
         case .disconnect:
             return environment.websocketClient.disconnect(ApiId())
                 .receive(on: environment.mainQueue)
                 .eraseToEffect()
+
+        case .didDisconnect:
+            state.connectivityState = .disconnected
+
+        case .didReceiveWebSocketEvent(let event):
+            switch event {
+            case .binary(let data):
+                return environment.rrFileParser.parse(data)
+                    .receive(on: environment.mainQueue)
+                    .catchToEffect()
+                    .map(Action.setMapData)
+            default:
+                break
+            }
+
+        case .didUpdateStatus(let status):
+            state.status = status
             
         case .fetchSegments:
             return environment.apiClient.fetchSegments(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
-                .map(Action.segmentsResponse)
+                .map(Action.fetchSegmentsResponse)
             
-        case .segmentsResponse(let response):
+        case .fetchSegmentsResponse(let response):
             switch response {
             case .success(let segments):
                 state.segments = segments
@@ -178,51 +207,49 @@ enum Api {
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.pauseCleaningResponse)
-            
+
+        case .pauseCleaningResponse(let result):
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            return .none
+
         case .driveHome:
             return environment.apiClient.driveHome(ApiId())
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.driveHomeResponse)
-            
-        case .didConnect:
-            state.connectivityState = .connected
-            
-        case .didDisconnect:
-            state.connectivityState = .disconnected
-            
-        case .didUpdateStatus(let status):
-            state.status = status
-            
-        case .didReceiveWebSocketEvent(let event):
-            switch event {
-            case .binary(let data):
-                return environment.mapDataParser.parse(data)
-                    .receive(on: environment.mainQueue)
-                    .catchToEffect()
-                    .map(Action.setMapData)
-            default:
+
+        case .driveHomeResponse(let result):
+            switch result {
+            case .success:
                 break
+            case .failure(let error):
+                print(error.localizedDescription)
             }
+            return .none
+
         case .setMapData(let result):
             switch result {
             case .success(let mapData):
                 state.mapData = mapData
-                if let image = mapData.image {
-                    return Effect(value: .setMapImage(image))
-                }
+                return .merge(
+                    Effect(value: Action.generateMapImage),
+                    Effect(value: Action.generateChargerImage),
+                    Effect(value: Action.generateForbiddenZones),
+                    Effect(value: Action.generatePathImage),
+                    Effect(value: Action.generateRobotImage)
+                )
             case .failure(let error):
                 print("\(error.localizedDescription)")
             }
-        
-        case .setMapImage(let image):
-            state.mapImage = image
-            
+
         case .refreshMapImage:
-            return environment.mapDataParser.redraw()
-                .receive(on: environment.mainQueue)
-                .catchToEffect()
-                .map(Action.setMapData)
+            // TODO: parse, draw
+            break
 
         case .setFanspeed(let fanspeed):
             return environment.apiClient.setFanspeed(ApiId(), fanspeed)
@@ -236,19 +263,84 @@ enum Api {
             } else {
                 state.rooms.append(roomId)
             }
-            environment.mapDataParser.segments = state.rooms
+            environment.rrFileParser.segments = state.rooms
             return Effect(value: .refreshMapImage)
             
         case .resetRooms:
             state.rooms = []
-            environment.mapDataParser.segments = state.rooms
-            return environment.mapDataParser.redraw()
+            environment.rrFileParser.segments = state.rooms
+            // TODO: parse, draw
+            break
+
+        case .generateMapImage:
+            return environment.rrFileParser.drawMapImage()
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
-                .map(Action.setMapData)
-            
-        case .none:
-        break
+                .map(Action.setMapImage)
+
+        case .generatePathImage:
+            return environment.rrFileParser.drawPathsImage()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setPathImage)
+
+        case .generateForbiddenZones:
+            return environment.rrFileParser.drawForbiddenZonesImage()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setForbiddenZonesImage)
+
+        case .generateRobotImage:
+            return environment.rrFileParser.drawRobotImage()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setRobotImage)
+
+        case .generateChargerImage:
+            return environment.rrFileParser.drawChargerImage()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setChargerImage)
+
+        case .setMapImage(let result):
+            switch result {
+            case .success(let image):
+                state.mapImage = image
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+
+        case .setPathImage(let result):
+            switch result {
+            case .success(let image):
+                state.pathImage = image
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+
+        case .setForbiddenZonesImage(let result):
+            switch result {
+            case .success(let image):
+                state.forbiddenZonesImage = image
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+
+        case .setRobotImage(let result):
+            switch result {
+            case .success(let image):
+                state.robotImage = image
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+
+        case .setChargerImage(let result):
+            switch result {
+            case .success(let image):
+                state.chargerImage = image
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
 
         default:
             break
@@ -259,17 +351,4 @@ enum Api {
     static let initialState = State()
     
     static let previewState = State()
-//        status: Status(state: 2, otaState: "idle", messageVersion: 3, battery: 94, cleanTime: 4, cleanArea: 0, errorCode: 0, mapPresent: 1, inCleaning: 0, inReturning: 0, inFreshState: 1, waterBoxStatus: 0, fanPower: 101, dndEnabled: 0, mapStatus: 3, mainBrushLife: 84, sideBrushLife: 75, filterLife: 67, stateHumanReadable: "Charger disconnected", model: "roborock.vacuum.s5", errorHumanReadable: "No error"),
-//        segments: Segment(segment: [
-//            SegmentValue(id: 16, name: "Arbeitszimmer"),
-//            SegmentValue(id: 17, name: "Wohnzimmer"),
-//            SegmentValue(id: 18, name: "Vorrat"),
-//            SegmentValue(id: 19, name: "Badezimmer"),
-//            SegmentValue(id: 20, name: "Gästebad"),
-//            SegmentValue(id: 21, name: "Schlafzimmer"),
-//            SegmentValue(id: 22, name: "Flur"),
-//            SegmentValue(id: 23, name: "Küche")
-//        ]
-//        )
-//    )
 }

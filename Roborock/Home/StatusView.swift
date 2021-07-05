@@ -17,17 +17,17 @@ struct StatusView: View {
                 StatusItemView(iconName: viewStore.batteryIcon,
                                label: "Battery",
                                unit: "%",
-                               value: viewStore.binding(get: { $0.api.battery }, send: Home.Action.api(.none)))
+                               value: viewStore.binding(get: { $0.api.battery }, send: Home.Action.none))
 
                 StatusItemView(iconName: "stopwatch",
                                label: "Clean Time",
                                unit: "min",
-                               value: viewStore.binding(get: { $0.api.cleanTime }, send: Home.Action.api(.none)))
+                               value: viewStore.binding(get: { $0.api.cleanTime }, send: Home.Action.none))
 
                 StatusItemView(iconName: "square.dashed",
                                label: "Clean Area",
                                unit: "qm",
-                               value: viewStore.binding(get: { $0.api.cleanArea }, send: Home.Action.api(.none)))
+                               value: viewStore.binding(get: { $0.api.cleanArea }, send: Home.Action.none))
             }
         }
     }

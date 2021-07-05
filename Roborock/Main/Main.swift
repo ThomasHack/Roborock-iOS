@@ -29,7 +29,7 @@ enum Main {
         let mainQueue: AnySchedulerOf<DispatchQueue>
         let apiClient: ApiRestClient
         let websocketClient: ApiWebSocketClient
-        let mapDataParser: MapDataParser
+        let rrFileParser: RRFileParser
         let defaults: UserDefaults
     }
     
@@ -70,7 +70,7 @@ enum Main {
             mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
             apiClient: ApiRestClient.live,
             websocketClient: ApiWebSocketClient.live,
-            mapDataParser: MapDataParser(),
+            rrFileParser: RRFileParser(),
             defaults: UserDefaults.standard
         )
     )
@@ -79,7 +79,7 @@ enum Main {
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
         apiClient: ApiRestClient.live,
         websocketClient: ApiWebSocketClient.live,
-        mapDataParser: MapDataParser(),
+        rrFileParser: RRFileParser(),
         defaults: UserDefaults.standard
     )
 }
