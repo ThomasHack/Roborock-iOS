@@ -13,23 +13,20 @@ struct HomeView: View {
     
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            ZStack(alignment: .top) {
-                
-                Color(UIColor.secondarySystemBackground)
-                    .edgesIgnoringSafeArea(.all)
-                
+            VStack(spacing: 0) {
+
                 MapView(store: store)
+                    .background(Color.blue)
                 
                 VStack(spacing: 0) {
-                    Spacer(minLength: 500)
                     VStack(spacing: 0) {
                         VStack(spacing: 0) {
                             HStack {
                                 Text("Roborock")
                                     .font(.system(size: 42, weight: .bold, design: .default))
-                                
+
                                 Spacer()
-                                
+
                                 Button(action: { }) {
                                     Image(systemName: "gear")
                                         .resizable()
@@ -38,35 +35,32 @@ struct HomeView: View {
                                 }
                                 .buttonStyle(SecondaryButtonStyle())
                             }
-                            
+
                             HStack {
                                 Text("Status:")
                                     .font(.system(size: 16, weight: .light, design: .default))
                                 Text(viewStore.api.status?.stateHumanReadable ?? (viewStore.api.connectivityState == .connected ? "Connected" : "Disconnected"))
                                     .font(.system(.headline))
                                 Spacer()
-                                
+
                             }
                         }
-                        .padding(.horizontal)
                         .padding(.bottom, 32)
-                        
+
                         StatusView(store: store)
-                            .padding(.horizontal)
                             .padding(.bottom, 32)
-                        
+
                         ButtonView(store: store)
-                            .padding(.horizontal)
-                            .padding(.bottom, 32)
-                        
-                        Spacer(minLength: 100)
                     }
-                    .padding(.vertical, 16)
+                    .padding(.horizontal)
+                    .padding(.top, 16)
+                    .padding(.bottom, 32)
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(15)
                 }
+                .background(Color(red: 0.0157, green: 0.4235, blue: 0.8314))
             }
-            .edgesIgnoringSafeArea(.top)
+            .edgesIgnoringSafeArea(.vertical)
             .sheet(isPresented: viewStore.binding(get: { $0.presentRoomSelection }, send: Home.Action.toggleRoomSelection)){
                 NavigationView {
                     SegmentList(store: store)

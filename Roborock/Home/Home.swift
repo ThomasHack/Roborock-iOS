@@ -7,6 +7,7 @@
 
 import Foundation
 import ComposableArchitecture
+import SwiftUI
 
 enum Home {
     struct State: Equatable {
@@ -63,11 +64,11 @@ enum Home {
 
             case .toggleRoomSelection(let toggle):
                 state.presentRoomSelection = toggle
-                return .none
 
             case .api, .none:
-                return .none
+                break
             }
+            return .none
         },
         Api.reducer.pullback(
             state: \HomeFeatureState.api,

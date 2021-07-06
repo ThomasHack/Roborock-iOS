@@ -16,7 +16,7 @@ struct ButtonView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             
-            HStack(spacing: 16) {
+            HStack(alignment: .center, spacing: 16) {
                 Button(action: { viewStore.send(.driveHome) }) {
                     Image(systemName: "house.fill")
                         .resizable()
@@ -71,15 +71,14 @@ struct ButtonView: View {
                             }
                         }                        }
                 }, label: {
-                    Button(action: { showingPopover = true }) {
-                        Image(systemName: "speedometer")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 20, height: 20)
-                    }
-                    .disabled(!viewStore.api.isConnected)
-                    .buttonStyle(SecondaryButtonStyle())
+                    Image(systemName: "speedometer")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
                 })
+                .padding(16)
+                .background(Color(.systemBackground))
+                .clipShape(Circle())
             }
         }
     }

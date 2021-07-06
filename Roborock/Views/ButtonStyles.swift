@@ -13,17 +13,13 @@ struct PrimaryButtonStyle: ButtonStyle {
     var disabled = false
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        /*let background = LinearGradient(gradient: Gradient(
-            colors: [Color("blue"), Color("blue-dark")]),
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)*/
-        
         let foregroundColor = Color(.systemBackground)
+        let backgroundColor = disabled ? Color.red : Color("blue")
 
         return configuration.label
             .padding(24)
             .foregroundColor(foregroundColor)
-            .background(disabled ? Color.red : Color("blue"))
+            .background(backgroundColor)
             .clipShape(Circle())
     }
 }
@@ -33,15 +29,13 @@ struct SecondaryButtonStyle: ButtonStyle {
     var disabled = false
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        let background = LinearGradient(gradient: Gradient(
-            colors: [Color(.systemBackground), Color("blue")]),
-                                           startPoint: .topLeading,
-                                           endPoint: .bottomTrailing).opacity(0.05)
+        let foregroundColor = Color("blue")
+        let backgroundColor = Color(.systemBackground)
+
         return configuration.label
             .padding(16)
-            .foregroundColor(Color("blue"))
-            .background(background)
-            .background(Color(.systemBackground))
+            .foregroundColor(foregroundColor)
+            .background(backgroundColor)
             .clipShape(Circle())
     }
 }
@@ -55,7 +49,6 @@ struct PrimaryButton: View {
                 .frame(width: 36, height: 36)
         }
         .buttonStyle(PrimaryButtonStyle())
-
     }
 }
 
@@ -68,7 +61,6 @@ struct SecondaryButton: View {
                 .frame(width: 20, height: 20)
         }
         .buttonStyle(SecondaryButtonStyle())
-
     }
 }
 

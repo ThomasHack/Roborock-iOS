@@ -16,4 +16,25 @@ enum SegmentType: Int {
     case livingroom = 17
     case toilet = 20
     case supply = 18
+
+    var label: String {
+        switch self {
+        case .studio:
+            return "Studio"
+        case .bath:
+            return "Badezimmer"
+        case .bedroom:
+            return "Schlafzimmer"
+        case .corridor:
+            return "Flur"
+        case .kitchen:
+            return "Küche"
+        case .livingroom:
+            return "Wohnzimmer"
+        case .toilet:
+            return "Toilette"
+        case .supply:
+            return "Vorrat"
+        }
+    }
 }

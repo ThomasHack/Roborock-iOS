@@ -28,6 +28,16 @@ enum Api {
         var forbiddenZonesImage: UIImage?
         var robotImage: UIImage?
         var chargerImage: UIImage?
+        var segmentLabelsImage: UIImage?
+
+        var initialUpdateDone: Bool {
+            return mapImage != nil
+            && pathImage != nil
+            && forbiddenZonesImage != nil
+            && robotImage != nil
+            && chargerImage != nil
+            && segmentLabelsImage != nil
+        }
 
         var status: Status? {
             willSet {
@@ -114,6 +124,7 @@ enum Api {
         case generateForbiddenZones
         case generateRobotImage
         case generateChargerImage
+        case generateSegmentLabelsImage
 
         case setMapData(Result<MapData, ParsingError>)
         case setMapImage(Result<UIImage, ImageGenerationError>)
@@ -121,6 +132,7 @@ enum Api {
         case setForbiddenZonesImage(Result<UIImage, ImageGenerationError>)
         case setRobotImage(Result<UIImage, ImageGenerationError>)
         case setChargerImage(Result<UIImage, ImageGenerationError>)
+        case setSegmentLabelsImage(Result<UIImage, ImageGenerationError>)
     }
     
     typealias Environment = Main.Environment
@@ -236,20 +248,35 @@ enum Api {
             switch result {
             case .success(let mapData):
                 state.mapData = mapData
-                return .merge(
-                    Effect(value: Action.generateMapImage),
-                    Effect(value: Action.generateChargerImage),
-                    Effect(value: Action.generateForbiddenZones),
-                    Effect(value: Action.generatePathImage),
-                    Effect(value: Action.generateRobotImage)
-                )
+                if state.initialUpdateDone {
+                    // Static images have been generated already
+                    // So just update the changed ones
+                    return .merge(
+                        Effect(value: Action.generateMapImage),
+                        Effect(value: Action.generatePathImage),
+                        Effect(value: Action.generateRobotImage)
+                    )
+                } else {
+                    // No images have been generated before
+                    // So generate all images including static ones
+                    return .merge(
+                        Effect(value: Action.generateMapImage),
+                        Effect(value: Action.generateChargerImage),
+                        Effect(value: Action.generateForbiddenZones),
+                        Effect(value: Action.generatePathImage),
+                        Effect(value: Action.generateRobotImage),
+                        Effect(value: Action.generateSegmentLabelsImage)
+                    )
+                }
             case .failure(let error):
                 print("\(error.localizedDescription)")
             }
 
         case .refreshMapImage:
-            // TODO: parse, draw
-            break
+            return environment.rrFileParser.refreshData()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setMapData)
 
         case .setFanspeed(let fanspeed):
             return environment.apiClient.setFanspeed(ApiId(), fanspeed)
@@ -269,8 +296,7 @@ enum Api {
         case .resetRooms:
             state.rooms = []
             environment.rrFileParser.segments = state.rooms
-            // TODO: parse, draw
-            break
+            return Effect(value: .refreshMapImage)
 
         case .generateMapImage:
             return environment.rrFileParser.drawMapImage()
@@ -301,6 +327,12 @@ enum Api {
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.setChargerImage)
+
+        case .generateSegmentLabelsImage:
+            return environment.rrFileParser.drawSegmentLabelsImage()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setSegmentLabelsImage)
 
         case .setMapImage(let result):
             switch result {
@@ -342,6 +374,13 @@ enum Api {
                 print(error.localizedDescription)
             }
 
+        case .setSegmentLabelsImage(let result):
+            switch result {
+            case .success(let image):
+                state.segmentLabelsImage = image
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         default:
             break
         }

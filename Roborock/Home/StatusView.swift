@@ -13,7 +13,7 @@ struct StatusView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            HStack {
+            HStack(spacing: 0) {
                 StatusItemView(iconName: viewStore.batteryIcon,
                                label: "Battery",
                                unit: "%",

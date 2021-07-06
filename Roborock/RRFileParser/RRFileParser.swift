@@ -49,8 +49,10 @@ class RRFileParser {
         guard let size = mapData.imageData?.dimensions else {
             return CGSize.zero
         }
-        return CGSize(width: size.width * 2, height: size.height * 2)
+        return CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
     }
+
+    private var scaleFactor: Int = 2
 
     // MARK: - Public methods
 
@@ -60,6 +62,17 @@ class RRFileParser {
     func parse(_ data: Data) -> AnyPublisher<MapData, ParsingError> {
         Future { promise in
             self.parseData(data)
+            promise(.success(self.mapData))
+        }
+        .eraseToAnyPublisher()
+    }
+
+
+    /// Parse current data again to refresh images
+    /// - Returns: Promise with MapData or MapDataError
+    func refreshData() -> AnyPublisher<MapData, ParsingError> {
+        Future { promise in
+            self.parseBlocks()
             promise(.success(self.mapData))
         }
         .eraseToAnyPublisher()
@@ -121,6 +134,17 @@ class RRFileParser {
         .eraseToAnyPublisher()
     }
 
+    /// Draw segment names image
+    /// - Returns: Promise with Image or Error
+    public func drawSegmentLabelsImage() -> AnyPublisher<UIImage, ImageGenerationError> {
+        Future { promise in
+            self.drawSegmentLabelsImage() { result in
+                promise(result)
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
     // MARK: - Parsing
     
     /// Provides custom color for segment
@@ -129,9 +153,9 @@ class RRFileParser {
     private func colorForSegmentId(segment: SegmentType?) -> UIColor {
         switch segment {
         case .studio,. bath, .bedroom, .corridor, .kitchen, .livingroom, .toilet, .supply:
-            return UIColor(hexString: "#56AFFC")
+            return UIColor.floorColor
         default:
-            return UIColor(hexString: "#56AFFC")
+            return UIColor.floorColor
         }
     }
 
@@ -188,7 +212,7 @@ class RRFileParser {
         case .chargerLocation:
             self.mapData.chargerLocation = parseChargerLocationBlock(data, offset: offset)
         case .image:
-            self.mapData.imageData = parseImageBlock(data, headerLength: headerLength, blockLength: blockLength, offset: offset)
+            self.mapData.imageData = parseMapBlocks(data, headerLength: headerLength, blockLength: blockLength, offset: offset)
         case .path:
             self.mapData.vacuumPath = parsePathBlock(data, blockLength: blockLength, offset: offset, type: .vacuum)
         case .gotoPath:
@@ -294,15 +318,12 @@ class RRFileParser {
     ///   - blockLength: Length of current data block (not including header)
     ///   - offset: Current offset, increments per block
     /// - Returns: Parsed image data from binary array with segments, dimensions, pixel array, etc.
-    private func parseImageBlock(_ block: Data, headerLength: Int, blockLength: Int, offset: Int) -> MapData.ImageData {
+    private func parseMapBlocks(_ block: Data, headerLength: Int, blockLength: Int, offset: Int) -> MapData.ImageData {
         var g3offset = 0
         if headerLength > 24 {
             g3offset = 4
         }
-        let segments = MapData.ImageData.Segments(count: g3offset > 0 ? block.getInt32(position: 0x08 + offset) : 0,
-                                                  center: [:],
-                                                  borders: [],
-                                                  neighbours: [:])
+        let segments = MapData.ImageData.Segments(count: g3offset > 0 ? block.getInt32(position: 0x08 + offset) : 0, center: [:])
 
         let position = MapData.Position(top: block.getInt32(position: 0x08 + g3offset + offset),
                                         left: block.getInt32(position: 0x0c + g3offset + offset))
@@ -310,14 +331,10 @@ class RRFileParser {
         let dimensions = MapData.Size(width: block.getInt32(position: 0x14 + g3offset + offset),
                                       height: block.getInt32(position: 0x10 + g3offset + offset))
 
-        let box = MapData.ImageData.Box(minX: 0, minY: 0, maxX: 0, maxY: 0)
-
-        var image = MapData.ImageData(segments: segments, position: position, dimensions: dimensions, box: box, pixels: [])
+        var image = MapData.ImageData(segments: segments, position: position, dimensions: dimensions, pixels: [])
 
         if dimensions.width > 0 && dimensions.height > 0 {
-            image = parseImagePixelBlock(block, blockLength: blockLength, image: image, offset: offset, g3offset: g3offset)
-        } else {
-            image.box = MapData.ImageData.Box(minX: 0, minY: 0, maxX: 100, maxY: 100)
+            image = parseImageBlock(block, blockLength: blockLength, imageData: image, offset: offset, g3offset: g3offset)
         }
         return image
     }
@@ -331,52 +348,63 @@ class RRFileParser {
     ///   - offset: Current offset, increments per block
     ///   - g3offset: Specific offset for generation 3+ vacuums and map version >= 1.1 as block header is 4 bytes longer
     /// - Returns: Parsed image data from binary array with pixel array (width*height) in rgba
-    private func parseImagePixelBlock(_ block: Data, blockLength: Int, image: MapData.ImageData, offset: Int, g3offset: Int) -> MapData.ImageData {
-        var tempImage = image
-        var mapImageData = MapData.ImageData.Data(floor: [],
-                                                  obstacleWeak: [],
-                                                  obstacleStrong: [])
+    private func parseImageBlock(_ block: Data, blockLength: Int, imageData: MapData.ImageData, offset: Int, g3offset: Int) -> MapData.ImageData {
+        var tempImageData = imageData
 
-        let freeColor = UIColor.clear//(red: 57/255, green: 127/255, blue: 224/255, alpha: 1)
-        let floorColor = UIColor(red: 86/255, green: 175/255, blue: 252/255, alpha: 1)
-        let obstacleColor = UIColor(red: 161/255, green: 219/255, blue: 255/255, alpha: 1)
         let selectedColor = UIColor(red: 121/255, green: 196/255, blue: 189/255, alpha: 1)
 
         for index in 0 ..< blockLength {
-            let x = (index % image.dimensions.width) + image.position.left
-            let y = image.dimensions.height - 1 - (index / image.dimensions.width) + image.position.top
+            let x = (index % imageData.dimensions.width) + imageData.position.left
+            let y = imageData.dimensions.height - 1 - (index / imageData.dimensions.width) + imageData.position.top
 
             let type = block.getInt8(position: 0x18 + g3offset + offset + index)
 
             switch type & 0x07 {
             case 0: // Free
-                tempImage.pixels.append(freeColor.toPixel)
+                tempImageData.pixels.append(UIColor.freeColor.toPixel)
             case 1: // Obstacle
-                tempImage.pixels.append(obstacleColor.toPixel)
-                mapImageData.obstacleStrong.append(MapData.Point(x: x, y: y))
+                tempImageData.pixels.append(UIColor.obstacleColor.toPixel)
             default: // Segment or floor
                 let segmentId = (type & 248) >> 3
                 if segmentId != 0 {
+                    // Optional colors for each segment
                     var color = colorForSegmentId(segment: SegmentType(rawValue: segmentId))
+
+                    // Color if segment is currently selected
                     if segments.contains(segmentId) {
                         color = selectedColor
                     }
-                    tempImage.pixels.append(color.toPixel)
-                    mapImageData.floor.append(MapData.Point(x: x, y: y))
+
+                    if tempImageData.segments.center[segmentId] == nil {
+                        tempImageData.segments.center[segmentId] = MapData.ImageData.Center(position: MapData.Point(x: 0, y: 0), count: 0)
+                    }
+                    tempImageData.segments.center[segmentId]?.position.x += x
+                    tempImageData.segments.center[segmentId]?.position.y += y
+                    tempImageData.segments.center[segmentId]?.count += 1
+
+                    // Push segment divider pixel
+                    let lastBlock = block.getInt8(position: 0x18 + g3offset + offset + index - 1)
+                    if lastBlock > 1 && (lastBlock & 248) >> 3 != segmentId {
+                        tempImageData.pixels.append(UIColor.clear.toPixel)
+                        break
+                    }
+
+                    // Push segment divider pixel
+                    let neighbourBlock = block.getInt8(position: 0x18 + g3offset + offset + index + imageData.dimensions.width)
+                    if neighbourBlock > 1 && (neighbourBlock & 248) >> 3 != segmentId {
+                        tempImageData.pixels.append(UIColor.clear.toPixel)
+                        break
+                    }
+                    // Push segment pixel
+                    tempImageData.pixels.append(color.toPixel)
                     break
                 }
-                tempImage.pixels.append(floorColor.toPixel)
-                mapImageData.floor.append(MapData.Point(x: x, y: y))
+                // Push floor pixel
+                tempImageData.pixels.append(UIColor.floorColor.toPixel)
             }
-
-            if (image.box.minX > x) { tempImage.box.minX = x }
-            if (image.box.maxX < x) { tempImage.box.maxX = x }
-            if (image.box.minY > y) { tempImage.box.minY = y }
-            if (image.box.maxY < y) { tempImage.box.maxY = y }
         }
 
-        tempImage.data = mapImageData
-        return tempImage
+        return tempImageData
     }
 
     // MARK: - Drawing
@@ -387,9 +415,11 @@ class RRFileParser {
     ///   - offset: Map offset
     /// - Returns: Coordinate in map space
     private func convertToMapCoordinate(_ coordinate: Int, offset: Int) -> Int {
-        return Int(Double(coordinate * 2) / 50.0 - Double(offset * 2))
+        return Int(Double(coordinate * scaleFactor) / 50.0 - Double(offset * scaleFactor))
     }
 
+    /// Internal method to draw map image
+    /// - Parameter completion: completion handler
     private func drawMap(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
         guard let pixels = mapData.imageData?.pixels, let image = drawMap(pixels: pixels) else {
             completion(.failure(ImageGenerationError.mapImageError))
@@ -398,6 +428,8 @@ class RRFileParser {
         completion(.success(image))
     }
 
+    /// Internal method to draw vacuum, goto and predicted paths to a single image
+    /// - Parameter completion: completion handler
     private func drawMapPaths(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
         // Draw vaccum path on map
         var image = UIImage()
@@ -431,6 +463,8 @@ class RRFileParser {
         completion(.success(image))
     }
 
+    /// Internal method to draw forbidden zones image
+    /// - Parameter completion: completion handler
     private func drawForbiddenZonesImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
         guard let forbiddenZones = mapData.forbiddenZones, let image = drawForbiddenZones(zones: forbiddenZones) else {
             completion(.failure(ImageGenerationError.forbiddenZonesImageError))
@@ -439,6 +473,8 @@ class RRFileParser {
         completion(.success(image))
     }
 
+    /// Internal method to draw robot image
+    /// - Parameter completion: completion handler
     private func drawRobotImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
         guard let robotPosition = mapData.robotPosition, let image = drawRobot(robot: robotPosition) else {
             completion(.failure(ImageGenerationError.robotImageError))
@@ -447,8 +483,21 @@ class RRFileParser {
         completion(.success(image))
     }
 
+    /// Internal method to draw charger image
+    /// - Parameter completion: completion handler
     private func drawChargerImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
         guard let chargerLocation = mapData.chargerLocation, let image = drawCharger(charger: chargerLocation) else {
+            completion(.failure(ImageGenerationError.chargerImageError))
+            return
+        }
+        completion(.success(image))
+    }
+
+
+    /// Internal method to draw segment labels
+    /// - Parameter completion: completion handler
+    private func drawSegmentLabelsImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
+        guard let segments = mapData.imageData?.segments, let image = drawSegmentLabels(segments: segments) else {
             completion(.failure(ImageGenerationError.chargerImageError))
             return
         }
@@ -482,7 +531,7 @@ class RRFileParser {
                     shouldInterpolate: false,
                     intent: .defaultIntent) else { return nil }
                 
-        let size = CGSize(width: imageSize.width * 2, height: imageSize.height * 2)
+        let size = CGSize(width: Int(imageSize.width) * scaleFactor, height: Int(imageSize.height) * scaleFactor)
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         
         let context = UIGraphicsGetCurrentContext()!
@@ -496,13 +545,13 @@ class RRFileParser {
         return UIImage(cgImage: cgImage, scale: 0, orientation: .downMirrored)
     }
 
-    /// Draw vacuum paths onto map image
+    /// Draw vacuum paths image
     /// - Parameters:
     ///   - path: Path object containing angle and point array
     ///   - image: Source image to draw on
     /// - Returns: Map image including paths
     private func drawMapPaths(path: MapData.Path, image: UIImage? = nil) -> UIImage? {
-        UIGraphicsBeginImageContext(imageSize)
+        UIGraphicsBeginImageContext(retinaImageSize)
 
         if let image = image {
             image.draw(at: .zero)
@@ -554,30 +603,26 @@ class RRFileParser {
     /// - Parameter zones: Forbidden zones objects
     /// - Returns: Image containing zones
     private func drawForbiddenZones(zones: MapData.ForbiddenZones) -> UIImage? {
-        UIGraphicsBeginImageContext(retinaImageSize)
+        let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
+        let tempImage = renderer.image { context in
+            context.cgContext.setLineWidth(1.0)
+            context.cgContext.setStrokeColor(UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor)
+            context.cgContext.setFillColor(UIColor(red: 1, green: 0, blue: 0, alpha: 0.5).cgColor)
 
-        let context = UIGraphicsGetCurrentContext()!
-        context.setLineWidth(1.0)
-        context.setStrokeColor(UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor)
-        context.setFillColor(UIColor(red: 1, green: 0, blue: 0, alpha: 0.5).cgColor)
-
-        for zone in zones.zones {
-            context.move(to: CGPoint(x: convertToMapCoordinate(zone[0].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[0].y, offset: imagePosition.top)))
-            context.addLine(to: CGPoint(x: convertToMapCoordinate(zone[1].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[1].y, offset: imagePosition.top)))
-            context.addLine(to: CGPoint(x: convertToMapCoordinate(zone[2].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[2].y, offset: imagePosition.top)))
-            context.addLine(to: CGPoint(x: convertToMapCoordinate(zone[3].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[3].y, offset: imagePosition.top)))
-            context.addLine(to: CGPoint(x: convertToMapCoordinate(zone[0].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[0].y, offset: imagePosition.top)))
-            context.fillPath()
-            context.strokePath()
+            for zone in zones.zones {
+                context.cgContext.move(to: CGPoint(x: convertToMapCoordinate(zone[0].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[0].y, offset: imagePosition.top)))
+                context.cgContext.addLine(to: CGPoint(x: convertToMapCoordinate(zone[1].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[1].y, offset: imagePosition.top)))
+                context.cgContext.addLine(to: CGPoint(x: convertToMapCoordinate(zone[2].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[2].y, offset: imagePosition.top)))
+                context.cgContext.addLine(to: CGPoint(x: convertToMapCoordinate(zone[3].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[3].y, offset: imagePosition.top)))
+                context.cgContext.addLine(to: CGPoint(x: convertToMapCoordinate(zone[0].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[0].y, offset: imagePosition.top)))
+                context.cgContext.fillPath()
+                context.cgContext.strokePath()
+            }
         }
-
-        let tempImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
         return tempImage
     }
 
-    /// Draw vacuum robot onto map image
+    /// Draw vacuum robot image
     /// - Parameters:
     ///   - robot: Robot object containing angle and coordinates
     /// - Returns: Image containing robot
@@ -588,21 +633,18 @@ class RRFileParser {
         guard let angle = robot.angle,
               let robotImage = UIImage(named: "robot")?
                 .withHorizontallyFlippedOrientation()
-                .rotate(angle: Float(angle + 90))?
-                .cgImage
+                .rotate(angle: Float(angle + 90))
         else { return nil }
 
-        UIGraphicsBeginImageContext(retinaImageSize)
-        let context = UIGraphicsGetCurrentContext()!
-        context.draw(robotImage, in: CGRect(origin: CGPoint(x: x - 16, y: y - 16), size: CGSize(width: 32, height: 32)))
-
-        let tempImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
+        let tempImage = renderer.image { context in
+            robotImage.draw(in: CGRect(origin: CGPoint(x: x - 12, y: y - 12), size: CGSize(width: 24, height: 24)))
+        }
 
         return tempImage
     }
 
-    /// Draw vacuum charger onto map image
+    /// Draw vacuum charger image
     /// - Parameters:
     ///   - charger: Charger coordinates
     /// - Returns: Image containing robot
@@ -610,15 +652,49 @@ class RRFileParser {
         let x = convertToMapCoordinate(charger.x, offset: imagePosition.left)
         let y = convertToMapCoordinate(charger.y, offset: imagePosition.top)
 
-        guard let chargerImage = UIImage(named: "charger")?.cgImage else { return nil }
+        guard let chargerImage = UIImage(named: "charger") else { return nil }
 
-        UIGraphicsBeginImageContext(retinaImageSize)
-        let context = UIGraphicsGetCurrentContext()!
-        context.draw(chargerImage, in: CGRect(origin: CGPoint(x: x - 4, y: y - 12), size: CGSize(width: 24, height: 24)))
+        let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
+        let tempImage = renderer.image { context in
+            chargerImage.draw(in: CGRect(origin: CGPoint(x: x - 4, y: y - 8), size: CGSize(width: 16, height: 16)))
+        }
 
-        let tempImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        return tempImage
+    }
 
+    /// Draw segment names image
+    /// - Parameter segments: Segments object
+    /// - Returns: Image containing labels
+    private func drawSegmentLabels(segments: MapData.ImageData.Segments) -> UIImage? {
+        let textColor = UIColor.white
+        let backgroundColor = UIColor(white: 0, alpha: 0.6).cgColor
+        let textFont = UIFont.systemFont(ofSize: 14)
+        let textFontAttributes = [NSAttributedString.Key.font: textFont, NSAttributedString.Key.foregroundColor: textColor] as [NSAttributedString.Key : Any]
+
+        let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
+
+        let tempImage = renderer.image{ context in
+            for center in segments.center {
+                guard let segmentType = SegmentType(rawValue: center.key) else { continue }
+                // Get text and text width
+                let text = segmentType.label
+                let textWidth = text.width(withConstrainedHeight: 14, font: UIFont.systemFont(ofSize: 14))
+
+                // Calculate coordinates and remove offsets for correct center
+                let x = (center.value.position.x/center.value.count) * scaleFactor - imagePosition.left * scaleFactor - Int(textWidth/2)
+                let y = Int(retinaImageSize.height) - (center.value.position.y/center.value.count) * 2 + imagePosition.top * 2 - 10
+
+                let rect = CGRect(x: x - 4, y: y - 2, width: Int(textWidth) + 8, height: 20)
+                let roundedRect = UIBezierPath(roundedRect: rect, cornerRadius: 4).cgPath
+
+                context.cgContext.setFillColor(backgroundColor)
+                context.cgContext.addPath(roundedRect)
+                context.cgContext.fillPath()
+
+                let textRect = CGRect(x: x, y: y, width: Int(retinaImageSize.width), height: Int(retinaImageSize.height))
+                text.draw(with: textRect, options: .usesLineFragmentOrigin, attributes: textFontAttributes, context: nil)
+            }
+        }
         return tempImage
     }
 }

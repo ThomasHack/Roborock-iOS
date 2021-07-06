@@ -12,7 +12,6 @@ extension MapData {
         var segments: Segments
         var position: Position
         var dimensions: Size
-        var box: Box
         var data: Data?
         var pixels: [Pixel]
 
@@ -30,8 +29,6 @@ extension MapData {
         struct Segments: Equatable {
             var count: Int
             var center: [Int: Center]
-            var borders: [Double]
-            var neighbours: [Int: Bool]
         }
 
         struct Box: Equatable {

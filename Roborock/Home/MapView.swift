@@ -17,6 +17,7 @@ struct MapView: View {
             VStack(spacing: 0) {
                 if let mapImage = viewStore.api.mapImage,
                    let forbiddenZonesImage = viewStore.api.forbiddenZonesImage,
+                   let segmentLabelsImage = viewStore.api.segmentLabelsImage,
                    let chargerImage = viewStore.api.chargerImage,
                    let pathImage = viewStore.api.pathImage,
                    let robotImage = viewStore.api.robotImage {
@@ -27,6 +28,10 @@ struct MapView: View {
                                 .aspectRatio(contentMode: .fill)
 
                             Image(uiImage: forbiddenZonesImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+
+                            Image(uiImage: segmentLabelsImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
 
@@ -43,11 +48,13 @@ struct MapView: View {
                                 .aspectRatio(contentMode: .fill)
                         }
                         .frame(width: geometry.size.width, height: 500)
-                    }.padding(.top, 32)
+                    }
 
                 } else {
+                    Spacer()
                     ProgressView()
                         .foregroundColor(Color(UIColor.label))
+                    Spacer()
                 }
             }
             .frame(maxWidth: .infinity)

@@ -31,9 +31,8 @@ struct StatusItemView: View {
                 }
                 .frame(width: 36, height: 36)
                 .padding(.top, 16)
-                .padding(.bottom, 16)
 
-                VStack(spacing: 4) {
+                VStack(spacing: 0) {
                     HStack {
                         Spacer()
                     }
