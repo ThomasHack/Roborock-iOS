@@ -14,53 +14,71 @@ struct HomeView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack(spacing: 0) {
-
-                MapView(store: store)
-                    .background(Color.blue)
                 
-                VStack(spacing: 0) {
+                if viewStore.shared.host != nil {
                     VStack(spacing: 0) {
+                        MapView(store: store)
+                            .background(Color.blue)
+                        
                         VStack(spacing: 0) {
-                            HStack {
-                                Text("Roborock")
-                                    .font(.system(size: 42, weight: .bold, design: .default))
-
-                                Spacer()
-
-                                Button(action: {
-                                    viewStore.send(.settingsButtonTapped)
-                                }) {
-                                    Image(systemName: "gear")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 20, height: 20)
+                            VStack(spacing: 0) {
+                                HStack {
+                                    Text("Roborock")
+                                        .font(.system(size: 42, weight: .bold, design: .default))
+                                    
+                                    Spacer()
+                                    
+                                    Button(action: {
+                                        viewStore.send(.settingsButtonTapped)
+                                    }) {
+                                        Image(systemName: "gear")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 20, height: 20)
+                                    }
+                                    .buttonStyle(SecondaryButtonStyle())
                                 }
-                                .buttonStyle(SecondaryButtonStyle())
+                                
+                                HStack {
+                                    Text("Status:")
+                                        .font(.system(size: 16, weight: .light, design: .default))
+                                    Text(viewStore.api.status?.stateHumanReadable ?? (viewStore.api.connectivityState == .connected ? "Connected" : "Disconnected"))
+                                        .font(.system(.headline))
+                                    Spacer()
+                                    
+                                }
                             }
-
-                            HStack {
-                                Text("Status:")
-                                    .font(.system(size: 16, weight: .light, design: .default))
-                                Text(viewStore.api.status?.stateHumanReadable ?? (viewStore.api.connectivityState == .connected ? "Connected" : "Disconnected"))
-                                    .font(.system(.headline))
-                                Spacer()
-
-                            }
-                        }
-                        .padding(.bottom, 32)
-
-                        StatusView(store: store)
                             .padding(.bottom, 32)
-
-                        ButtonView(store: store)
+                            
+                            StatusView(store: store)
+                                .padding(.bottom, 32)
+                            
+                            ButtonView(store: store)
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 16)
+                        .padding(.bottom, 32)
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(15)
                     }
-                    .padding(.horizontal)
-                    .padding(.top, 16)
-                    .padding(.bottom, 32)
-                    .background(Color(.secondarySystemBackground))
-                    .cornerRadius(15)
+                    .background(Color("blue"))
+                } else {
+                    VStack(alignment: .center, spacing: 8) {
+                        HStack() {
+                            Image(systemName: "bolt.slash.fill")
+                            Text("Not Connected")
+                        }.foregroundColor(.secondary)
+                        Button(action: {
+                            if viewStore.shared.host != nil {
+                                viewStore.send(.settingsButtonTapped)
+                            } else {
+                                viewStore.send(.settingsButtonTapped)
+                            }
+                        }) {
+                            Text(viewStore.shared.host != nil ? "Connect" : "Set Host")
+                        }
+                    }
                 }
-                .background(Color(red: 0.0157, green: 0.4235, blue: 0.8314))
             }
             .edgesIgnoringSafeArea(.vertical)
             .sheet(isPresented: viewStore.binding(
@@ -87,10 +105,6 @@ struct HomeView: View {
                         })
                 }
             }
-        }
-        .onAppear {
-            let viewStore = ViewStore(store)
-            viewStore.send(.fetchSegments)
         }
     }
 }

@@ -103,6 +103,7 @@ enum Api {
         case didConnect
         case disconnect
         case didDisconnect
+        case resetState
         case didReceiveWebSocketEvent(ApiWebSocketEvent)
         case didUpdateStatus(Status)
 
@@ -155,6 +156,9 @@ enum Api {
 
         case .didConnect:
             state.connectivityState = .connected
+            return .merge(
+                Effect(value: .fetchSegments)
+            )
 
         case .disconnect:
             return environment.websocketClient.disconnect(ApiId())
@@ -163,6 +167,17 @@ enum Api {
 
         case .didDisconnect:
             state.connectivityState = .disconnected
+            return Effect(value: .resetState)
+            
+        case .resetState:
+            state.status = nil
+            state.rooms = []
+            state.mapImage = nil
+            state.pathImage = nil
+            state.forbiddenZonesImage = nil
+            state.robotImage = nil
+            state.chargerImage = nil
+            state.segmentLabelsImage = nil
 
         case .didReceiveWebSocketEvent(let event):
             switch event {
