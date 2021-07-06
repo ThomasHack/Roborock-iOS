@@ -53,6 +53,11 @@ enum Settings {
             state: \SettingsFeatureState.shared,
             action: /Action.shared,
             environment: { $0 }
+        ),
+        Api.reducer.pullback(
+            state: \SettingsFeatureState.api,
+            action: /Action.api,
+            environment: { $0 }
         )
     )
 
