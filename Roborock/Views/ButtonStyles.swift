@@ -9,12 +9,11 @@ import SwiftUI
 import SwiftUIVisualEffects
 
 struct PrimaryButtonStyle: ButtonStyle {
-    var active = false
-    var disabled = false
+    @Environment(\.isEnabled) var isEnabled
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        let foregroundColor = Color(.systemBackground)
-        let backgroundColor = disabled ? Color.red : Color("blue")
+        let foregroundColor = isEnabled ? Color(.systemBackground) : Color(.tertiaryLabel)
+        let backgroundColor = isEnabled ? Color("blue") : Color(.tertiarySystemBackground)
 
         return configuration.label
             .padding(24)
@@ -25,12 +24,11 @@ struct PrimaryButtonStyle: ButtonStyle {
 }
 
 struct SecondaryButtonStyle: ButtonStyle {
-    var active = false
-    var disabled = false
+    @Environment(\.isEnabled) var isEnabled
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        let foregroundColor = Color("blue")
-        let backgroundColor = Color(.systemBackground)
+        let foregroundColor = isEnabled ? Color("blue") : Color(.tertiaryLabel)
+        let backgroundColor = isEnabled ? Color(.systemBackground) : Color(.tertiarySystemBackground)
 
         return configuration.label
             .padding(16)

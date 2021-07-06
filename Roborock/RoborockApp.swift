@@ -16,7 +16,7 @@ struct RoborockApp: App {
     
     fileprivate func connect() {
         let viewStore = ViewStore(store)
-        guard let url = URL(string: "ws://roborock") else { return }
+        guard let host = viewStore.state.shared.host, let url = URL(string: host) else { return }
         viewStore.send(.api(.connect(url)))
     }
 

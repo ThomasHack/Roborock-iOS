@@ -53,4 +53,8 @@ public struct Status: Equatable, Decodable {
         case model = "model"
         case errorHumanReadable = "errorHR"
     }
+
+    var vacuumState: VacuumState? {
+        return VacuumState(rawValue: state)
+    }
 }

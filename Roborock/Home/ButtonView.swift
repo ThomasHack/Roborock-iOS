@@ -23,7 +23,7 @@ struct ButtonView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
                 }
-                .disabled(viewStore.state.connectivityState != .connected)
+                .disabled(viewStore.api.connectivityState != .connected || viewStore.api.state == .charging)
                 .buttonStyle(SecondaryButtonStyle())
                 
                 if !viewStore.api.inCleaning && !viewStore.api.inReturning {

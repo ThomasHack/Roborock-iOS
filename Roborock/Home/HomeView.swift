@@ -27,7 +27,9 @@ struct HomeView: View {
 
                                 Spacer()
 
-                                Button(action: { }) {
+                                Button(action: {
+                                    viewStore.send(.settingsButtonTapped)
+                                }) {
                                     Image(systemName: "gear")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
@@ -61,6 +63,12 @@ struct HomeView: View {
                 .background(Color(red: 0.0157, green: 0.4235, blue: 0.8314))
             }
             .edgesIgnoringSafeArea(.vertical)
+            .sheet(isPresented: viewStore.binding(
+                get: \.showSettingsModal,
+                send: Home.Action.toggleSettingsModal)
+            ) {
+                SettingsView(store: Main.store.settings)
+            }
             .sheet(isPresented: viewStore.binding(get: { $0.presentRoomSelection }, send: Home.Action.toggleRoomSelection)){
                 NavigationView {
                     SegmentList(store: store)

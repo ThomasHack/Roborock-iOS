@@ -47,6 +47,13 @@ enum Api {
             }
         }
 
+        var state: VacuumState {
+            guard let state = status?.vacuumState else {
+                return VacuumState.unknown
+            }
+            return state
+        }
+
         var isConnected: Bool {
             return connectivityState == .connected
         }
@@ -76,7 +83,9 @@ enum Api {
             guard let status = status else {
                 return "-"
             }
-            return "\((status.cleanTime % 3600)/60):\((status.cleanTime % 3600) % 60)"
+            let minutes = String(format: "%02d", (status.cleanTime % 3600)/60)
+            let seconds = String(format: "%02d", (status.cleanTime % 3600) % 60)
+            return "\(minutes):\(seconds)"
         }
         
         var cleanArea: String {

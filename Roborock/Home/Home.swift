@@ -22,9 +22,12 @@ enum Home {
         case pauseCleaning
         case driveHome
         case selectAll
+        case settingsButtonTapped
         case toggleRoomSelection(Bool)
+        case toggleSettingsModal(Bool)
         
         case api(Api.Action)
+        case shared(Shared.Action)
         case none
     }
     
@@ -62,14 +65,25 @@ enum Home {
                 state.rooms = []
                 return .none
 
+            case .settingsButtonTapped:
+                return Effect(value: Action.shared(.showSettingsModal))
+
             case .toggleRoomSelection(let toggle):
                 state.presentRoomSelection = toggle
 
-            case .api, .none:
+            case .toggleSettingsModal(let toggle):
+                return Effect(value: Action.shared(.toggleSettingsModal(toggle)))
+
+            case .api, .shared, .none:
                 break
             }
             return .none
         },
+        Shared.reducer.pullback(
+            state: \HomeFeatureState.shared,
+            action: /Action.shared,
+            environment: { $0 }
+        ),
         Api.reducer.pullback(
             state: \HomeFeatureState.api,
             action: /Action.api,
