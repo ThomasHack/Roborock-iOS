@@ -196,11 +196,36 @@
 			path = Rest;
 			sourceTree = "<group>";
 		};
-		52AD4DAE2695D34A00D5C839 /* New Group */ = {
+		5249E97A2695D5390095828E /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				6542893B2646B78B009B8BE5 /* RoborockApp.swift */,
+				6542894D2646C1CF009B8BE5 /* Api */,
+				52F12B9D268A2D4400C5494E /* Helper */,
+				654289562646C402009B8BE5 /* Home */,
+				654289592646C438009B8BE5 /* Main */,
+				522336C9269351B300748AFD /* RRFileParser */,
+				52DBCBAB2694BBDA00D25CC6 /* Settings */,
+				52046F2126494BF100E1C041 /* Views */,
 			);
-			path = "New Group";
+			path = Code;
+			sourceTree = "<group>";
+		};
+		5249E97B2695D55A0095828E /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				6542893F2646B78C009B8BE5 /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		5249E97C2695D5640095828E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				654289442646B78C009B8BE5 /* Info.plist */,
+				52AD4DAC2695D2C700D5C839 /* Localizable.strings */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		52DBCBAB2694BBDA00D25CC6 /* Settings */ = {
@@ -255,19 +280,10 @@
 		6542893A2646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXGroup;
 			children = (
-				52AD4DAE2695D34A00D5C839 /* New Group */,
-				6542894D2646C1CF009B8BE5 /* Api */,
-				6542893F2646B78C009B8BE5 /* Assets.xcassets */,
-				52F12B9D268A2D4400C5494E /* Helper */,
-				654289562646C402009B8BE5 /* Home */,
-				654289442646B78C009B8BE5 /* Info.plist */,
-				654289592646C438009B8BE5 /* Main */,
+				5249E97B2695D55A0095828E /* Assets */,
+				5249E97A2695D5390095828E /* Code */,
 				654289412646B78C009B8BE5 /* Preview Content */,
-				6542893B2646B78B009B8BE5 /* RoborockApp.swift */,
-				522336C9269351B300748AFD /* RRFileParser */,
-				52DBCBAB2694BBDA00D25CC6 /* Settings */,
-				52046F2126494BF100E1C041 /* Views */,
-				52AD4DAC2695D2C700D5C839 /* Localizable.strings */,
+				5249E97C2695D5640095828E /* Supporting Files */,
 			);
 			path = Roborock;
 			sourceTree = "<group>";
