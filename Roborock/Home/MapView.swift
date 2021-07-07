@@ -14,13 +14,14 @@ struct MapView: View {
     
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            VStack(spacing: 0) {
+            VStack(alignment: .center, spacing: 0) {
                 if let mapImage = viewStore.api.mapImage,
                    let forbiddenZonesImage = viewStore.api.forbiddenZonesImage,
                    let segmentLabelsImage = viewStore.api.segmentLabelsImage,
                    let chargerImage = viewStore.api.chargerImage,
                    let pathImage = viewStore.api.pathImage,
                    let robotImage = viewStore.api.robotImage {
+                    Spacer(minLength: 0)
                     GeometryReader { geometry in
                         ZStack {
                             Image(uiImage: mapImage)
@@ -47,13 +48,16 @@ struct MapView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                         }
-                        .frame(width: geometry.size.width, height: 500)
+                        .frame(width: geometry.size.width)
+                        .frame(minHeight: 500)
                     }
-
+                    Spacer(minLength: 0)
                 } else {
                     Spacer()
-                    ProgressView()
-                        .foregroundColor(Color(UIColor.label))
+                    if viewStore.api.connectivityState == .connected {
+                        ProgressView()
+                            .foregroundColor(Color(UIColor.label))
+                    }
                     Spacer()
                 }
             }

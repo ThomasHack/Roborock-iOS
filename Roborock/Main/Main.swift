@@ -39,7 +39,6 @@ enum Main {
         let apiClient: ApiRestClient
         let websocketClient: ApiWebSocketClient
         let rrFileParser: RRFileParser
-        let defaults: UserDefaults
     }
     
     static let reducer = Reducer<State, Action, Environment>.combine(
@@ -89,8 +88,7 @@ enum Main {
             mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
             apiClient: ApiRestClient.live,
             websocketClient: ApiWebSocketClient.live,
-            rrFileParser: RRFileParser(),
-            defaults: UserDefaults.standard
+            rrFileParser: RRFileParser()
         )
     )
 
@@ -101,8 +99,7 @@ enum Main {
             mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
             apiClient: ApiRestClient.live,
             websocketClient: ApiWebSocketClient.live,
-            rrFileParser: RRFileParser(),
-            defaults: UserDefaults.standard
+            rrFileParser: RRFileParser()
         )
     )
     
@@ -110,8 +107,7 @@ enum Main {
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
         apiClient: ApiRestClient.live,
         websocketClient: ApiWebSocketClient.live,
-        rrFileParser: RRFileParser(),
-        defaults: UserDefaults.standard
+        rrFileParser: RRFileParser()
     )
 }
 

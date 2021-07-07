@@ -35,11 +35,15 @@ enum Settings {
             case .connectButtonTapped:
                 switch state.connectivityState {
                 case .connected, .connecting:
+                    state.showSettingsModal = false
                     return Effect(value: Action.api(.disconnect))
 
                 case .disconnected:
                     guard let url = URL(string: state.hostInput) else { return .none }
-                    return Effect(value: Action.api(.connect(url)))
+                    return .merge(
+                        Effect(value: Action.api(.connect(url))),
+                        Effect(value: Action.hideSettingsModal)
+                    )
                 }
             case .doneButtonTapped:
                 state.shared.host = state.hostInput

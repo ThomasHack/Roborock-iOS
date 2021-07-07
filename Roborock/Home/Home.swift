@@ -16,6 +16,7 @@ enum Home {
     
     enum Action {
         case connect
+        case connectButtonTapped
         case fetchSegments
         case startCleaning
         case stopCleaning
@@ -39,6 +40,18 @@ enum Home {
             case .connect:
                 let url = URL(string: "http://roborock/")
                 return Effect(value: Action.api(.connect(url!)))
+                
+            case .connectButtonTapped:
+                switch state.connectivityState {
+                case .connected, .connecting:
+                    state.showSettingsModal = false
+                    return Effect(value: Action.api(.disconnect))
+
+                case .disconnected:
+                    guard let url = URL(string: state.hostInput) else { return .none }
+                    state.showSettingsModal = false
+                    return Effect(value: Action.api(.connect(url)))
+                }
 
             case .fetchSegments:
                 return Effect(value: Action.api(.fetchSegments))
