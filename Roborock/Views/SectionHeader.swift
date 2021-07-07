@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SectionHeader: View {
 
-    var text: LocalizedStringKey
+    var text: String
 
     var body: some View {
         Text(text)

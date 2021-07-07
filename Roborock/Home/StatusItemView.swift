@@ -47,7 +47,7 @@ struct StatusItemView: View {
                     }
                     .fixedSize(horizontal: true, vertical: false)
 
-                    Text(LocalizedStringKey(label))
+                    Text(label)
                         .font(.system(size: 12, weight: .regular, design: .default))
                         .foregroundColor(Color(.label))
                         .fixedSize(horizontal: true, vertical: false)

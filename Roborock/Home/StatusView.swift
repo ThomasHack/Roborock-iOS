@@ -15,17 +15,17 @@ struct StatusView: View {
         WithViewStore(self.store) { viewStore in
             HStack(spacing: 0) {
                 StatusItemView(iconName: viewStore.batteryIcon,
-                               label: "home.battery",
+                               label: "Battery",
                                unit: "%",
                                value: viewStore.binding(get: { $0.api.battery }, send: Home.Action.none))
 
                 StatusItemView(iconName: "stopwatch",
-                               label: "home.cleanTime",
+                               label: "Clean Time",
                                unit: "min",
                                value: viewStore.binding(get: { $0.api.cleanTime }, send: Home.Action.none))
 
                 StatusItemView(iconName: "square.dashed",
-                               label: "home.cleanArea",
+                               label: "Clean Area",
                                unit: "qm",
                                value: viewStore.binding(get: { $0.api.cleanArea }, send: Home.Action.none))
             }

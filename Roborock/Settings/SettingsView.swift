@@ -16,9 +16,9 @@ struct SettingsView: View {
             NavigationView {
                 VStack {
                     List {
-                        Section(header: Text(LocalizedStringKey("settings.host"))) {
+                        Section(header: Text("Host")) {
                             VStack(alignment: .leading) {
-                                SectionHeader(text: LocalizedStringKey("settings.host"))
+                                SectionHeader(text: "Host")
                                 TextField("ws://roborock.home",
                                           text: viewStore.binding(
                                             get: { $0.hostInput },
@@ -36,9 +36,9 @@ struct SettingsView: View {
                             HStack(alignment: .center) {
                                 Spacer()
                                 if viewStore.api.connectivityState == .disconnected {
-                                    Text("api.connect")
+                                    Text("Connect")
                                 } else {
-                                    Text("api.disconnect")
+                                    Text("Disconnect")
                                         .foregroundColor(.red)
                                 }
                                 Spacer()
@@ -46,7 +46,7 @@ struct SettingsView: View {
                         }
                     }
                 }
-                .navigationBarTitle(Text("settings.title"), displayMode: .large)
+                .navigationBarTitle(Text("Settings"), displayMode: .large)
                 .background(Color(.systemBackground))
                 .edgesIgnoringSafeArea(.all)
                 .padding([.top], 10)
@@ -56,7 +56,7 @@ struct SettingsView: View {
                     Button(action: {
                         viewStore.send(.doneButtonTapped)
                     }) {
-                        Text("done")
+                        Text("Done")
                             .font(.system(size: 17, weight: .bold))
                     }
                 }
