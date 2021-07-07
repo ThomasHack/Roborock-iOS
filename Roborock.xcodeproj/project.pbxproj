@@ -24,6 +24,7 @@
 		5275B1642649919D008B4DC7 /* SwiftUIVisualEffects in Frameworks */ = {isa = PBXBuildFile; productRef = 5275B1632649919D008B4DC7 /* SwiftUIVisualEffects */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
 		52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */; };
+		52AD4DAA2695D2C700D5C839 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52AD4DAC2695D2C700D5C839 /* Localizable.strings */; };
 		52DBCBA626946C0300D25CC6 /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA526946C0300D25CC6 /* UIColor+Custom.swift */; };
 		52DBCBA82694B1AB00D25CC6 /* String+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA72694B1AB00D25CC6 /* String+Size.swift */; };
 		52DBCBAA2694BA7600D25CC6 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA92694BA7600D25CC6 /* Shared.swift */; };
@@ -83,6 +84,8 @@
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+PixelData.swift"; sourceTree = "<group>"; };
+		52AD4DAB2695D2C700D5C839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		52AD4DAD2695D2D200D5C839 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52DBCBA526946C0300D25CC6 /* UIColor+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Custom.swift"; sourceTree = "<group>"; };
 		52DBCBA72694B1AB00D25CC6 /* String+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Size.swift"; sourceTree = "<group>"; };
 		52DBCBA92694BA7600D25CC6 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
@@ -193,6 +196,13 @@
 			path = Rest;
 			sourceTree = "<group>";
 		};
+		52AD4DAE2695D34A00D5C839 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		52DBCBAB2694BBDA00D25CC6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,6 +255,7 @@
 		6542893A2646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXGroup;
 			children = (
+				52AD4DAE2695D34A00D5C839 /* New Group */,
 				6542894D2646C1CF009B8BE5 /* Api */,
 				6542893F2646B78C009B8BE5 /* Assets.xcassets */,
 				52F12B9D268A2D4400C5494E /* Helper */,
@@ -256,6 +267,7 @@
 				522336C9269351B300748AFD /* RRFileParser */,
 				52DBCBAB2694BBDA00D25CC6 /* Settings */,
 				52046F2126494BF100E1C041 /* Views */,
+				52AD4DAC2695D2C700D5C839 /* Localizable.strings */,
 			);
 			path = Roborock;
 			sourceTree = "<group>";
@@ -361,6 +373,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 6542892F2646B78B009B8BE5;
 			packageReferences = (
@@ -384,6 +397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				654289432646B78C009B8BE5 /* Preview Assets.xcassets in Resources */,
+				52AD4DAA2695D2C700D5C839 /* Localizable.strings in Resources */,
 				654289402646B78C009B8BE5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -449,11 +463,24 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		52AD4DAC2695D2C700D5C839 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				52AD4DAB2695D2C700D5C839 /* en */,
+				52AD4DAD2695D2D200D5C839 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		654289452646B78C009B8BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -515,6 +542,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
