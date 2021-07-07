@@ -39,12 +39,15 @@ struct HomeView: View {
                             }
 
                             HStack {
-                                Text("Status:")
+                                Text("home.status")
                                     .font(.system(size: 16, weight: .light, design: .default))
-                                Text(viewStore.api.status?.stateHumanReadable ?? (viewStore.api.connectivityState == .connected ? "Connected" : "Disconnected"))
-                                    .font(.system(.headline))
+                                if let state = viewStore.api.status?.stateHumanReadable {
+                                    Text(state)
+                                } else {
+                                    Text(viewStore.api.connectivityState == .connected ? LocalizedStringKey("api.connected") : LocalizedStringKey("api.disconnected"))
+                                        .font(.system(.headline))
+                                }
                                 Spacer()
-
                             }
                         }
                         .padding(.bottom, 32)
@@ -72,17 +75,17 @@ struct HomeView: View {
             .sheet(isPresented: viewStore.binding(get: { $0.presentRoomSelection }, send: Home.Action.toggleRoomSelection)){
                 NavigationView {
                     SegmentList(store: store)
-                        .navigationBarTitle("Select Room", displayMode: .large)
+                        .navigationBarTitle("home.selectRoom", displayMode: .large)
                         .navigationBarItems(leading: HStack {
                             Button(action: { viewStore.send(.toggleRoomSelection(false))}) {
-                                Text("Cancel")
+                                Text("cancel")
                             }
                         }, trailing: HStack {
                             Button(action: {
                                 viewStore.send(.startCleaning)
                                 viewStore.send(.toggleRoomSelection(false))
                             }) {
-                                Text("Start")
+                                Text("start")
                             }
                         })
                 }

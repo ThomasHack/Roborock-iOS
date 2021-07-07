@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  Roborock
+
+  Created by Hack, Thomas on 07.07.21.
+  
+*/
+
+"cancel" = "Abbrechen";
+"start" = "Start";
+"done" = "Done";
+"home.status" = "Status";
+"api.connected" = "Connected";
+"api.disconnected" = "Disconnected";
+"api.connect" = "Connect";
+"api.disconnect" = "Disconnect";
+"home.battery" = "Battery";
+"home.cleanTime" = "Clean Time";
+"home.cleanArea" = "Clean Area";
+"home.selectRoom" = "Select Room";
+"settings.title" = "Settings";
+"settings.host" = "Host";
