@@ -621,7 +621,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Roborock/Info.plist;
+				INFOPLIST_FILE = "Roborock/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -645,7 +645,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Roborock/Info.plist;
+				INFOPLIST_FILE = "Roborock/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
