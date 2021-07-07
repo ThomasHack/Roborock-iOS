@@ -13,7 +13,7 @@ struct SectionHeader: View {
     var text: String
 
     var body: some View {
-        Text(text)
+        Text(LocalizedStringKey(text))
         .foregroundColor(Color(UIColor.label))
         .font(.system(size: 16.0, weight: .semibold))
     }

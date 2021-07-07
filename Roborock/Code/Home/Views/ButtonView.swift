@@ -88,9 +88,9 @@ struct ButtonView: View {
                         HStack(alignment: .center) {
                             Spacer()
                             if viewStore.api.connectivityState == .disconnected {
-                                Text("Connect")
+                                Text("api.connect")
                             } else {
-                                Text("Disconnect")
+                                Text("api.disconnect")
                                     .foregroundColor(.red)
                             }
                             Spacer()

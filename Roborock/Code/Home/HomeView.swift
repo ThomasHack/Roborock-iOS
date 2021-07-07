@@ -15,7 +15,7 @@ struct HomeView: View {
         WithViewStore(self.store) { viewStore in
             VStack(spacing: 0) {
                 
-                if viewStore.shared.host == nil {
+                if (viewStore.shared.host ?? "").isEmpty {
                     NotConnectedView(store: store)
                 } else {
                     VStack(spacing: 0) {

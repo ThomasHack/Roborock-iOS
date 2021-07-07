@@ -16,7 +16,7 @@ struct NotConnectedView: View {
             VStack(alignment: .center, spacing: 8) {
                 HStack() {
                     Image(systemName: "bolt.slash.fill")
-                    Text("Not Connected")
+                    Text("api.disconnected")
                 }.foregroundColor(.secondary)
                 Button(action: {
                     if viewStore.shared.host != nil {
@@ -25,7 +25,7 @@ struct NotConnectedView: View {
                         viewStore.send(.settingsButtonTapped)
                     }
                 }) {
-                    Text(viewStore.shared.host != nil ? "Connect" : "Set Host")
+                    Text((viewStore.shared.host ?? "").isEmpty ? "home.setHost" : "api.connect")
                 }
             }
         }

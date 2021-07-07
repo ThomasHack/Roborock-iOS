@@ -234,6 +234,20 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		5249E9832695D8440095828E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5275B169264999D1008B4DC7 /* ButtonView.swift */,
+				5249E97D2695D6930095828E /* HeaderView.swift */,
+				5275B16D2649A05B008B4DC7 /* MapView.swift */,
+				5249E97F2695D6ED0095828E /* NotConnectedView.swift */,
+				6542896B264725F1009B8BE5 /* SegmentList.swift */,
+				52046F2226494C0000E1C041 /* StatusItemView.swift */,
+				5275B16526499263008B4DC7 /* StatusView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		52DBCBAB2694BBDA00D25CC6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,17 +330,11 @@
 		654289562646C402009B8BE5 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				5275B169264999D1008B4DC7 /* ButtonView.swift */,
+				5249E9832695D8440095828E /* Views */,
 				654289572646C40F009B8BE5 /* Home.swift */,
 				654289652646E6DF009B8BE5 /* Home+HomeFeature.swift */,
 				654289632646E631009B8BE5 /* HomeView.swift */,
-				5275B16D2649A05B008B4DC7 /* MapView.swift */,
-				6542896B264725F1009B8BE5 /* SegmentList.swift */,
 				5249E9812695D7C00095828E /* RoomSelectionView.swift */,
-				52046F2226494C0000E1C041 /* StatusItemView.swift */,
-				5249E97D2695D6930095828E /* HeaderView.swift */,
-				5249E97F2695D6ED0095828E /* NotConnectedView.swift */,
-				5275B16526499263008B4DC7 /* StatusView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";

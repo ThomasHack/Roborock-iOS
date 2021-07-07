@@ -18,5 +18,6 @@
 "home.cleanTime" = "Zeit";
 "home.cleanArea" = "Fläche";
 "home.selectRoom" = "Raum wählen";
+"home.setHost" = "Host eingeben";
 "settings.title" = "Einstellungen";
 "settings.host" = "Host";

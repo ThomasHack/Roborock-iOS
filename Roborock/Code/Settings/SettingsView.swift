@@ -16,9 +16,9 @@ struct SettingsView: View {
             NavigationView {
                 VStack {
                     List {
-                        Section(header: Text("Host")) {
+                        Section(header: Text("settings.host")) {
                             VStack(alignment: .leading) {
-                                SectionHeader(text: "Host")
+                                SectionHeader(text: "settings.host")
                                 TextField("ws://roborock.home",
                                           text: viewStore.binding(
                                             get: { $0.hostInput },
@@ -36,9 +36,9 @@ struct SettingsView: View {
                             HStack(alignment: .center) {
                                 Spacer()
                                 if viewStore.api.connectivityState == .disconnected {
-                                    Text("Connect")
+                                    Text("api.connect")
                                 } else {
-                                    Text("Disconnect")
+                                    Text("api.disconnect")
                                         .foregroundColor(.red)
                                 }
                                 Spacer()
@@ -46,7 +46,7 @@ struct SettingsView: View {
                         }
                     }
                 }
-                .navigationBarTitle(Text("Settings"), displayMode: .large)
+                .navigationBarTitle(Text("settings.title"), displayMode: .large)
                 .background(Color(.systemBackground))
                 .edgesIgnoringSafeArea(.all)
                 .padding([.top], 10)
@@ -56,7 +56,7 @@ struct SettingsView: View {
                     Button(action: {
                         viewStore.send(.doneButtonTapped)
                     }) {
-                        Text("Done")
+                        Text("done")
                             .font(.system(size: 17, weight: .bold))
                     }
                 }

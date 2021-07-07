@@ -15,17 +15,17 @@ struct RoomSelectionView: View {
         WithViewStore(self.store) { viewStore in
             NavigationView {
                 SegmentList(store: store)
-                    .navigationBarTitle("Select Room", displayMode: .large)
+                    .navigationBarTitle("home.selectRoom", displayMode: .large)
                     .navigationBarItems(leading: HStack {
                         Button(action: { viewStore.send(.toggleRoomSelection(false))}) {
-                            Text("Cancel")
+                            Text("cancel")
                         }
                     }, trailing: HStack {
                         Button(action: {
                             viewStore.send(.startCleaning)
                             viewStore.send(.toggleRoomSelection(false))
                         }) {
-                            Text("Start")
+                            Text("start")
                         }
                     })
             }
