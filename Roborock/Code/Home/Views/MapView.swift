@@ -32,15 +32,15 @@ struct MapView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
 
-                            Image(uiImage: segmentLabelsImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-
                             Image(uiImage: chargerImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
 
                             Image(uiImage: pathImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+
+                            Image(uiImage: segmentLabelsImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
 

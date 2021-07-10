@@ -18,6 +18,10 @@
 		5249E97E2695D6930095828E /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E97D2695D6930095828E /* HeaderView.swift */; };
 		5249E9802695D6ED0095828E /* NotConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E97F2695D6ED0095828E /* NotConnectedView.swift */; };
 		5249E9822695D7C00095828E /* RoomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9812695D7C00095828E /* RoomSelectionView.swift */; };
+		5249E9A526970BD00095828E /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5249E9A426970BD00095828E /* Intents.framework */; };
+		5249E9A826970BD00095828E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9A726970BD00095828E /* IntentHandler.swift */; };
+		5249E9BC26970BD10095828E /* StartCleaning.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5249E9A326970BD00095828E /* StartCleaning.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5249E9C626970CD50095828E /* CleanRoomIntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */; };
 		525079D0268F7BD8000F7095 /* ForbiddenZones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079CF268F7BD8000F7095 /* ForbiddenZones.swift */; };
 		525079D2268F82E6000F7095 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D1268F82E6000F7095 /* UIColor+Hex.swift */; };
 		525079D4268F82ED000F7095 /* UIImage+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D3268F82ED000F7095 /* UIImage+Rotate.swift */; };
@@ -26,6 +30,8 @@
 		5264819C268DE7770061D2FB /* Blocktype.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264819B268DE7770061D2FB /* Blocktype.swift */; };
 		5275B1642649919D008B4DC7 /* SwiftUIVisualEffects in Frameworks */ = {isa = PBXBuildFile; productRef = 5275B1632649919D008B4DC7 /* SwiftUIVisualEffects */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
+		5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
+		5297E3A82698956E00680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
 		52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */; };
 		52AD4DAA2695D2C700D5C839 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52AD4DAC2695D2C700D5C839 /* Localizable.strings */; };
 		52DBCBA626946C0300D25CC6 /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA526946C0300D25CC6 /* UIColor+Custom.swift */; };
@@ -68,6 +74,30 @@
 		65B531D3268CF463005F9036 /* Pixel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B531D2268CF463005F9036 /* Pixel.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5249E9BA26970BD10095828E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 654289302646B78B009B8BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5249E9A226970BD00095828E;
+			remoteInfo = StartCleaning;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5249E99E2696E7A70095828E /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5249E9BC26970BD10095828E /* StartCleaning.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		52046F2226494C0000E1C041 /* StatusItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemView.swift; sourceTree = "<group>"; };
 		52046F2526494DA100E1C041 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
@@ -80,6 +110,16 @@
 		5249E97D2695D6930095828E /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		5249E97F2695D6ED0095828E /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
 		5249E9812695D7C00095828E /* RoomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSelectionView.swift; sourceTree = "<group>"; };
+		5249E984269609FA0095828E /* Roborock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Roborock.entitlements; sourceTree = "<group>"; };
+		5249E98F2696E7A70095828E /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		5249E9A326970BD00095828E /* StartCleaning.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StartCleaning.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5249E9A426970BD00095828E /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		5249E9A726970BD00095828E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		5249E9A926970BD00095828E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5249E9B126970BD10095828E /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
+		5249E9B426970BD10095828E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		5249E9B626970BD10095828E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanRoomIntentHandler.swift; sourceTree = "<group>"; };
 		525079CF268F7BD8000F7095 /* ForbiddenZones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForbiddenZones.swift; sourceTree = "<group>"; };
 		525079D1268F82E6000F7095 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		525079D3268F82ED000F7095 /* UIImage+Rotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotate.swift"; sourceTree = "<group>"; };
@@ -89,6 +129,8 @@
 		5275B16526499263008B4DC7 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		5297E3A42698949300680D9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Intents.intentdefinition; sourceTree = "<group>"; };
+		5297E3A72698949B00680D9A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
 		52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+PixelData.swift"; sourceTree = "<group>"; };
 		52AD4DAB2695D2C700D5C839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52AD4DAD2695D2D200D5C839 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -130,6 +172,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5249E9A026970BD00095828E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5249E9A526970BD00095828E /* Intents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		654289352646B78B009B8BE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -248,6 +298,35 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		5249E98E2696E7A70095828E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5249E98F2696E7A70095828E /* IntentsUI.framework */,
+				5249E9A426970BD00095828E /* Intents.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5249E9A626970BD00095828E /* StartCleaning */ = {
+			isa = PBXGroup;
+			children = (
+				5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */,
+				5249E9A926970BD00095828E /* Info.plist */,
+				5249E9A726970BD00095828E /* IntentHandler.swift */,
+			);
+			path = StartCleaning;
+			sourceTree = "<group>";
+		};
+		5249E9B026970BD10095828E /* StartCleaningUI */ = {
+			isa = PBXGroup;
+			children = (
+				5249E9B126970BD10095828E /* IntentViewController.swift */,
+				5249E9B326970BD10095828E /* MainInterface.storyboard */,
+				5249E9B626970BD10095828E /* Info.plist */,
+			);
+			path = StartCleaningUI;
+			sourceTree = "<group>";
+		};
 		52DBCBAB2694BBDA00D25CC6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,6 +364,9 @@
 			isa = PBXGroup;
 			children = (
 				6542893A2646B78B009B8BE5 /* Roborock */,
+				5249E9A626970BD00095828E /* StartCleaning */,
+				5249E9B026970BD10095828E /* StartCleaningUI */,
+				5249E98E2696E7A70095828E /* Frameworks */,
 				654289392646B78B009B8BE5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -293,6 +375,7 @@
 			isa = PBXGroup;
 			children = (
 				654289382646B78B009B8BE5 /* Roborock.app */,
+				5249E9A326970BD00095828E /* StartCleaning.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -300,6 +383,8 @@
 		6542893A2646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXGroup;
 			children = (
+				5297E3A52698949300680D9A /* Intents.intentdefinition */,
+				5249E984269609FA0095828E /* Roborock.entitlements */,
 				5249E97B2695D55A0095828E /* Assets */,
 				5249E97A2695D5390095828E /* Code */,
 				654289412646B78C009B8BE5 /* Preview Content */,
@@ -362,6 +447,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5249E9A226970BD00095828E /* StartCleaning */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5249E9C026970BD10095828E /* Build configuration list for PBXNativeTarget "StartCleaning" */;
+			buildPhases = (
+				5249E99F26970BD00095828E /* Sources */,
+				5249E9A026970BD00095828E /* Frameworks */,
+				5249E9A126970BD00095828E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StartCleaning;
+			productName = StartCleaning;
+			productReference = 5249E9A326970BD00095828E /* StartCleaning.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		654289372646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 654289472646B78C009B8BE5 /* Build configuration list for PBXNativeTarget "Roborock" */;
@@ -369,10 +471,12 @@
 				654289342646B78B009B8BE5 /* Sources */,
 				654289352646B78B009B8BE5 /* Frameworks */,
 				654289362646B78B009B8BE5 /* Resources */,
+				5249E99E2696E7A70095828E /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5249E9BB26970BD10095828E /* PBXTargetDependency */,
 			);
 			name = Roborock;
 			packageProductDependencies = (
@@ -391,9 +495,12 @@
 		654289302646B78B009B8BE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
+					5249E9A226970BD00095828E = {
+						CreatedOnToolsVersion = 13.0;
+					};
 					654289372646B78B009B8BE5 = {
 						CreatedOnToolsVersion = 12.5;
 					};
@@ -420,11 +527,19 @@
 			projectRoot = "";
 			targets = (
 				654289372646B78B009B8BE5 /* Roborock */,
+				5249E9A226970BD00095828E /* StartCleaning */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5249E9A126970BD00095828E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		654289362646B78B009B8BE5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -438,6 +553,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5249E99F26970BD00095828E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5297E3A82698956E00680D9A /* Intents.intentdefinition in Sources */,
+				5249E9A826970BD00095828E /* IntentHandler.swift in Sources */,
+				5249E9C626970CD50095828E /* CleanRoomIntentHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		654289342646B78B009B8BE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -454,6 +579,7 @@
 				6510E8DF2688AD02001E9230 /* ButtonView.swift in Sources */,
 				5211E4E4268B3E680043F55F /* ImageData.swift in Sources */,
 				652FA920264D2EE1007C67F6 /* ApiWebSocketClient.swift in Sources */,
+				5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */,
 				65B531D3268CF463005F9036 /* Pixel.swift in Sources */,
 				6542896A2646EE53009B8BE5 /* Segment.swift in Sources */,
 				652FA91A264D2CC6007C67F6 /* ApiWebSocketDelegate.swift in Sources */,
@@ -499,7 +625,32 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5249E9BB26970BD10095828E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5249E9A226970BD00095828E /* StartCleaning */;
+			targetProxy = 5249E9BA26970BD10095828E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		5249E9B326970BD10095828E /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5249E9B426970BD10095828E /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		5297E3A52698949300680D9A /* Intents.intentdefinition */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5297E3A42698949300680D9A /* Base */,
+				5297E3A72698949B00680D9A /* de */,
+			);
+			name = Intents.intentdefinition;
+			sourceTree = "<group>";
+		};
 		52AD4DAC2695D2C700D5C839 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -512,6 +663,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5249E9C126970BD10095828E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N9C9UAVR87;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StartCleaning/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StartCleaning;
+				INFOPLIST_KEY_CFBundleExecutable = StartCleaning;
+				INFOPLIST_KEY_CFBundleName = StartCleaning;
+				INFOPLIST_KEY_CFBundleVersion = 20210706;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.StartCleaning;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5249E9C226970BD10095828E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N9C9UAVR87;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StartCleaning/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StartCleaning;
+				INFOPLIST_KEY_CFBundleExecutable = StartCleaning;
+				INFOPLIST_KEY_CFBundleName = StartCleaning;
+				INFOPLIST_KEY_CFBundleVersion = 20210706;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.StartCleaning;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		654289452646B78C009B8BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -633,9 +842,11 @@
 		654289482646B78C009B8BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Roborock/Roborock.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
@@ -657,9 +868,11 @@
 		654289492646B78C009B8BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Roborock/Roborock.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
@@ -681,6 +894,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5249E9C026970BD10095828E /* Build configuration list for PBXNativeTarget "StartCleaning" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5249E9C126970BD10095828E /* Debug */,
+				5249E9C226970BD10095828E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		654289332646B78B009B8BE5 /* Build configuration list for PBXProject "Roborock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

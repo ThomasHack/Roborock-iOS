@@ -21,3 +21,7 @@
 "home.setHost" = "Host eingeben";
 "settings.title" = "Einstellungen";
 "settings.host" = "Host";
+
+"roborock.state.Charging" = "Lädt";
+"roborock.state.Idle" = "Standby";
+"roborock.state.Rooms cleaning" = "Reinigung";
