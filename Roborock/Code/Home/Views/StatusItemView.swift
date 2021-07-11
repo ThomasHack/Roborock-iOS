@@ -27,7 +27,7 @@ struct StatusItemView: View {
                     Image(systemName: iconName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .foregroundColor(Color("blue"))
+                        .foregroundColor(Color("primary"))
                 }
                 .frame(width: 36, height: 36)
                 .padding(.top, 16)
@@ -39,11 +39,11 @@ struct StatusItemView: View {
                     HStack(alignment: .lastTextBaseline, spacing: 2) {
                         Text(value)
                             .font(.system(size: 18, weight: .bold, design: .default))
-                            .foregroundColor(Color("blue"))
+                            .foregroundColor(Color("primary"))
                             .fixedSize(horizontal: true, vertical: false)
                         Text(unit)
                             .font(.system(size: 14, weight: .bold, design: .default))
-                            .foregroundColor(Color("blue"))
+                            .foregroundColor(Color("primary"))
                     }
                     .fixedSize(horizontal: true, vertical: false)
 

@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct MapView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
-    let gradient = Gradient(colors: [Color(red: 0.2, green: 0.6314, blue: 0.9608), Color(red: 0.0157, green: 0.4235, blue: 0.8314)])
+    let gradient = Gradient(colors: [Color("blue-light"), Color("blue-dark")])
     
     var body: some View {
         WithViewStore(self.store) { viewStore in

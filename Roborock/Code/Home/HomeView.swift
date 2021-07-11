@@ -37,7 +37,7 @@ struct HomeView: View {
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(15)
                     }
-                    .background(Color("blue"))
+                    .background(Color("blue-dark"))
                 }
             }
             .edgesIgnoringSafeArea(.vertical)

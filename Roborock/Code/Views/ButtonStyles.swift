@@ -13,7 +13,7 @@ struct PrimaryButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Self.Configuration) -> some View {
         let foregroundColor = isEnabled ? Color(.systemBackground) : Color(.tertiaryLabel)
-        let backgroundColor = isEnabled ? Color("blue") : Color(.tertiarySystemBackground)
+        let backgroundColor = isEnabled ? Color("primary") : Color(.tertiarySystemBackground)
 
         return configuration.label
             .padding(24)
@@ -27,7 +27,7 @@ struct SecondaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        let foregroundColor = isEnabled ? Color("blue") : Color(.tertiaryLabel)
+        let foregroundColor = isEnabled ? Color("primary") : Color(.tertiaryLabel)
         let backgroundColor = isEnabled ? Color(.systemBackground) : Color(.tertiarySystemBackground)
 
         return configuration.label
