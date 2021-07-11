@@ -34,7 +34,7 @@ struct HeaderView: View {
                 HStack {
                     Text("home.status")
                         .font(.system(size: 16, weight: .light, design: .default))
-                    if let state = viewStore.api.status?.stateHumanReadable {
+                    if let state = viewStore.api.status?.state {
                         Text(LocalizedStringKey(String("roborock.state.\(state)")))
                     } else {
                         Text(viewStore.api.connectivityState == .connected ? "api.connected" : "api.disconnected")

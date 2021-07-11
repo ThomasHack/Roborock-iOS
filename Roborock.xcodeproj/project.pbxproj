@@ -279,7 +279,9 @@
 			isa = PBXGroup;
 			children = (
 				654289442646B78C009B8BE5 /* Info.plist */,
+				5297E3A52698949300680D9A /* Intents.intentdefinition */,
 				52AD4DAC2695D2C700D5C839 /* Localizable.strings */,
+				5249E984269609FA0095828E /* Roborock.entitlements */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -383,8 +385,6 @@
 		6542893A2646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXGroup;
 			children = (
-				5297E3A52698949300680D9A /* Intents.intentdefinition */,
-				5249E984269609FA0095828E /* Roborock.entitlements */,
 				5249E97B2695D55A0095828E /* Assets */,
 				5249E97A2695D5390095828E /* Code */,
 				654289412646B78C009B8BE5 /* Preview Content */,
@@ -846,7 +846,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = Roborock/Roborock.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Roborock/Supporting Files/Roborock.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
@@ -872,7 +872,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = Roborock/Roborock.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Roborock/Supporting Files/Roborock.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";

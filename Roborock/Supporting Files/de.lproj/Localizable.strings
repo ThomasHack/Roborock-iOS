@@ -5,23 +5,46 @@
   Created by Hack, Thomas on 07.07.21.
 
 */
-
+// General
 "cancel" = "Abbrechen";
 "start" = "Starten";
 "done" = "Fertig";
-"home.status" = "Status";
+
+// API
 "api.connected" = "Verbunden";
 "api.disconnected" = "Nicht verbunden";
 "api.connect" = "Verbinden";
 "api.disconnect" = "Trennen";
+
+// Home
+"home.status" = "Status";
 "home.battery" = "Ladezustand";
 "home.cleanTime" = "Zeit";
 "home.cleanArea" = "Fläche";
 "home.selectRoom" = "Raum wählen";
 "home.setHost" = "Host eingeben";
+
+// Settings
 "settings.title" = "Einstellungen";
 "settings.host" = "Host";
 
-"roborock.state.Charging" = "Lädt";
-"roborock.state.Idle" = "Standby";
-"roborock.state.Rooms cleaning" = "Reinigung";
+// Roborock vaccum state
+"roborock.state.0" = "Verbinde...";
+"roborock.state.1" = "Starte";
+"roborock.state.2" = "Ladegerät nicht angeschlossen";
+"roborock.state.3" = "Leerlauf";
+"roborock.state.4" = "Fernbedienung aktiv";
+"roborock.state.5" = "Reinigung";
+"roborock.state.6" = "Rückkehr zur Station";
+"roborock.state.7" = "Manueller Modus";
+"roborock.state.8" = "Lädt";
+"roborock.state.9" = "Ladeproblem";
+"roborock.state.10" = "Pausiert";
+"roborock.state.11" = "Spotreinigung";
+"roborock.state.12" = "Fehler";
+"roborock.state.13" = "Herunterfahren";
+"roborock.state.14" = "Aktualisierung";
+"roborock.state.15" = "Ankopplung";
+"roborock.state.16" = "Zum Ziel gehen";
+"roborock.state.17" = "Zonenreinigung";
+"roborock.state.18" = "Zimmerreinigung";
