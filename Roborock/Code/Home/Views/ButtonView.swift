@@ -94,23 +94,26 @@ struct ButtonView: View {
                         .clipShape(Circle())
                     }
                 } else {
-                    Button {
-                        viewStore.send(.connectButtonTapped)
-                    } label: {
-                        HStack(alignment: .center) {
-                            Spacer()
-                            if viewStore.api.connectivityState == .disconnected {
-                                Text("api.connect")
-                            } else {
-                                Text("api.disconnect")
-                                    .foregroundColor(.red)
+                    VStack {
+                        Button {
+                            viewStore.send(.connectButtonTapped)
+                        } label: {
+                            HStack(alignment: .center) {
+                                Spacer()
+                                if viewStore.api.connectivityState == .disconnected {
+                                    Text("api.connect")
+                                } else {
+                                    Text("api.disconnect")
+                                        .foregroundColor(.red)
+                                }
+                                Spacer()
                             }
-                            Spacer()
+                            .padding()
+                            .background(Color(.systemBackground))
+                            .cornerRadius(15)
                         }
-                        .padding()
-                        .background(Color(.systemBackground))
-                        .cornerRadius(15)
                     }
+                    .padding(8)
                 }
             }
         }
