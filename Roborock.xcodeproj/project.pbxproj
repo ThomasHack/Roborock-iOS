@@ -156,9 +156,6 @@
 		5249E9A426970BD00095828E /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		5249E9A726970BD00095828E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		5249E9A926970BD00095828E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5249E9B126970BD10095828E /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
-		5249E9B426970BD10095828E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		5249E9B626970BD10095828E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanRoomIntentHandler.swift; sourceTree = "<group>"; };
 		525079CF268F7BD8000F7095 /* ForbiddenZones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForbiddenZones.swift; sourceTree = "<group>"; };
 		525079D1268F82E6000F7095 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
@@ -361,16 +358,6 @@
 			path = StartCleaning;
 			sourceTree = "<group>";
 		};
-		5249E9B026970BD10095828E /* StartCleaningUI */ = {
-			isa = PBXGroup;
-			children = (
-				5249E9B126970BD10095828E /* IntentViewController.swift */,
-				5249E9B326970BD10095828E /* MainInterface.storyboard */,
-				5249E9B626970BD10095828E /* Info.plist */,
-			);
-			path = StartCleaningUI;
-			sourceTree = "<group>";
-		};
 		52D1BA7F269C574800219230 /* RoborockApi */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,7 +407,6 @@
 			children = (
 				6542893A2646B78B009B8BE5 /* Roborock */,
 				5249E9A626970BD00095828E /* StartCleaning */,
-				5249E9B026970BD10095828E /* StartCleaningUI */,
 				52D1BA7F269C574800219230 /* RoborockApi */,
 				5249E98E2696E7A70095828E /* Frameworks */,
 				654289392646B78B009B8BE5 /* Products */,
@@ -749,14 +735,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		5249E9B326970BD10095828E /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5249E9B426970BD10095828E /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
 		5297E3A52698949300680D9A /* Intents.intentdefinition */ = {
 			isa = PBXVariantGroup;
 			children = (
