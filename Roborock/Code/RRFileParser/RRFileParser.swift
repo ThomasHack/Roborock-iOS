@@ -9,6 +9,7 @@ import UIKit
 import Combine
 import Gzip
 import SwiftUI
+import RoborockApi
 
 enum ParsingError: Error {
     case gzipError

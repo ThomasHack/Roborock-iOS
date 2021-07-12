@@ -9,6 +9,7 @@ import Foundation
 import ComposableArchitecture
 import Combine
 import Network
+import RoborockApi
 import NWWebSocket
 
 private var dependencies: [AnyHashable: Dependencies] = [:]

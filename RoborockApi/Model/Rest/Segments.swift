@@ -7,30 +7,30 @@
 
 import Foundation
 
-struct Segment: Equatable, Decodable, Hashable {
-    let data: [SegmentValue]
+public struct Segments: Equatable, Decodable, Hashable {
+    public let data: [Segment]
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        data = try container.decode([SegmentValue].self)
+        data = try container.decode([Segment].self)
     }
     
-    init(segment: [SegmentValue]) {
+    public init(segment: [Segment]) {
         self.data = segment
     }
 }
 
-struct SegmentValue: Equatable, Decodable, Hashable {
-    let id: Int?
-    let name: String?
+public struct Segment: Equatable, Decodable, Hashable {
+    public let id: Int?
+    public let name: String?
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         self.id = try? container.decode(Int.self)
         self.name = try? container.decode(String.self)
     }
     
-    init(id: Int, name: String) {
+    public init(id: Int, name: String) {
         self.id = id
         self.name = name
     }

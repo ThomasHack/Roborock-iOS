@@ -3,41 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>INEnums</key>
-	<array>
-		<dict>
-			<key>INEnumDisplayName</key>
-			<string>Room</string>
-			<key>INEnumDisplayNameID</key>
-			<string>hhSGfb</string>
-			<key>INEnumGeneratesHeader</key>
-			<true/>
-			<key>INEnumName</key>
-			<string>Room</string>
-			<key>INEnumType</key>
-			<string>Regular</string>
-			<key>INEnumValues</key>
-			<array>
-				<dict>
-					<key>INEnumValueDisplayName</key>
-					<string>unknown</string>
-					<key>INEnumValueDisplayNameID</key>
-					<string>lAg24U</string>
-					<key>INEnumValueName</key>
-					<string>unknown</string>
-				</dict>
-				<dict>
-					<key>INEnumValueDisplayName</key>
-					<string>wohnzimmer</string>
-					<key>INEnumValueDisplayNameID</key>
-					<string>nkGbWV</string>
-					<key>INEnumValueIndex</key>
-					<integer>1</integer>
-					<key>INEnumValueName</key>
-					<string>wohnzimmer</string>
-				</dict>
-			</array>
-		</dict>
-	</array>
+	<array/>
 	<key>INIntentDefinitionModelVersion</key>
 	<string>1.2</string>
 	<key>INIntentDefinitionNamespace</key>
@@ -55,16 +21,16 @@
 			<string>generic</string>
 			<key>INIntentConfigurable</key>
 			<true/>
+			<key>INIntentDefaultImageName</key>
+			<string>robot</string>
 			<key>INIntentDescription</key>
-			<string>Start Cleaning a room.</string>
+			<string>Start Cleaning a room</string>
 			<key>INIntentDescriptionID</key>
 			<string>kufUyF</string>
-			<key>INIntentInput</key>
-			<string>rooms</string>
 			<key>INIntentKeyParameter</key>
 			<string>rooms</string>
 			<key>INIntentLastParameterTag</key>
-			<integer>8</integer>
+			<integer>9</integer>
 			<key>INIntentManagedParameterCombinations</key>
 			<dict>
 				<key>rooms</key>
@@ -72,7 +38,7 @@
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
 					<key>INIntentParameterCombinationTitle</key>
-					<string>Shortcuts summary</string>
+					<string>Start room cleaning with Roborock S5</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>BKfrBs</string>
 					<key>INIntentParameterCombinationUpdatesLinked</key>
@@ -86,13 +52,13 @@
 				<key>rooms</key>
 				<dict>
 					<key>INIntentParameterCombinationSubtitle</key>
-					<string>This will start a cleaning session.</string>
+					<string>Start room cleaning with Roborock your S5</string>
 					<key>INIntentParameterCombinationSubtitleID</key>
 					<string>WLRimO</string>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
 					<key>INIntentParameterCombinationTitle</key>
-					<string>Start cleaning a room!</string>
+					<string>Start room cleaning</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>ULG3x8</string>
 				</dict>
@@ -110,24 +76,17 @@
 					<string>fp0Nev</string>
 					<key>INIntentParameterDisplayPriority</key>
 					<integer>1</integer>
-					<key>INIntentParameterMetadata</key>
-					<dict>
-						<key>INIntentParameterMetadataCapitalization</key>
-						<string>Sentences</string>
-						<key>INIntentParameterMetadataDefaultValueID</key>
-						<string>YZVLii</string>
-					</dict>
 					<key>INIntentParameterName</key>
 					<string>rooms</string>
+					<key>INIntentParameterObjectType</key>
+					<string>Room</string>
+					<key>INIntentParameterObjectTypeNamespace</key>
+					<string>Bx3g8n</string>
 					<key>INIntentParameterPromptDialogs</key>
 					<array>
 						<dict>
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Which rooms should be cleaned?</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>xm5Wis</string>
 							<key>INIntentParameterPromptDialogType</key>
 							<string>Configuration</string>
 						</dict>
@@ -140,10 +99,6 @@
 						<dict>
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>There are ${count} options matching ‘${rooms}’.</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>JXyXCZ</string>
 							<key>INIntentParameterPromptDialogType</key>
 							<string>DisambiguationIntroduction</string>
 						</dict>
@@ -151,11 +106,21 @@
 							<key>INIntentParameterPromptDialogCustom</key>
 							<true/>
 							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Just to confirm, you wanted ‘${rooms}’?</string>
+							<string>Just to confirm, you wanted to clean ${rooms}?</string>
 							<key>INIntentParameterPromptDialogFormatStringID</key>
 							<string>UzzQEo</string>
 							<key>INIntentParameterPromptDialogType</key>
 							<string>Confirmation</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>Which room do you want to clean?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>bFSQGL</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>DisambiguationSelection</string>
 						</dict>
 					</array>
 					<key>INIntentParameterSupportsDynamicEnumeration</key>
@@ -165,9 +130,9 @@
 					<key>INIntentParameterSupportsResolution</key>
 					<true/>
 					<key>INIntentParameterTag</key>
-					<integer>8</integer>
+					<integer>9</integer>
 					<key>INIntentParameterType</key>
-					<string>String</string>
+					<string>Object</string>
 				</dict>
 			</array>
 			<key>INIntentResponse</key>
@@ -202,7 +167,9 @@
 					</dict>
 				</array>
 				<key>INIntentResponseLastParameterTag</key>
-				<integer>5</integer>
+				<integer>6</integer>
+				<key>INIntentResponseOutput</key>
+				<string>rooms</string>
 				<key>INIntentResponseParameters</key>
 				<array>
 					<dict>
@@ -214,12 +181,16 @@
 						<integer>1</integer>
 						<key>INIntentResponseParameterName</key>
 						<string>rooms</string>
+						<key>INIntentResponseParameterObjectType</key>
+						<string>Room</string>
+						<key>INIntentResponseParameterObjectTypeNamespace</key>
+						<string>Bx3g8n</string>
 						<key>INIntentResponseParameterSupportsMultipleValues</key>
 						<true/>
 						<key>INIntentResponseParameterTag</key>
-						<integer>5</integer>
+						<integer>6</integer>
 						<key>INIntentResponseParameterType</key>
-						<string>String</string>
+						<string>Object</string>
 					</dict>
 				</array>
 			</dict>
@@ -236,6 +207,70 @@
 		</dict>
 	</array>
 	<key>INTypes</key>
-	<array/>
+	<array>
+		<dict>
+			<key>INTypeDisplayName</key>
+			<string>Room</string>
+			<key>INTypeDisplayNameID</key>
+			<string>z64sx3</string>
+			<key>INTypeLastPropertyTag</key>
+			<integer>99</integer>
+			<key>INTypeName</key>
+			<string>Room</string>
+			<key>INTypeProperties</key>
+			<array>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>1</integer>
+					<key>INTypePropertyName</key>
+					<string>identifier</string>
+					<key>INTypePropertyTag</key>
+					<integer>1</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>2</integer>
+					<key>INTypePropertyName</key>
+					<string>displayString</string>
+					<key>INTypePropertyTag</key>
+					<integer>2</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>3</integer>
+					<key>INTypePropertyName</key>
+					<string>pronunciationHint</string>
+					<key>INTypePropertyTag</key>
+					<integer>3</integer>
+					<key>INTypePropertyType</key>
+					<string>String</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDefault</key>
+					<true/>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>4</integer>
+					<key>INTypePropertyName</key>
+					<string>alternativeSpeakableMatches</string>
+					<key>INTypePropertySupportsMultipleValues</key>
+					<true/>
+					<key>INTypePropertyTag</key>
+					<integer>4</integer>
+					<key>INTypePropertyType</key>
+					<string>SpeakableString</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

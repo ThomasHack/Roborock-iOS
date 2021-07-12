@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum VacuumState: Int {
+public enum VacuumState: Int {
     case unknown = 0
     case initiating = 1
     case sleeping = 2

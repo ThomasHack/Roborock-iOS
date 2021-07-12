@@ -8,9 +8,10 @@
 import SwiftUI
 import ComposableArchitecture
 import Combine
+import RoborockApi
 
 struct ApiRestClient {
-    var fetchSegments: (AnyHashable) -> Effect<Segment, Failure>
+    var fetchSegments: (AnyHashable) -> Effect<Segments, Failure>
     var startCleaningSegment: (AnyHashable, [Int]) -> Effect<Data, Failure>
     var stopCleaning: (AnyHashable) -> Effect<Data, Failure>
     var pauseCleaning: (AnyHashable) -> Effect<Data, Failure>
@@ -28,7 +29,7 @@ extension ApiRestClient {
             
             return URLSession.shared.dataTaskPublisher(for: url)
                 .map { data, _ in data }
-                .decode(type: Segment.self, decoder: jsonDecoder)
+                .decode(type: Segments.self, decoder: jsonDecoder)
                 .mapError { _ in Failure() }
                 .eraseToEffect()
         },

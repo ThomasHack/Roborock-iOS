@@ -8,7 +8,7 @@
 import Foundation
 
 extension MapData {
-    enum Blocktype: Int {
+    public enum Blocktype: Int {
         case chargerLocation = 1
         case image = 2
         case path = 3

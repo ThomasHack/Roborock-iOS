@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RoborockApi
 
 extension UIColor {
     var toPixel: MapData.Pixel {

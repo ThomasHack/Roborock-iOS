@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SegmentType: Int {
+public enum SegmentType: Int {
     case studio = 16
     case bath = 19
     case bedroom = 21
@@ -17,7 +17,7 @@ enum SegmentType: Int {
     case toilet = 20
     case supply = 18
 
-    var label: String {
+    public var label: String {
         switch self {
         case .studio:
             return "Studio"

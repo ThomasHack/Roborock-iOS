@@ -9,7 +9,15 @@ import Foundation
 import Intents
 
 class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {
-    private let availableRooms: [String] = ["Wohnzimmer", "Arbeitszimmer", "Schlafzimmer", "Badezimmer", "Flur", "Küche", "Vorrat", "Toilette"]
+    private let availableRooms: [Room] = [
+        Room(identifier: "16", display: "Arbeitszimmer"),
+        Room(identifier: "17", display: "Wohnzimmer"),
+        Room(identifier: "18", display: "Vorrat"),
+        Room(identifier: "19", display: "Badezimmer"),
+        Room(identifier: "21", display: "Schlafzimmer"),
+        Room(identifier: "22", display: "Flur"),
+        Room(identifier: "23", display: "Küche"),
+    ]
 
     func handle(intent: CleanRoomIntent, completion: @escaping (CleanRoomIntentResponse) -> Void) {
         guard let rooms = intent.rooms else {
@@ -19,26 +27,25 @@ class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {
         completion(CleanRoomIntentResponse.success(rooms: rooms))
     }
 
-    func resolveRooms(for intent: CleanRoomIntent, with completion: @escaping ([INStringResolutionResult]) -> Void) {
+    func resolveRooms(for intent: CleanRoomIntent, with completion: @escaping ([RoomResolutionResult]) -> Void) {
         guard let rooms = intent.rooms else {
-            completion([INStringResolutionResult.needsValue()])
+            completion([RoomResolutionResult.needsValue()])
             return
         }
 
-        var result: [INStringResolutionResult] = []
+        var result: [RoomResolutionResult] = []
 
         for room in rooms {
             if !availableRooms.contains(room) {
-                result.append(INStringResolutionResult.needsValue())
+                result.append(RoomResolutionResult.needsValue())
             } else {
-                result.append(INStringResolutionResult.success(with: room))
+                result.append(RoomResolutionResult.success(with: room))
             }
         }
         completion(result)
-
     }
 
-    func provideRoomsOptionsCollection(for intent: CleanRoomIntent, with completion: @escaping (INObjectCollection<NSString>?, Error?) -> Void) {
-        completion(INObjectCollection(items: availableRooms.map { NSString(string: $0) }), nil)
+    func provideRoomsOptionsCollection(for intent: CleanRoomIntent, with completion: @escaping (INObjectCollection<Room>?, Error?) -> Void) {
+        completion(INObjectCollection(items: availableRooms), nil)
     }
 }

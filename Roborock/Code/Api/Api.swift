@@ -7,6 +7,7 @@
 
 import UIKit
 import ComposableArchitecture
+import RoborockApi
 
 struct ApiId: Hashable {}
 
@@ -20,7 +21,7 @@ enum Api {
     struct State: Equatable {
         var connectivityState: ConnectivityState = .disconnected
 
-        var segments: Segment?
+        var segments: Segments?
         var mapData: MapData?
 
         var mapImage: UIImage?
@@ -109,7 +110,7 @@ enum Api {
 
         case fetchSegments
 
-        case fetchSegmentsResponse(Result<Segment, ApiRestClient.Failure>)
+        case fetchSegmentsResponse(Result<Segments, ApiRestClient.Failure>)
         
         case startCleaningSegment
         case startCleaningSegmentResponse(Result<Data, ApiRestClient.Failure>)

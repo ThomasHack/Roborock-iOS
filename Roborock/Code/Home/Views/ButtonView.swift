@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import RoborockApi
 
 struct ButtonView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>

@@ -7,14 +7,14 @@
 
 import Foundation
 
-enum Fanspeed: Int, Equatable, CaseIterable {
+public enum Fanspeed: Int, Equatable, CaseIterable {
     case quiet = 101
     case balanced = 102
     case turbo = 103
     case max = 104
     case mop = 105
 
-    var label: String {
+    public var label: String {
         switch self {
         case .quiet:
             return "Quiet"
