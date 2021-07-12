@@ -51,8 +51,7 @@ class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {
                 let rooms = segments.map { Room(identifier: String($0.id), display: $0.name) }
                 completion(INObjectCollection(items: rooms), nil)
             case .failure(let error):
-                print("error: \(error.localizedDescription)")
-                completion(nil, nil)
+                completion(nil, error)
             }
         }
     }
@@ -80,13 +79,11 @@ class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {
     private func fetchSegments(completion: @escaping (Result<[Segment], Error>) -> Void) {
         let url = URL(string: "\(baseUrl)/segment_names")!
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            print("fetchSegments: \(String(describing: response))")
             if let data = data {
                 do {
                     let segments = try JSONDecoder().decode(Segments.self, from: data)
                     completion(.success(segments.data))
                 } catch {
-                    print(error.localizedDescription)
                     completion(.failure(error))
                 }
             } else {
