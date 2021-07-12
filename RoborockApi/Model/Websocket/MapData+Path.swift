@@ -18,11 +18,5 @@ extension MapData {
             self.points = points
             self.type = type
         }
-
-        public enum PathType {
-            case vacuum
-            case predicted
-            case goto
-        }
     }
 }

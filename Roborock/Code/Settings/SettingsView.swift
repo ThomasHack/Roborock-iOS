@@ -24,15 +24,15 @@ struct SettingsView: View {
                                             get: { $0.hostInput },
                                             send: Settings.Action.hostInputTextChanged)
                                 )
-                                .keyboardType(.URL)
-                                .disableAutocorrection(true)
-                                .autocapitalization(.none)
+                                    .keyboardType(.URL)
+                                    .disableAutocorrection(true)
+                                    .autocapitalization(.none)
                             }
                         }
 
-                        Button(action: {
+                        Button {
                             viewStore.send(.connectButtonTapped)
-                        }) {
+                        } label: {
                             HStack(alignment: .center) {
                                 Spacer()
                                 if viewStore.api.connectivityState == .disconnected {
@@ -50,12 +50,11 @@ struct SettingsView: View {
                 .background(Color(.systemBackground))
                 .edgesIgnoringSafeArea(.all)
                 .padding([.top], 10)
-                .navigationBarItems(
-                    trailing:
-                        HStack(spacing: 16) {
-                    Button(action: {
+                .navigationBarItems(trailing:
+                                        HStack(spacing: 16) {
+                    Button {
                         viewStore.send(.doneButtonTapped)
-                    }) {
+                    } label: {
                         Text("done")
                             .font(.system(size: 17, weight: .bold))
                     }

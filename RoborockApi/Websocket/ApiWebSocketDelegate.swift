@@ -27,7 +27,7 @@ public class ApiWebSocketDelegate: WebSocketConnectionDelegate {
         self.didReceiveWebSocketEvent = didReceiveWebSocketEvent
         self.didUpdateStatus = didUpdateStatus
     }
-    
+
     public func webSocketDidConnect(connection: WebSocketConnection) {
         self.didConnect()
     }

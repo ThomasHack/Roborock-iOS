@@ -5,8 +5,8 @@
 //  Created by Hack, Thomas on 10.05.21.
 //
 
-import SwiftUI
 import ComposableArchitecture
+import SwiftUI
 
 struct StatusView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>

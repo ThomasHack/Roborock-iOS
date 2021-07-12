@@ -39,7 +39,7 @@ class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {
             return
         }
 
-        completion(rooms.map { (room) -> RoomResolutionResult in
+        completion(rooms.map { room -> RoomResolutionResult in
             return RoomResolutionResult.success(with: room)
         })
     }
@@ -77,8 +77,8 @@ class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {
     }()
 
     private func fetchSegments(completion: @escaping (Result<[Segment], Error>) -> Void) {
-        let url = URL(string: "\(baseUrl)/segment_names")!
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        guard let url = URL(string: "\(baseUrl)/segment_names") else { return }
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
             if let data = data {
                 do {
                     let segments = try JSONDecoder().decode(Segments.self, from: data)
@@ -93,26 +93,26 @@ class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {
         task.resume()
     }
 
-
     private func cleanSegments(rooms: [Room], completion: @escaping (Result<Bool, Error>) -> Void) {
-        let segments = rooms.map { Int($0.identifier!) }
+        let segments = rooms.map { Int($0.identifier ?? "") }
         let requestData = [segments, 1, 1] as [Any]
-        let url = URL(string: "\(baseUrl)/start_cleaning_segment")!
+        guard let url = URL(string: "\(baseUrl)/start_cleaning_segment"),
+                let httpBody = try? JSONSerialization.data(withJSONObject: requestData, options: .fragmentsAllowed) else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
-        request.httpBody = try! JSONSerialization.data(withJSONObject: requestData, options: .fragmentsAllowed)
+        request.httpBody = httpBody
         request.allHTTPHeaderFields = [
             "Content-Type": "application/json",
             "Accept": "application/json"
         ]
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            if let _ = data {
+            if data != nil {
                 completion(.success(true))
                 return
             } else {

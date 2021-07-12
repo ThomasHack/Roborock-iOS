@@ -31,7 +31,7 @@ public struct Status: Equatable, Decodable {
     public var errorHumanReadable: String
 
     public var vacuumState: VacuumState? {
-        return VacuumState(rawValue: state)
+        VacuumState(rawValue: state)
     }
 
     public init(state: Int, otaState: String, messageVersion: Int, battery: Int, cleanTime: Int, cleanArea: Int, errorCode: Int, mapPresent: Int, inCleaning: Int, inReturning: Int, inFreshState: Int, waterBoxStatus: Int, fanPower: Int, dndEnabled: Int, mapStatus: Int, mainBrushLife: Int, sideBrushLife: Int, filterLife: Int, stateHumanReadable: String, model: String, errorHumanReadable: String) {
@@ -57,7 +57,7 @@ public struct Status: Equatable, Decodable {
         self.model = model
         self.errorHumanReadable = errorHumanReadable
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case state = "state"
         case otaState = "ota_state"

@@ -18,7 +18,7 @@ struct BlurView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> UIVisualEffectView {
-        return UIVisualEffectView(effect: UIBlurEffect(style: self.style))
+        UIVisualEffectView(effect: UIBlurEffect(style: self.style))
     }
 
     func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
@@ -37,7 +37,7 @@ struct VibrancyView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> UIVisualEffectView {
-        return UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: blurEffect, style: self.style))
+        UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: blurEffect, style: self.style))
     }
 
     func updateUIView(_ uiView: UIVisualEffectView, context: Context) {

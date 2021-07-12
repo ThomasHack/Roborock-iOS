@@ -21,7 +21,7 @@ enum Shared {
             }
         }
 
-        var showSettingsModal: Bool = false
+        var showSettingsModal = false
     }
 
     static let initialState = State(
@@ -37,7 +37,7 @@ enum Shared {
 
     typealias Environment = Main.Environment
 
-    static let reducer = Reducer<State, Action, Environment> { state, action, environment in
+    static let reducer = Reducer<State, Action, Environment> { state, action, _ in
         switch action {
         case .updateHost(let string):
             state.host = string

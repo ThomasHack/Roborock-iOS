@@ -5,13 +5,13 @@
 //  Created by Hack, Thomas on 10.05.21.
 //
 
-import SwiftUI
 import ComposableArchitecture
+import SwiftUI
 
 struct MapView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
     let gradient = Gradient(colors: [Color("blue-light"), Color("blue-dark")])
-    
+
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack(alignment: .center, spacing: 0) {

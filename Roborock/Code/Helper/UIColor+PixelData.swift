@@ -5,8 +5,8 @@
 //  Created by Hack, Thomas on 28.06.21.
 //
 
-import UIKit
 import RoborockApi
+import UIKit
 
 extension UIColor {
     var toPixel: MapData.Pixel {
@@ -17,8 +17,8 @@ extension UIColor {
         getRed(&red, green: &green, blue: &blue, alpha: &alpha)
 
         return MapData.Pixel(r: UInt8(max(0, min(255, red * 255))),
-                         g: UInt8(max(0, min(255, green * 255))),
-                         b: UInt8(max(0, min(255, blue * 255))),
-                         a: UInt8(max(0, min(255, alpha * 255))))
+                             g: UInt8(max(0, min(255, green * 255))),
+                             b: UInt8(max(0, min(255, blue * 255))),
+                             a: UInt8(max(0, min(255, alpha * 255))))
     }
 }

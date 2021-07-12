@@ -26,7 +26,7 @@ enum Settings {
     typealias Environment = Main.Environment
 
     static let reducer = Reducer<SettingsFeatureState, Action, Environment>.combine(
-        Reducer { state, action, environment in
+        Reducer { state, action, _ in
             switch action {
             case .hostInputTextChanged(let text):
                 state.hostInput = text

@@ -16,45 +16,42 @@ struct StatusItemView: View {
     @State var iconName: String
     @State var label: String
     @State var unit: String
-    
+
     @Binding var value: String
 
     var body: some View {
-        Button(action: {}) {
+        VStack {
             VStack {
-                VStack {
-                    Image(systemName: iconName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                Image(systemName: iconName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(Color("primary"))
+            }
+            .frame(width: 36, height: 36)
+            .padding(.top, 16)
+
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                }
+                HStack(alignment: .lastTextBaseline, spacing: 2) {
+                    Text(value)
+                        .font(.system(size: 18, weight: .bold, design: .default))
+                        .foregroundColor(Color("primary"))
+                        .fixedSize(horizontal: true, vertical: false)
+                    Text(unit)
+                        .font(.system(size: 14, weight: .bold, design: .default))
                         .foregroundColor(Color("primary"))
                 }
-                .frame(width: 36, height: 36)
-                .padding(.top, 16)
+                .fixedSize(horizontal: true, vertical: false)
 
-                VStack(spacing: 0) {
-                    HStack {
-                        Spacer()
-                    }
-                    HStack(alignment: .lastTextBaseline, spacing: 2) {
-                        Text(value)
-                            .font(.system(size: 18, weight: .bold, design: .default))
-                            .foregroundColor(Color("primary"))
-                            .fixedSize(horizontal: true, vertical: false)
-                        Text(unit)
-                            .font(.system(size: 14, weight: .bold, design: .default))
-                            .foregroundColor(Color("primary"))
-                    }
+                Text(LocalizedStringKey(label))
+                    .font(.system(size: 12, weight: .regular, design: .default))
+                    .foregroundColor(Color(.label))
                     .fixedSize(horizontal: true, vertical: false)
-
-                    Text(LocalizedStringKey(label))
-                        .font(.system(size: 12, weight: .regular, design: .default))
-                        .foregroundColor(Color(.label))
-                        .fixedSize(horizontal: true, vertical: false)
-                }
-                .padding(.bottom, 16)
             }
+            .padding(.bottom, 16)
         }
-        // .background(BlurEffect())
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .padding(.horizontal, 4)

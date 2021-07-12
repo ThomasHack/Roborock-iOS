@@ -5,11 +5,11 @@
 //  Created by Hack, Thomas on 28.06.21.
 //  https://github.com/marcelrv/XiaomiRobotVacuumProtocol/blob/master/RRMapFile/RRFileFormat.md
 
-import UIKit
 import Combine
 import Gzip
-import SwiftUI
 import RoborockApi
+import SwiftUI
+import UIKit
 
 enum ParsingError: Error {
     case gzipError
@@ -26,10 +26,9 @@ enum ImageGenerationError: Error {
     case chargerImageError
 }
 
-class RRFileParser {
+public class RRFileParser {
     private var data: Data?
-    private var mapData: MapData = MapData()
-    
+    private var mapData = MapData()
     public var segments: [Int] = []
 
     private var imagePosition: MapData.Position {
@@ -68,7 +67,6 @@ class RRFileParser {
         .eraseToAnyPublisher()
     }
 
-
     /// Parse current data again to refresh images
     /// - Returns: Promise with MapData or MapDataError
     func refreshData() -> AnyPublisher<MapData, ParsingError> {
@@ -79,10 +77,9 @@ class RRFileParser {
         .eraseToAnyPublisher()
     }
 
-
     /// Draw map image
     /// - Returns: Promise with Image or Error
-    public func drawMapImage() -> AnyPublisher<UIImage, ImageGenerationError> {
+    func drawMapImage() -> AnyPublisher<UIImage, ImageGenerationError> {
         Future { promise in
             self.drawMap { result in
                 promise(result)
@@ -93,7 +90,7 @@ class RRFileParser {
 
     /// Draw path image
     /// - Returns: Promise with Image or Error
-    public func drawPathsImage() -> AnyPublisher<UIImage, ImageGenerationError> {
+    func drawPathsImage() -> AnyPublisher<UIImage, ImageGenerationError> {
         Future { promise in
             self.drawMapPaths { result in
                 promise(result)
@@ -104,7 +101,7 @@ class RRFileParser {
 
     /// Draw forbidden zones image
     /// - Returns: Promise with Image or Error
-    public func drawForbiddenZonesImage() -> AnyPublisher<UIImage, ImageGenerationError> {
+    func drawForbiddenZonesImage() -> AnyPublisher<UIImage, ImageGenerationError> {
         Future { promise in
             self.drawForbiddenZonesImage { result in
                 promise(result)
@@ -115,9 +112,9 @@ class RRFileParser {
 
     /// Draw robot image
     /// - Returns: Promise with Image or Error
-    public func drawRobotImage() -> AnyPublisher<UIImage, ImageGenerationError> {
+    func drawRobotImage() -> AnyPublisher<UIImage, ImageGenerationError> {
         Future { promise in
-            self.drawRobotImage() { result in
+            self.drawRobotImage { result in
                 promise(result)
             }
         }
@@ -126,9 +123,9 @@ class RRFileParser {
 
     /// Draw charger image
     /// - Returns: Promise with Image or Error
-    public func drawChargerImage() -> AnyPublisher<UIImage, ImageGenerationError> {
+    func drawChargerImage() -> AnyPublisher<UIImage, ImageGenerationError> {
         Future { promise in
-            self.drawChargerImage() { result in
+            self.drawChargerImage { result in
                 promise(result)
             }
         }
@@ -137,9 +134,9 @@ class RRFileParser {
 
     /// Draw segment names image
     /// - Returns: Promise with Image or Error
-    public func drawSegmentLabelsImage() -> AnyPublisher<UIImage, ImageGenerationError> {
+    func drawSegmentLabelsImage() -> AnyPublisher<UIImage, ImageGenerationError> {
         Future { promise in
-            self.drawSegmentLabelsImage() { result in
+            self.drawSegmentLabelsImage { result in
                 promise(result)
             }
         }
@@ -147,13 +144,13 @@ class RRFileParser {
     }
 
     // MARK: - Parsing
-    
+
     /// Provides custom color for segment
     /// - Parameter segment: Segment object
     /// - Returns: Color
-    private func colorForSegmentId(segment: SegmentType?) -> UIColor {
+    private func colorForSegmentId(segment: MapData.SegmentType?) -> UIColor {
         switch segment {
-        case .studio,. bath, .bedroom, .corridor, .kitchen, .livingroom, .toilet, .supply:
+        case .studio, .bath, .bedroom, .corridor, .kitchen, .livingroom, .toilet, .supply:
             return UIColor.floorColor
         default:
             return UIColor.floorColor
@@ -197,7 +194,6 @@ class RRFileParser {
         }
 
         guard let blockType = MapData.Blocktype(rawValue: data.getInt16(position: 0x00 + offset)) else {
-            print("no block header")
             return
         }
 
@@ -222,14 +218,11 @@ class RRFileParser {
             self.mapData.gotoPredictedPath = parsePathBlock(data, blockLength: blockLength, offset: offset, type: .predicted)
         case .forbiddenZones:
             self.mapData.forbiddenZones = parseForbiddenZones(data, blockLength: blockLength, offset: offset)
-        case .currentlyCleanedZones, .currentlyCleanedBlocks, .gotoTarget, .forbiddenMopZones, .virtualWalls:
-            break
-        case .digest:
+        case .currentlyCleanedZones, .currentlyCleanedBlocks, .gotoTarget, .forbiddenMopZones, .virtualWalls, .digest:
             break
         }
         return parseBlock(data, offset: offset + headerLength + blockLength, mapData: self.mapData)
     }
-
 
     /// Parse first meta block in binary array
     /// - Parameter block: Data block that contains block header and data
@@ -241,10 +234,9 @@ class RRFileParser {
         let minorVersion = block.getInt16(position: 0x0A)
         let mapIndex = block.getInt32(position: 0x0c)
         let mapSequence = block.getInt32(position: 0x10)
-        let version = MapData.Meta.Version(major: majorVersion, minor: minorVersion)
+        let version = MapData.Version(major: majorVersion, minor: minorVersion)
         return MapData.Meta(headerLength: headerLength, dataLength: dataLength, version: version, mapIndex: mapIndex, mapSequence: mapSequence)
     }
-
 
     /// Parse robot position block
     /// - Parameters:
@@ -259,7 +251,6 @@ class RRFileParser {
         return MapData.RobotPosition(position: MapData.Point(x: x, y: y), angle: angle)
     }
 
-
     /// Parse charger location block
     /// - Parameters:
     ///   - block: Data block that contains block header and data
@@ -271,14 +262,13 @@ class RRFileParser {
         return MapData.Point(x: x, y: y)
     }
 
-
     /// Parse vacuum paths
     /// - Parameters:
     ///   - block: Data block that contains block header and data
     ///   - blockLength: Length of current data block (not including header)
     ///   - offset: Current offset, increments per block
     /// - Returns: Current angle and array of driven paths from vacuum
-    private func parsePathBlock(_ block: Data, blockLength: Int, offset: Int, type: MapData.Path.PathType) -> MapData.Path {
+    private func parsePathBlock(_ block: Data, blockLength: Int, offset: Int, type: MapData.PathType) -> MapData.Path {
         var points: [MapData.Point] = []
         let currentAngle = block.getInt32(position: 0x10 + offset)
 
@@ -289,7 +279,6 @@ class RRFileParser {
         }
         return MapData.Path(currentAngle: currentAngle, points: points, type: type)
     }
-
 
     /// Parse forbidden zones
     /// - Parameters:
@@ -311,7 +300,6 @@ class RRFileParser {
         return MapData.ForbiddenZones(count: count, zones: zones)
     }
 
-
     /// Parse image block with all information including segments, dimensions, positions and pixel information
     /// - Parameters:
     ///   - block: Data block that contains block header and data
@@ -324,7 +312,7 @@ class RRFileParser {
         if headerLength > 24 {
             g3offset = 4
         }
-        let segments = MapData.ImageData.Segments(count: g3offset > 0 ? block.getInt32(position: 0x08 + offset) : 0, center: [:])
+        let segments = MapData.Segments(count: g3offset > 0 ? block.getInt32(position: 0x08 + offset) : 0, center: [:])
 
         let position = MapData.Position(top: block.getInt32(position: 0x08 + g3offset + offset),
                                         left: block.getInt32(position: 0x0c + g3offset + offset))
@@ -340,7 +328,6 @@ class RRFileParser {
         return image
     }
 
-
     /// Parse pixel array block from binary data of map image
     /// - Parameters:
     ///   - block: Data block that contains block header and data
@@ -352,7 +339,7 @@ class RRFileParser {
     private func parseImageBlock(_ block: Data, blockLength: Int, imageData: MapData.ImageData, offset: Int, g3offset: Int) -> MapData.ImageData {
         var tempImageData = imageData
 
-        let selectedColor = UIColor(red: 121/255, green: 196/255, blue: 189/255, alpha: 1)
+        let selectedColor = #colorLiteral(red: 121/255, green: 196/255, blue: 189/255, alpha: 1)
 
         for index in 0 ..< blockLength {
             let x = (index % imageData.dimensions.width) + imageData.position.left
@@ -369,7 +356,7 @@ class RRFileParser {
                 let segmentId = (type & 248) >> 3
                 if segmentId != 0 {
                     // Optional colors for each segment
-                    var color = colorForSegmentId(segment: SegmentType(rawValue: segmentId))
+                    var color = colorForSegmentId(segment: MapData.SegmentType(rawValue: segmentId))
 
                     // Color if segment is currently selected
                     if segments.contains(segmentId) {
@@ -377,7 +364,7 @@ class RRFileParser {
                     }
 
                     if tempImageData.segments.center[segmentId] == nil {
-                        tempImageData.segments.center[segmentId] = MapData.ImageData.Center(position: MapData.Point(x: 0, y: 0), count: 0)
+                        tempImageData.segments.center[segmentId] = MapData.Center(position: MapData.Point(x: 0, y: 0), count: 0)
                     }
                     tempImageData.segments.center[segmentId]?.position.x += x
                     tempImageData.segments.center[segmentId]?.position.y += y
@@ -385,14 +372,14 @@ class RRFileParser {
 
                     // Push segment divider pixel
                     let lastBlock = block.getInt8(position: 0x18 + g3offset + offset + index - 1)
-                    if lastBlock > 1 && (lastBlock & 248) >> 3 != segmentId {
+                    if lastBlock > 1 && segmentId != (lastBlock & 248) >> 3 {
                         tempImageData.pixels.append(UIColor.clear.toPixel)
                         break
                     }
 
                     // Push segment divider pixel
                     let neighbourBlock = block.getInt8(position: 0x18 + g3offset + offset + index + imageData.dimensions.width)
-                    if neighbourBlock > 1 && (neighbourBlock & 248) >> 3 != segmentId {
+                    if neighbourBlock > 1 && segmentId != (neighbourBlock & 248) >> 3 {
                         tempImageData.pixels.append(UIColor.clear.toPixel)
                         break
                     }
@@ -409,19 +396,19 @@ class RRFileParser {
     }
 
     // MARK: - Drawing
-    
+
     /// Convert coordinate to map space
     /// - Parameters:
     ///   - coordinate: Axis coordinate
     ///   - offset: Map offset
     /// - Returns: Coordinate in map space
     private func convertToMapCoordinate(_ coordinate: Int, offset: Int) -> Int {
-        return Int(Double(coordinate * scaleFactor) / 50.0 - Double(offset * scaleFactor))
+        Int(Double(coordinate * scaleFactor) / 50.0 - Double(offset * scaleFactor))
     }
 
     /// Internal method to draw map image
     /// - Parameter completion: completion handler
-    private func drawMap(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
+    private func drawMap(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
         guard let pixels = mapData.imageData?.pixels, let image = drawMap(pixels: pixels) else {
             completion(.failure(ImageGenerationError.mapImageError))
             return
@@ -431,7 +418,7 @@ class RRFileParser {
 
     /// Internal method to draw vacuum, goto and predicted paths to a single image
     /// - Parameter completion: completion handler
-    private func drawMapPaths(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
+    private func drawMapPaths(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
         // Draw vaccum path on map
         var image = UIImage()
 
@@ -466,7 +453,7 @@ class RRFileParser {
 
     /// Internal method to draw forbidden zones image
     /// - Parameter completion: completion handler
-    private func drawForbiddenZonesImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
+    private func drawForbiddenZonesImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
         guard let forbiddenZones = mapData.forbiddenZones, let image = drawForbiddenZones(zones: forbiddenZones) else {
             completion(.failure(ImageGenerationError.forbiddenZonesImageError))
             return
@@ -476,7 +463,7 @@ class RRFileParser {
 
     /// Internal method to draw robot image
     /// - Parameter completion: completion handler
-    private func drawRobotImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
+    private func drawRobotImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
         guard let robotPosition = mapData.robotPosition, let image = drawRobot(robot: robotPosition) else {
             completion(.failure(ImageGenerationError.robotImageError))
             return
@@ -486,7 +473,7 @@ class RRFileParser {
 
     /// Internal method to draw charger image
     /// - Parameter completion: completion handler
-    private func drawChargerImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
+    private func drawChargerImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
         guard let chargerLocation = mapData.chargerLocation, let image = drawCharger(charger: chargerLocation) else {
             completion(.failure(ImageGenerationError.chargerImageError))
             return
@@ -494,10 +481,9 @@ class RRFileParser {
         completion(.success(image))
     }
 
-
     /// Internal method to draw segment labels
     /// - Parameter completion: completion handler
-    private func drawSegmentLabelsImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> ()) {
+    private func drawSegmentLabelsImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
         guard let segments = mapData.imageData?.segments, let image = drawSegmentLabels(segments: segments) else {
             completion(.failure(ImageGenerationError.chargerImageError))
             return
@@ -531,17 +517,17 @@ class RRFileParser {
                     decode: nil,
                     shouldInterpolate: false,
                     intent: .defaultIntent) else { return nil }
-                
+
         let size = CGSize(width: Int(imageSize.width) * scaleFactor, height: Int(imageSize.height) * scaleFactor)
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        
-        let context = UIGraphicsGetCurrentContext()!
+
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
         context.interpolationQuality = .none
         context.draw(cgImage, in: CGRect(origin: .zero, size: size))
-        
+
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         guard let cgImage = image?.cgImage else { return nil }
         return UIImage(cgImage: cgImage, scale: 0, orientation: .downMirrored)
     }
@@ -559,17 +545,17 @@ class RRFileParser {
         }
 
         var color: UIColor
-        let context = UIGraphicsGetCurrentContext()!
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
         context.setLineWidth(1.0)
 
         switch path.type {
         case .vacuum:
-            color = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+            color = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)
         case .predicted:
-            color = UIColor(red: 1, green: 0, blue: 0, alpha: 0.8)
+            color = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.8)
             context.setLineDash(phase: 0, lengths: [4, 2])
         case .goto:
-            color = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+            color = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)
         }
 
         context.setStrokeColor(color.cgColor)
@@ -607,8 +593,8 @@ class RRFileParser {
         let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
         let tempImage = renderer.image { context in
             context.cgContext.setLineWidth(1.0)
-            context.cgContext.setStrokeColor(UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor)
-            context.cgContext.setFillColor(UIColor(red: 1, green: 0, blue: 0, alpha: 0.5).cgColor)
+            context.cgContext.setStrokeColor(#colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor)
+            context.cgContext.setFillColor(#colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.5).cgColor)
 
             for zone in zones.zones {
                 context.cgContext.move(to: CGPoint(x: convertToMapCoordinate(zone[0].x, offset: imagePosition.left), y: convertToMapCoordinate(zone[0].y, offset: imagePosition.top)))
@@ -632,13 +618,12 @@ class RRFileParser {
         let y = convertToMapCoordinate(robot.position.y, offset: imagePosition.top)
 
         guard let angle = robot.angle,
-              let robotImage = UIImage(named: "robot")?
+              let robotImage = #imageLiteral(resourceName: "robot")
                 .withHorizontallyFlippedOrientation()
-                .rotate(angle: Float(angle + 90))
-        else { return nil }
+                .rotate(angle: Float(angle + 90)) else { return nil }
 
         let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
-        let tempImage = renderer.image { context in
+        let tempImage = renderer.image { _ in
             robotImage.draw(in: CGRect(origin: CGPoint(x: x - 12, y: y - 12), size: CGSize(width: 24, height: 24)))
         }
 
@@ -653,10 +638,10 @@ class RRFileParser {
         let x = convertToMapCoordinate(charger.x, offset: imagePosition.left)
         let y = convertToMapCoordinate(charger.y, offset: imagePosition.top)
 
-        guard let chargerImage = UIImage(named: "charger") else { return nil }
+        let chargerImage = #imageLiteral(resourceName: "charger")
 
         let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
-        let tempImage = renderer.image { context in
+        let tempImage = renderer.image { _ in
             chargerImage.draw(in: CGRect(origin: CGPoint(x: x - 4, y: y - 8), size: CGSize(width: 16, height: 16)))
         }
 
@@ -666,24 +651,26 @@ class RRFileParser {
     /// Draw segment names image
     /// - Parameter segments: Segments object
     /// - Returns: Image containing labels
-    private func drawSegmentLabels(segments: MapData.ImageData.Segments) -> UIImage? {
+    private func drawSegmentLabels(segments: MapData.Segments) -> UIImage? {
         let textColor = UIColor.white
-        let backgroundColor = UIColor(white: 0, alpha: 0.6).cgColor
+        let backgroundColor =  #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6).cgColor
         let textFont = UIFont.systemFont(ofSize: 14)
-        let textFontAttributes = [NSAttributedString.Key.font: textFont, NSAttributedString.Key.foregroundColor: textColor] as [NSAttributedString.Key : Any]
+        let textFontAttributes = [
+            NSAttributedString.Key.font: textFont,
+            NSAttributedString.Key.foregroundColor: textColor] as [NSAttributedString.Key: Any]
 
         let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
 
-        let tempImage = renderer.image{ context in
+        let tempImage = renderer.image { context in
             for center in segments.center {
-                guard let segmentType = SegmentType(rawValue: center.key) else { continue }
+                guard let segmentType = MapData.SegmentType(rawValue: center.key) else { continue }
                 // Get text and text width
                 let text = segmentType.label
                 let textWidth = text.width(withConstrainedHeight: 14, font: UIFont.systemFont(ofSize: 14))
 
                 // Calculate coordinates and remove offsets for correct center
-                let x = (center.value.position.x/center.value.count) * scaleFactor - imagePosition.left * scaleFactor - Int(textWidth/2)
-                let y = Int(retinaImageSize.height) - (center.value.position.y/center.value.count) * 2 + imagePosition.top * 2 - 10
+                let x = (center.value.position.x / center.value.count) * scaleFactor - imagePosition.left * scaleFactor - Int(textWidth / 2)
+                let y = Int(retinaImageSize.height) - (center.value.position.y / center.value.count) * 2 + imagePosition.top * 2 - 10
 
                 let rect = CGRect(x: x - 4, y: y - 2, width: Int(textWidth) + 8, height: 20)
                 let roundedRect = UIBezierPath(roundedRect: rect, cornerRadius: 4).cgPath

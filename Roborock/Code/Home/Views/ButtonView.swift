@@ -5,9 +5,9 @@
 //  Created by Hack, Thomas on 10.05.21.
 //
 
-import SwiftUI
 import ComposableArchitecture
 import RoborockApi
+import SwiftUI
 
 struct ButtonView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
@@ -19,7 +19,10 @@ struct ButtonView: View {
             VStack {
                 if viewStore.api.connectivityState == .connected {
                     HStack(alignment: .center, spacing: 16) {
-                        Button(action: { viewStore.send(.driveHome) }) {
+                        Button {
+                            viewStore.send(.driveHome)
+
+                        } label: {
                             Image(systemName: "house.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -27,9 +30,11 @@ struct ButtonView: View {
                         }
                         .disabled(viewStore.api.connectivityState != .connected || viewStore.api.state == .charging)
                         .buttonStyle(SecondaryButtonStyle())
-                        
+
                         if !viewStore.api.inCleaning && !viewStore.api.inReturning {
-                            Button(action: { viewStore.send(.toggleRoomSelection(true)) }) {
+                            Button {
+                                viewStore.send(.toggleRoomSelection(true))
+                            } label: {
                                 Image(systemName: "play.fill")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -39,7 +44,9 @@ struct ButtonView: View {
                             .disabled(!viewStore.api.isConnected)
                             .buttonStyle(PrimaryButtonStyle())
                         } else {
-                            Button(action: { viewStore.send(.stopCleaning) }) {
+                            Button {
+                                viewStore.send(.stopCleaning)
+                            } label: {
                                 Image(systemName: "stop.fill")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -50,7 +57,9 @@ struct ButtonView: View {
                         }
 
                         if viewStore.api.inCleaning && viewStore.api.inReturning {
-                            Button(action: { viewStore.send(.pauseCleaning) }) {
+                            Button {
+                                viewStore.send(.pauseCleaning)
+                            } label: {
                                 Image(systemName: "pause.fill")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -62,7 +71,9 @@ struct ButtonView: View {
 
                         Menu(content: {
                             ForEach(Fanspeed.allCases.reversed(), id: \.self) { value in
-                                Button(action: { viewStore.send(.api(.setFanspeed(value.rawValue))) }) {
+                                Button {
+                                    viewStore.send(.api(.setFanspeed(value.rawValue)))
+                                } label: {
                                     HStack {
                                         Text(value.label)
                                         Spacer()
@@ -83,9 +94,9 @@ struct ButtonView: View {
                         .clipShape(Circle())
                     }
                 } else {
-                    Button(action: {
+                    Button {
                         viewStore.send(.connectButtonTapped)
-                    }) {
+                    } label: {
                         HStack(alignment: .center) {
                             Spacer()
                             if viewStore.api.connectivityState == .disconnected {

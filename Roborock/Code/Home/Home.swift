@@ -5,15 +5,14 @@
 //  Created by Thomas Hack on 08.05.21.
 //
 
-import Foundation
 import ComposableArchitecture
 import SwiftUI
 
 enum Home {
     struct State: Equatable {
-        var presentRoomSelection: Bool = false
+        var presentRoomSelection = false
     }
-    
+
     enum Action {
         case connect
         case connectButtonTapped
@@ -26,21 +25,21 @@ enum Home {
         case settingsButtonTapped
         case toggleRoomSelection(Bool)
         case toggleSettingsModal(Bool)
-        
+
         case api(Api.Action)
         case shared(Shared.Action)
         case none
     }
-    
+
     typealias Environment = Main.Environment
-    
+
     static let reducer = Reducer<HomeFeatureState, Action, Environment>.combine(
-        Reducer { state, action, environment in
+        Reducer { state, action, _ in
             switch action {
             case .connect:
-                let url = URL(string: "http://roborock/")
-                return Effect(value: Action.api(.connect(url!)))
-                
+                guard let url = URL(string: "http://roborock/") else { return .none }
+                return Effect(value: Action.api(.connect(url)))
+
             case .connectButtonTapped:
                 switch state.connectivityState {
                 case .connected, .connecting:
@@ -71,7 +70,7 @@ enum Home {
             case .selectAll:
                 if state.rooms.isEmpty {
                     guard let segments = state.api.segments else { return .none }
-                    let rooms = segments.data.map { $0.id}
+                    let rooms = segments.data.map { $0.id }
                     state.rooms = rooms
                     return .none
                 }
@@ -103,6 +102,6 @@ enum Home {
             environment: { $0 }
         )
     )
-    
+
     static let initialState = State()
 }

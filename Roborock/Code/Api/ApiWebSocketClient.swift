@@ -5,17 +5,18 @@
 //  Created by Thomas Hack on 13.05.21.
 //
 
-import Foundation
-import ComposableArchitecture
 import Combine
+import ComposableArchitecture
+import Foundation
 import Network
-import RoborockApi
 import NWWebSocket
+import RoborockApi
 
 private var dependencies: [AnyHashable: Dependencies] = [:]
 private struct Dependencies {
-    let socket: NWWebSocket
     let delegate: ApiWebSocketDelegate
+
+    let socket: NWWebSocket
     let subscriber: Effect<Api.Action, Never>.Subscriber
 }
 
@@ -44,7 +45,7 @@ extension ApiWebSocketClient {
                 let socket = NWWebSocket(url: url)
                 socket.delegate = delegate
                 socket.connect()
-                dependencies[id] = Dependencies(socket: socket, delegate: delegate, subscriber: subscriber)
+                dependencies[id] = Dependencies(delegate: delegate, socket: socket, subscriber: subscriber)
                 return AnyCancellable {
                     dependencies[id]?.subscriber.send(completion: .finished)
                     dependencies[id] = nil

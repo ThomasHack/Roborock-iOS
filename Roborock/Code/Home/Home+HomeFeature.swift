@@ -9,7 +9,7 @@ import Foundation
 
 extension Home {
     @dynamicMemberLookup
-    
+
     struct HomeFeatureState: Equatable {
         var home: Home.State
         var settings: Settings.State
@@ -26,7 +26,7 @@ extension Home {
                 return "battery.100"
             }
         }
-        
+
         public subscript<T>(dynamicMember keyPath: WritableKeyPath<Home.State, T>) -> T {
             get { home[keyPath: keyPath] }
             set { home[keyPath: keyPath] = newValue }
@@ -47,7 +47,7 @@ extension Home {
             set { api[keyPath: keyPath] = newValue }
         }
     }
-    
+
     static let previewState = HomeFeatureState(
         home: Home.State(),
         settings: Settings.State(),

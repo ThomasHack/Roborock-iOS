@@ -1,0 +1,84 @@
+excluded:
+- Carthage
+- "Room.swift"
+opt_in_rules:
+- empty_count
+- first_where
+- force_unwrapping
+- overridden_super_call
+- strict_fileprivate
+- yoda_condition
+- contains_over_range_nil_comparison
+- enum_case_associated_values_count
+- flatmap_over_map_reduce
+- prefer_self_type_over_type_of_self
+- anyobject_protocol
+- array_init
+# - closure_body_length disabled, because function-builders tend to be long
+- closure_spacing
+- collection_alignment
+- contains_over_first_not_nil
+- convenience_type
+- empty_string
+- empty_xctest_method
+- explicit_init
+- explicit_self
+- fallthrough
+- function_default_parameter_at_end
+- identical_operands
+- implicit_return
+- implicitly_unwrapped_optional
+- joined_default_parameter
+- legacy_random
+- literal_expression_end_indentation
+- lower_acl_than_parent
+- modifier_order
+- multiline_arguments
+- multiline_function_chains
+- multiline_parameters
+- nimble_operator
+- no_extension_access_modifier
+- operator_usage_whitespace
+- override_in_extension
+- pattern_matching_keywords
+- prefixed_toplevel_constant
+- prohibited_super_call
+- quick_discouraged_call
+- quick_discouraged_focused_test
+- quick_discouraged_pending_test
+- redundant_nil_coalescing
+- redundant_type_annotation
+- required_enum_case
+- single_test_class
+- sorted_first_last
+- sorted_imports
+- static_operator
+- switch_case_on_newline
+- toggle_bool
+- unavailable_function
+- unneeded_parentheses_in_closure_argument
+- unused_import
+- vertical_parameter_alignment_on_call
+- file_name
+- last_where
+- legacy_multiple
+- nslocalizedstring_key
+- object_literal
+- private_action
+- reduce_into
+- xct_specific_matcher
+- contains_over_filter_count
+- contains_over_filter_is_empty
+- discouraged_optional_boolean
+- empty_collection_literal
+- unused_declaration
+disabled_rules:
+- line_length
+- identifier_name
+custom_rules:
+    future:
+        included: ".*\\.swift"
+        name: "Future Task"
+        regex: "(FUTURE: )"
+        match_kinds:
+        - comment

@@ -5,8 +5,8 @@
 //  Created by Hack, Thomas on 10.05.21.
 //
 
-import SwiftUI
 import ComposableArchitecture
+import SwiftUI
 
 struct HeaderView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
@@ -20,9 +20,9 @@ struct HeaderView: View {
 
                     Spacer()
 
-                    Button(action: {
+                    Button {
                         viewStore.send(.settingsButtonTapped)
-                    }) {
+                    } label: {
                         Image(systemName: "gear")
                             .resizable()
                             .aspectRatio(contentMode: .fit)

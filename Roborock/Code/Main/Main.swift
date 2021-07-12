@@ -5,17 +5,17 @@
 //  Created by Thomas Hack on 08.05.21.
 //
 
-import Foundation
 import ComposableArchitecture
+import Foundation
 
 enum Main {
-    
+
     struct State: Equatable {
         var home: Home.State
         var api: Api.State
         var shared: Shared.State
         var settings: Settings.State
-        
+
         var homeFeature: Home.HomeFeatureState {
             get { Home.HomeFeatureState(home: self.home, settings: self.settings, shared: self.shared, api: self.api) }
             set { self.home = newValue.home; self.shared = newValue.shared; self.api = newValue.api }
@@ -26,23 +26,23 @@ enum Main {
             set { self.settings = newValue.settings; self.shared = newValue.shared }
         }
     }
-    
+
     enum Action {
         case home(Home.Action)
         case api(Api.Action)
         case shared(Shared.Action)
         case settings(Settings.Action)
     }
-    
+
     struct Environment {
         let mainQueue: AnySchedulerOf<DispatchQueue>
         let apiClient: ApiRestClient
         let websocketClient: ApiWebSocketClient
         let rrFileParser: RRFileParser
     }
-    
+
     static let reducer = Reducer<State, Action, Environment>.combine(
-        Reducer { state, action, environment in
+        Reducer { _, action, _ in
             switch action {
             case .home, . api, .shared, .settings:
                 return .none
@@ -69,7 +69,7 @@ enum Main {
             environment: { $0 }
         )
     )
-    
+
     static let store = Store(
         initialState: State(
             home: Home.initialState,
@@ -80,7 +80,7 @@ enum Main {
         reducer: reducer,
         environment: initialEnvironment
     )
-    
+
     static let previewStoreHome = Store(
         initialState: Home.previewState,
         reducer: Home.reducer,
@@ -102,7 +102,7 @@ enum Main {
             rrFileParser: RRFileParser()
         )
     )
-    
+
     static let initialEnvironment = Environment(
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
         apiClient: ApiRestClient.live,
@@ -119,7 +119,7 @@ extension Store where State == Main.State, Action == Main.Action {
     var settings: Store<Settings.SettingsFeatureState, Settings.Action> {
         scope(state: \.settingsFeature, action: Main.Action.settings)
     }
-    
+
     var api: Store<Api.State, Api.Action> {
         scope(state: \.api, action: Main.Action.api)
     }
