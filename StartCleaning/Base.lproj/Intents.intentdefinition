@@ -27,10 +27,12 @@
 			<string>Start Cleaning a room</string>
 			<key>INIntentDescriptionID</key>
 			<string>kufUyF</string>
+			<key>INIntentInput</key>
+			<string>rooms</string>
 			<key>INIntentKeyParameter</key>
 			<string>rooms</string>
 			<key>INIntentLastParameterTag</key>
-			<integer>9</integer>
+			<integer>11</integer>
 			<key>INIntentManagedParameterCombinations</key>
 			<dict>
 				<key>rooms</key>
@@ -38,7 +40,7 @@
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
 					<true/>
 					<key>INIntentParameterCombinationTitle</key>
-					<string>Start room cleaning with Roborock S5</string>
+					<string>Start room cleaning in ${rooms}</string>
 					<key>INIntentParameterCombinationTitleID</key>
 					<string>BKfrBs</string>
 					<key>INIntentParameterCombinationUpdatesLinked</key>
@@ -52,7 +54,7 @@
 				<key>rooms</key>
 				<dict>
 					<key>INIntentParameterCombinationSubtitle</key>
-					<string>Start room cleaning with Roborock your S5</string>
+					<string>Starting room cleaning for rooms ${rooms}</string>
 					<key>INIntentParameterCombinationSubtitleID</key>
 					<string>WLRimO</string>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
@@ -130,7 +132,7 @@
 					<key>INIntentParameterSupportsResolution</key>
 					<true/>
 					<key>INIntentParameterTag</key>
-					<integer>9</integer>
+					<integer>11</integer>
 					<key>INIntentParameterType</key>
 					<string>Object</string>
 				</dict>
@@ -214,7 +216,7 @@
 			<key>INTypeDisplayNameID</key>
 			<string>z64sx3</string>
 			<key>INTypeLastPropertyTag</key>
-			<integer>99</integer>
+			<integer>103</integer>
 			<key>INTypeName</key>
 			<string>Room</string>
 			<key>INTypeProperties</key>
@@ -268,6 +270,20 @@
 					<integer>4</integer>
 					<key>INTypePropertyType</key>
 					<string>SpeakableString</string>
+				</dict>
+				<dict>
+					<key>INTypePropertyDisplayName</key>
+					<string>Segment Id</string>
+					<key>INTypePropertyDisplayNameID</key>
+					<string>ypiyfN</string>
+					<key>INTypePropertyDisplayPriority</key>
+					<integer>5</integer>
+					<key>INTypePropertyName</key>
+					<string>segmentId</string>
+					<key>INTypePropertyTag</key>
+					<integer>103</integer>
+					<key>INTypePropertyType</key>
+					<string>Integer</string>
 				</dict>
 			</array>
 		</dict>

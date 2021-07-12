@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIVisualEffects
 
 enum StatusItemValue {
     case int(Int)
@@ -51,7 +50,6 @@ struct StatusItemView: View {
                         .font(.system(size: 12, weight: .regular, design: .default))
                         .foregroundColor(Color(.label))
                         .fixedSize(horizontal: true, vertical: false)
-                        .vibrancyEffect()
                 }
                 .padding(.bottom, 16)
             }

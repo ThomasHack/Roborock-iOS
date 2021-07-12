@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIVisualEffects
 
 struct PrimaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled

@@ -71,7 +71,7 @@ enum Home {
             case .selectAll:
                 if state.rooms.isEmpty {
                     guard let segments = state.api.segments else { return .none }
-                    let rooms = segments.data.map { $0.id!}
+                    let rooms = segments.data.map { $0.id}
                     state.rooms = rooms
                     return .none
                 }

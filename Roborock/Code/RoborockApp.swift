@@ -56,6 +56,7 @@ struct RoborockApp: App {
     private func donateShortcut() {
         let intent = CleanRoomIntent()
         intent.suggestedInvocationPhrase = "Staubsaugen starten"
+        intent.rooms = [Room(identifier: "17", display: "Wohnzimmer")]
         let interaction = INInteraction(intent: intent, response: nil)
         interaction.donate { error in
             if error != nil {
