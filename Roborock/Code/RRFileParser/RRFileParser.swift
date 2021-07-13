@@ -4,6 +4,7 @@
 //
 //  Created by Hack, Thomas on 28.06.21.
 //  https://github.com/marcelrv/XiaomiRobotVacuumProtocol/blob/master/RRMapFile/RRFileFormat.md
+//  swiftlint:disable type_body_length file_length
 
 import Combine
 import Gzip

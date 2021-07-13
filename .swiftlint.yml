@@ -1,6 +1,5 @@
 excluded:
 - Carthage
-- "Room.swift"
 opt_in_rules:
 - empty_count
 - first_where

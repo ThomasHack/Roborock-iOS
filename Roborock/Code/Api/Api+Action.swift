@@ -21,22 +21,22 @@ extension Api {
 
         case fetchSegments
 
-        case fetchSegmentsResponse(Result<Segments, ApiRestClient.Failure>)
+        case fetchSegmentsResponse(Result<Segments, RestClientError>)
 
         case startCleaningSegment
-        case startCleaningSegmentResponse(Result<Data, ApiRestClient.Failure>)
+        case startCleaningSegmentResponse(Result<String, RestClientError>)
         case stopCleaning
-        case stopCleaningResponse(Result<Data, ApiRestClient.Failure>)
+        case stopCleaningResponse(Result<String, RestClientError>)
         case pauseCleaning
-        case pauseCleaningResponse(Result<Data, ApiRestClient.Failure>)
+        case pauseCleaningResponse(Result<String, RestClientError>)
 
         case driveHome
-        case driveHomeResponse(Result<Data, ApiRestClient.Failure>)
+        case driveHomeResponse(Result<String, RestClientError>)
 
         case refreshMapImage
 
         case setFanspeed(Int)
-        case setFanspeedResponse(Result<Data, ApiRestClient.Failure>)
+        case setFanspeedResponse(Result<String, RestClientError>)
 
         case toggleRoom(Int)
         case resetRooms

@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import Foundation
+import RoborockApi
 
 enum Main {
 
@@ -36,7 +37,7 @@ enum Main {
 
     struct Environment {
         let mainQueue: AnySchedulerOf<DispatchQueue>
-        let apiClient: ApiRestClient
+        let restClient: RestClient
         let websocketClient: ApiWebSocketClient
         let rrFileParser: RRFileParser
     }
@@ -86,7 +87,7 @@ enum Main {
         reducer: Home.reducer,
         environment: Main.Environment(
             mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            apiClient: ApiRestClient.live,
+            restClient: RestClient(baseUrl: "http://roborock/api/"),
             websocketClient: ApiWebSocketClient.live,
             rrFileParser: RRFileParser()
         )
@@ -97,7 +98,7 @@ enum Main {
         reducer: Settings.reducer,
         environment: Main.Environment(
             mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            apiClient: ApiRestClient.live,
+            restClient: RestClient(baseUrl: "http://roborock/api/"),
             websocketClient: ApiWebSocketClient.live,
             rrFileParser: RRFileParser()
         )
@@ -105,7 +106,7 @@ enum Main {
 
     static let initialEnvironment = Environment(
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-        apiClient: ApiRestClient.live,
+        restClient: RestClient(baseUrl: "http://roborock/api/"),
         websocketClient: ApiWebSocketClient.live,
         rrFileParser: RRFileParser()
     )

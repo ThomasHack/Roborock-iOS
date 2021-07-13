@@ -10,9 +10,22 @@
 		52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2226494C0000E1C041 /* StatusItemView.swift */; };
 		52046F2626494DA100E1C041 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2526494DA100E1C041 /* PrimaryButtonStyle.swift */; };
 		52046F2926494DC400E1C041 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2826494DC400E1C041 /* BlurView.swift */; };
-		520801B4269CB2D200C3CE52 /* MapData+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520801B3269CB2D200C3CE52 /* MapData+Center.swift */; };
-		520801B6269CB2FB00C3CE52 /* MapData+Segments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520801B5269CB2FB00C3CE52 /* MapData+Segments.swift */; };
-		520801B8269CB34000C3CE52 /* MapData+PathType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520801B7269CB34000C3CE52 /* MapData+PathType.swift */; };
+		521C73FC269DD0C10098D71A /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 521C73FB269DD0C10098D71A /* RoborockApi */; };
+		521C73FE269DD0C60098D71A /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 521C73FD269DD0C60098D71A /* RoborockApi */; };
+		521C7406269DD3CD0098D71A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 521C7405269DD3CD0098D71A /* Assets.xcassets */; };
+		521C740D269DD3CE0098D71A /* WatchApp Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 521C740C269DD3CE0098D71A /* WatchApp Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		521C7412269DD3CE0098D71A /* RoborockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521C7411269DD3CE0098D71A /* RoborockApp.swift */; };
+		521C7414269DD3CE0098D71A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521C7413269DD3CE0098D71A /* HomeView.swift */; };
+		521C7416269DD3CE0098D71A /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521C7415269DD3CE0098D71A /* NotificationController.swift */; };
+		521C7418269DD3CE0098D71A /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521C7417269DD3CE0098D71A /* NotificationView.swift */; };
+		521C741A269DD3CE0098D71A /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521C7419269DD3CE0098D71A /* ComplicationController.swift */; };
+		521C741C269DD3CF0098D71A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 521C741B269DD3CF0098D71A /* Assets.xcassets */; };
+		521C741F269DD3CF0098D71A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 521C741E269DD3CF0098D71A /* Preview Assets.xcassets */; };
+		521C7424269DD3CF0098D71A /* WatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 521C7403269DD3CC0098D71A /* WatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		521C742E269DD77B0098D71A /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521C742D269DD77B0098D71A /* Home.swift */; };
+		521C7430269DD8680098D71A /* ApiRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521C742F269DD8680098D71A /* ApiRestClient.swift */; };
+		521C7432269DFA6A0098D71A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 521C7431269DFA6A0098D71A /* ComposableArchitecture */; };
+		521C7434269DFB0D0098D71A /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 521C7433269DFB0D0098D71A /* RoborockApi */; };
 		5249E97E2695D6930095828E /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E97D2695D6930095828E /* HeaderView.swift */; };
 		5249E9802695D6ED0095828E /* NotConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E97F2695D6ED0095828E /* NotConnectedView.swift */; };
 		5249E9822695D7C00095828E /* RoomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9812695D7C00095828E /* RoomSelectionView.swift */; };
@@ -26,37 +39,10 @@
 		5297E3A82698956E00680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
 		52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */; };
 		52AD4DAA2695D2C700D5C839 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52AD4DAC2695D2C700D5C839 /* Localizable.strings */; };
-		52D1BA83269C574800219230 /* RoborockApi.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D1BA80269C574800219230 /* RoborockApi.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		52D1BA8C269C57BD00219230 /* CleanRoomIntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */; };
-		52D1BA8D269C591800219230 /* MapData+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4ED268B580D0043F55F /* MapData+Path.swift */; };
-		52D1BA8E269C591800219230 /* MapData+ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4E3268B3E680043F55F /* MapData+ImageData.swift */; };
-		52D1BA8F269C591800219230 /* ApiWebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652FA91B264D2D0A007C67F6 /* ApiWebSocketEvent.swift */; };
-		52D1BA90269C591800219230 /* MapData+SegmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6506A7182690CDD000412028 /* MapData+SegmentType.swift */; };
-		52D1BA91269C591800219230 /* MapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4E5268B406F0043F55F /* MapData.swift */; };
-		52D1BA92269C591800219230 /* MapData+Meta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F3C87C268CA3B10085BC2C /* MapData+Meta.swift */; };
-		52D1BA93269C591800219230 /* MapData+Blocktype.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264819B268DE7770061D2FB /* MapData+Blocktype.swift */; };
-		52D1BA94269C591800219230 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289612646C728009B8BE5 /* Status.swift */; };
-		52D1BA95269C591800219230 /* MapData+ForbiddenZones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079CF268F7BD8000F7095 /* MapData+ForbiddenZones.swift */; };
-		52D1BA96269C591800219230 /* MapData+RobotPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4EB268B434B0043F55F /* MapData+RobotPosition.swift */; };
-		52D1BA97269C591800219230 /* MapData+Pixel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B531D2268CF463005F9036 /* MapData+Pixel.swift */; };
-		52D1BA98269C591800219230 /* MapData+Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211E4E7268B409E0043F55F /* MapData+Version.swift */; };
-		52D1BA99269C591800219230 /* MapData+Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65766E46268D10530081724F /* MapData+Point.swift */; };
-		52D1BA9A269C591800219230 /* MapData+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65766E44268D10220081724F /* MapData+Position.swift */; };
-		52D1BA9B269C591800219230 /* MapData+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65766E48268D10EE0081724F /* MapData+Size.swift */; };
-		52D1BA9C269C591800219230 /* VacuumState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBB42694C46B00D25CC6 /* VacuumState.swift */; };
-		52D1BA9E269C591E00219230 /* Segments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289692646EE53009B8BE5 /* Segments.swift */; };
-		52D1BA9F269C591E00219230 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652FA91D264D2D36007C67F6 /* Response.swift */; };
-		52D1BAA0269C592000219230 /* Fanspeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D5268F891D000F7095 /* Fanspeed.swift */; };
-		52D1BAA3269C595400219230 /* ApiWebSocketDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652FA919264D2CC6007C67F6 /* ApiWebSocketDelegate.swift */; };
-		52D1BAA4269C598B00219230 /* ApiRestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542895C2646C4F4009B8BE5 /* ApiRestClient.swift */; };
 		52D1BAA5269C598B00219230 /* ApiWebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652FA91F264D2EE1007C67F6 /* ApiWebSocketClient.swift */; };
-		52D1BAA9269C627E00219230 /* NWWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = 52D1BAA8269C627E00219230 /* NWWebSocket */; };
 		52D1BAAE269C6AB900219230 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 52D1BAAD269C6AB900219230 /* ComposableArchitecture */; };
 		52D1BAB0269C6AB900219230 /* Gzip in Frameworks */ = {isa = PBXBuildFile; productRef = 52D1BAAF269C6AB900219230 /* Gzip */; };
-		52D1BAB1269C6BA100219230 /* RoborockApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D1BA7E269C574800219230 /* RoborockApi.framework */; platformFilter = ios; };
-		52D1BAB2269C6BA100219230 /* RoborockApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 52D1BA7E269C574800219230 /* RoborockApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		52D1BAB6269C6BA800219230 /* RoborockApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D1BA7E269C574800219230 /* RoborockApi.framework */; platformFilter = ios; };
-		52D1BAB7269C6BA800219230 /* RoborockApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 52D1BA7E269C574800219230 /* RoborockApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		52D1BABB269C6C4A00219230 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5249E98F2696E7A70095828E /* IntentsUI.framework */; };
 		52DBCBA626946C0300D25CC6 /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA526946C0300D25CC6 /* UIColor+Custom.swift */; };
 		52DBCBA82694B1AB00D25CC6 /* String+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA72694B1AB00D25CC6 /* String+Size.swift */; };
@@ -86,6 +72,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		521C740E269DD3CE0098D71A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 654289302646B78B009B8BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 521C740B269DD3CE0098D71A;
+			remoteInfo = "WatchApp Extension";
+		};
+		521C7422269DD3CF0098D71A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 654289302646B78B009B8BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 521C7402269DD3CC0098D71A;
+			remoteInfo = WatchApp;
+		};
 		5249E9BA26970BD10095828E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 654289302646B78B009B8BE5 /* Project object */;
@@ -93,23 +93,31 @@
 			remoteGlobalIDString = 5249E9A226970BD00095828E;
 			remoteInfo = StartCleaning;
 		};
-		52D1BAB3269C6BA100219230 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 654289302646B78B009B8BE5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 52D1BA7D269C574800219230;
-			remoteInfo = RoborockApi;
-		};
-		52D1BAB8269C6BA800219230 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 654289302646B78B009B8BE5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 52D1BA7D269C574800219230;
-			remoteInfo = RoborockApi;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		521C7428269DD3CF0098D71A /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				521C740D269DD3CE0098D71A /* WatchApp Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5237FC77269DA2FD00266CD9 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				521C7424269DD3CF0098D71A /* WatchApp.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5249E99E2696E7A70095828E /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -127,7 +135,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				52D1BAB2269C6BA100219230 /* RoborockApi.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,7 +145,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				52D1BAB7269C6BA800219230 /* RoborockApi.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -149,14 +155,22 @@
 		52046F2226494C0000E1C041 /* StatusItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemView.swift; sourceTree = "<group>"; };
 		52046F2526494DA100E1C041 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
 		52046F2826494DC400E1C041 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		520801B3269CB2D200C3CE52 /* MapData+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Center.swift"; sourceTree = "<group>"; };
-		520801B5269CB2FB00C3CE52 /* MapData+Segments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Segments.swift"; sourceTree = "<group>"; };
-		520801B7269CB34000C3CE52 /* MapData+PathType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+PathType.swift"; sourceTree = "<group>"; };
-		5211E4E3268B3E680043F55F /* MapData+ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+ImageData.swift"; sourceTree = "<group>"; };
-		5211E4E5268B406F0043F55F /* MapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapData.swift; sourceTree = "<group>"; };
-		5211E4E7268B409E0043F55F /* MapData+Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Version.swift"; sourceTree = "<group>"; };
-		5211E4EB268B434B0043F55F /* MapData+RobotPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+RobotPosition.swift"; sourceTree = "<group>"; };
-		5211E4ED268B580D0043F55F /* MapData+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Path.swift"; sourceTree = "<group>"; };
+		521C73FA269DCFFF0098D71A /* RoborockApi */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RoborockApi; path = ../RoborockApi; sourceTree = "<group>"; };
+		521C7403269DD3CC0098D71A /* WatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		521C7405269DD3CD0098D71A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		521C7407269DD3CD0098D71A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		521C740C269DD3CE0098D71A /* WatchApp Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "WatchApp Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		521C7411269DD3CE0098D71A /* RoborockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoborockApp.swift; sourceTree = "<group>"; };
+		521C7413269DD3CE0098D71A /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		521C7415269DD3CE0098D71A /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		521C7417269DD3CE0098D71A /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		521C7419269DD3CE0098D71A /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		521C741B269DD3CF0098D71A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		521C741E269DD3CF0098D71A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		521C7420269DD3CF0098D71A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		521C7421269DD3CF0098D71A /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		521C742D269DD77B0098D71A /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		521C742F269DD8680098D71A /* ApiRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRestClient.swift; sourceTree = "<group>"; };
 		5249E97D2695D6930095828E /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		5249E97F2695D6ED0095828E /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
 		5249E9812695D7C00095828E /* RoomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSelectionView.swift; sourceTree = "<group>"; };
@@ -167,11 +181,8 @@
 		5249E9A726970BD00095828E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		5249E9A926970BD00095828E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanRoomIntentHandler.swift; sourceTree = "<group>"; };
-		525079CF268F7BD8000F7095 /* MapData+ForbiddenZones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+ForbiddenZones.swift"; sourceTree = "<group>"; };
 		525079D1268F82E6000F7095 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		525079D3268F82ED000F7095 /* UIImage+Rotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotate.swift"; sourceTree = "<group>"; };
-		525079D5268F891D000F7095 /* Fanspeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fanspeed.swift; sourceTree = "<group>"; };
-		5264819B268DE7770061D2FB /* MapData+Blocktype.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Blocktype.swift"; sourceTree = "<group>"; };
 		5275B16526499263008B4DC7 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -179,9 +190,6 @@
 		52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+PixelData.swift"; sourceTree = "<group>"; };
 		52AD4DAB2695D2C700D5C839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52AD4DAD2695D2D200D5C839 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		52D1BA7E269C574800219230 /* RoborockApi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RoborockApi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		52D1BA80269C574800219230 /* RoborockApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoborockApi.h; sourceTree = "<group>"; };
-		52D1BA81269C574800219230 /* RoborockApi.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = RoborockApi.docc; sourceTree = "<group>"; };
 		52DBCBA526946C0300D25CC6 /* UIColor+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Custom.swift"; sourceTree = "<group>"; };
 		52DBCBA72694B1AB00D25CC6 /* String+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Size.swift"; sourceTree = "<group>"; };
 		52DBCBA92694BA7600D25CC6 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
@@ -189,7 +197,6 @@
 		52DBCBAE2694BC6A00D25CC6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		52DBCBB02694BC7300D25CC6 /* Settings+SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+SettingsFeature.swift"; sourceTree = "<group>"; };
 		52DBCBB22694C20900D25CC6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
-		52DBCBB42694C46B00D25CC6 /* VacuumState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacuumState.swift; sourceTree = "<group>"; };
 		52EE04C5269CA00900C677AA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
 		52EE04C7269CA2AB00C677AA /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		52EE04C8269CA8D400C677AA /* Api+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Api+State.swift"; sourceTree = "<group>"; };
@@ -198,11 +205,6 @@
 		52EE04CE269CAE8D00C677AA /* SecondaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButtonStyle.swift; sourceTree = "<group>"; };
 		52F12B992689BF4300C5494E /* RRFileParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRFileParser.swift; sourceTree = "<group>"; };
 		52F12B9E268A2D5400C5494E /* Data+ByteBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+ByteBuffer.swift"; sourceTree = "<group>"; };
-		52F3C87C268CA3B10085BC2C /* MapData+Meta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Meta.swift"; sourceTree = "<group>"; };
-		6506A7182690CDD000412028 /* MapData+SegmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+SegmentType.swift"; sourceTree = "<group>"; };
-		652FA919264D2CC6007C67F6 /* ApiWebSocketDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiWebSocketDelegate.swift; sourceTree = "<group>"; };
-		652FA91B264D2D0A007C67F6 /* ApiWebSocketEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiWebSocketEvent.swift; sourceTree = "<group>"; };
-		652FA91D264D2D36007C67F6 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		652FA91F264D2EE1007C67F6 /* ApiWebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiWebSocketClient.swift; sourceTree = "<group>"; };
 		654289382646B78B009B8BE5 /* Roborock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roborock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6542893B2646B78B009B8BE5 /* RoborockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoborockApp.swift; sourceTree = "<group>"; };
@@ -211,36 +213,30 @@
 		654289442646B78C009B8BE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		654289572646C40F009B8BE5 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		6542895A2646C442009B8BE5 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
-		6542895C2646C4F4009B8BE5 /* ApiRestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRestClient.swift; sourceTree = "<group>"; };
 		6542895E2646C623009B8BE5 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
-		654289612646C728009B8BE5 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		654289632646E631009B8BE5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		654289652646E6DF009B8BE5 /* Home+HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Home+HomeFeature.swift"; sourceTree = "<group>"; };
 		654289672646E884009B8BE5 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		654289692646EE53009B8BE5 /* Segments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segments.swift; sourceTree = "<group>"; };
 		6542896B264725F1009B8BE5 /* SegmentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentList.swift; sourceTree = "<group>"; };
-		65766E44268D10220081724F /* MapData+Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Position.swift"; sourceTree = "<group>"; };
-		65766E46268D10530081724F /* MapData+Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Point.swift"; sourceTree = "<group>"; };
-		65766E48268D10EE0081724F /* MapData+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Size.swift"; sourceTree = "<group>"; };
-		65B531D2268CF463005F9036 /* MapData+Pixel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapData+Pixel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		521C7409269DD3CE0098D71A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				521C7434269DFB0D0098D71A /* RoborockApi in Frameworks */,
+				521C7432269DFA6A0098D71A /* ComposableArchitecture in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5249E9A026970BD00095828E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52D1BAB6269C6BA800219230 /* RoborockApi.framework in Frameworks */,
 				5249E9A526970BD00095828E /* Intents.framework in Frameworks */,
+				521C73FE269DD0C60098D71A /* RoborockApi in Frameworks */,
 				52D1BABB269C6C4A00219230 /* IntentsUI.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		52D1BA7B269C574800219230 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				52D1BAA9269C627E00219230 /* NWWebSocket in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,8 +245,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				52D1BAB0269C6AB900219230 /* Gzip in Frameworks */,
+				521C73FC269DD0C10098D71A /* RoborockApi in Frameworks */,
 				52D1BAAE269C6AB900219230 /* ComposableArchitecture in Frameworks */,
-				52D1BAB1269C6BA100219230 /* RoborockApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,46 +264,55 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		521C7404269DD3CC0098D71A /* WatchApp */ = {
+			isa = PBXGroup;
+			children = (
+				521C7405269DD3CD0098D71A /* Assets.xcassets */,
+				521C7407269DD3CD0098D71A /* Info.plist */,
+			);
+			path = WatchApp;
+			sourceTree = "<group>";
+		};
+		521C7410269DD3CE0098D71A /* WatchApp Extension */ = {
+			isa = PBXGroup;
+			children = (
+				521C742C269DD7700098D71A /* Home */,
+				521C7411269DD3CE0098D71A /* RoborockApp.swift */,
+				521C7413269DD3CE0098D71A /* HomeView.swift */,
+				521C7415269DD3CE0098D71A /* NotificationController.swift */,
+				521C7417269DD3CE0098D71A /* NotificationView.swift */,
+				521C7419269DD3CE0098D71A /* ComplicationController.swift */,
+				521C741B269DD3CF0098D71A /* Assets.xcassets */,
+				521C7420269DD3CF0098D71A /* Info.plist */,
+				521C7421269DD3CF0098D71A /* PushNotificationPayload.apns */,
+				521C741D269DD3CF0098D71A /* Preview Content */,
+				521C742F269DD8680098D71A /* ApiRestClient.swift */,
+			);
+			path = "WatchApp Extension";
+			sourceTree = "<group>";
+		};
+		521C741D269DD3CF0098D71A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				521C741E269DD3CF0098D71A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		521C742C269DD7700098D71A /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				521C742D269DD77B0098D71A /* Home.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		522336C9269351B300748AFD /* RRFileParser */ = {
 			isa = PBXGroup;
 			children = (
 				52F12B992689BF4300C5494E /* RRFileParser.swift */,
 			);
 			path = RRFileParser;
-			sourceTree = "<group>";
-		};
-		52397678268CD1B400F291E4 /* Websocket */ = {
-			isa = PBXGroup;
-			children = (
-				652FA91B264D2D0A007C67F6 /* ApiWebSocketEvent.swift */,
-				5211E4E5268B406F0043F55F /* MapData.swift */,
-				5264819B268DE7770061D2FB /* MapData+Blocktype.swift */,
-				520801B3269CB2D200C3CE52 /* MapData+Center.swift */,
-				525079CF268F7BD8000F7095 /* MapData+ForbiddenZones.swift */,
-				5211E4E3268B3E680043F55F /* MapData+ImageData.swift */,
-				52F3C87C268CA3B10085BC2C /* MapData+Meta.swift */,
-				5211E4ED268B580D0043F55F /* MapData+Path.swift */,
-				520801B7269CB34000C3CE52 /* MapData+PathType.swift */,
-				65B531D2268CF463005F9036 /* MapData+Pixel.swift */,
-				65766E46268D10530081724F /* MapData+Point.swift */,
-				65766E44268D10220081724F /* MapData+Position.swift */,
-				5211E4EB268B434B0043F55F /* MapData+RobotPosition.swift */,
-				520801B5269CB2FB00C3CE52 /* MapData+Segments.swift */,
-				65766E48268D10EE0081724F /* MapData+Size.swift */,
-				5211E4E7268B409E0043F55F /* MapData+Version.swift */,
-				6506A7182690CDD000412028 /* MapData+SegmentType.swift */,
-				654289612646C728009B8BE5 /* Status.swift */,
-				52DBCBB42694C46B00D25CC6 /* VacuumState.swift */,
-			);
-			path = Websocket;
-			sourceTree = "<group>";
-		};
-		52397679268CD1F800F291E4 /* Websocket */ = {
-			isa = PBXGroup;
-			children = (
-				652FA919264D2CC6007C67F6 /* ApiWebSocketDelegate.swift */,
-			);
-			path = Websocket;
 			sourceTree = "<group>";
 		};
 		5249E97A2695D5390095828E /* Code */ = {
@@ -377,15 +382,12 @@
 			path = StartCleaning;
 			sourceTree = "<group>";
 		};
-		52D1BA7F269C574800219230 /* RoborockApi */ = {
+		52B9B22C269DCAA9002411BF /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				52D1BA80269C574800219230 /* RoborockApi.h */,
-				52D1BA81269C574800219230 /* RoborockApi.docc */,
-				654289602646C70F009B8BE5 /* Model */,
-				52397679268CD1F800F291E4 /* Websocket */,
+				521C73FA269DCFFF0098D71A /* RoborockApi */,
 			);
-			path = RoborockApi;
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		52DBCBAB2694BBDA00D25CC6 /* Settings */ = {
@@ -411,24 +413,17 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
-		6510E8DE2688928D001E9230 /* Rest */ = {
-			isa = PBXGroup;
-			children = (
-				525079D5268F891D000F7095 /* Fanspeed.swift */,
-				652FA91D264D2D36007C67F6 /* Response.swift */,
-				654289692646EE53009B8BE5 /* Segments.swift */,
-			);
-			path = Rest;
-			sourceTree = "<group>";
-		};
 		6542892F2646B78B009B8BE5 = {
 			isa = PBXGroup;
 			children = (
+				52EE04C7269CA2AB00C677AA /* .swiftlint.yml */,
+				5249E98E2696E7A70095828E /* Frameworks */,
+				52B9B22C269DCAA9002411BF /* Packages */,
+				654289392646B78B009B8BE5 /* Products */,
 				6542893A2646B78B009B8BE5 /* Roborock */,
 				5249E9A626970BD00095828E /* StartCleaning */,
-				52D1BA7F269C574800219230 /* RoborockApi */,
-				5249E98E2696E7A70095828E /* Frameworks */,
-				654289392646B78B009B8BE5 /* Products */,
+				521C7404269DD3CC0098D71A /* WatchApp */,
+				521C7410269DD3CE0098D71A /* WatchApp Extension */,
 			);
 			sourceTree = "<group>";
 		};
@@ -437,7 +432,8 @@
 			children = (
 				654289382646B78B009B8BE5 /* Roborock.app */,
 				5249E9A326970BD00095828E /* StartCleaning.appex */,
-				52D1BA7E269C574800219230 /* RoborockApi.framework */,
+				521C7403269DD3CC0098D71A /* WatchApp.app */,
+				521C740C269DD3CE0098D71A /* WatchApp Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -449,7 +445,6 @@
 				5249E97A2695D5390095828E /* Code */,
 				654289412646B78C009B8BE5 /* Preview Content */,
 				5249E97C2695D5640095828E /* Supporting Files */,
-				52EE04C7269CA2AB00C677AA /* .swiftlint.yml */,
 			);
 			path = Roborock;
 			sourceTree = "<group>";
@@ -466,11 +461,10 @@
 			isa = PBXGroup;
 			children = (
 				6542895E2646C623009B8BE5 /* Api.swift */,
-				6542895C2646C4F4009B8BE5 /* ApiRestClient.swift */,
-				652FA91F264D2EE1007C67F6 /* ApiWebSocketClient.swift */,
-				52EE04C8269CA8D400C677AA /* Api+State.swift */,
-				52EE04CA269CA8DD00C677AA /* Api+Reducer.swift */,
 				52EE04CC269CA8E800C677AA /* Api+Action.swift */,
+				52EE04CA269CA8DD00C677AA /* Api+Reducer.swift */,
+				52EE04C8269CA8D400C677AA /* Api+State.swift */,
+				652FA91F264D2EE1007C67F6 /* ApiWebSocketClient.swift */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -497,33 +491,52 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		654289602646C70F009B8BE5 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				52397678268CD1B400F291E4 /* Websocket */,
-				6510E8DE2688928D001E9230 /* Rest */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		52D1BA79269C574800219230 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				52D1BA83269C574800219230 /* RoborockApi.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
+		521C7402269DD3CC0098D71A /* WatchApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 521C7429269DD3CF0098D71A /* Build configuration list for PBXNativeTarget "WatchApp" */;
+			buildPhases = (
+				521C7401269DD3CC0098D71A /* Resources */,
+				521C7428269DD3CF0098D71A /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				521C740F269DD3CE0098D71A /* PBXTargetDependency */,
+			);
+			name = WatchApp;
+			productName = WatchApp;
+			productReference = 521C7403269DD3CC0098D71A /* WatchApp.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		521C740B269DD3CE0098D71A /* WatchApp Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 521C7425269DD3CF0098D71A /* Build configuration list for PBXNativeTarget "WatchApp Extension" */;
+			buildPhases = (
+				521C7408269DD3CE0098D71A /* Sources */,
+				521C7409269DD3CE0098D71A /* Frameworks */,
+				521C740A269DD3CE0098D71A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WatchApp Extension";
+			packageProductDependencies = (
+				521C7431269DFA6A0098D71A /* ComposableArchitecture */,
+				521C7433269DFB0D0098D71A /* RoborockApi */,
+			);
+			productName = "WatchApp Extension";
+			productReference = 521C740C269DD3CE0098D71A /* WatchApp Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		5249E9A226970BD00095828E /* StartCleaning */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5249E9C026970BD10095828E /* Build configuration list for PBXNativeTarget "StartCleaning" */;
 			buildPhases = (
+				52B9B22A269DC369002411BF /* ShellScript */,
 				5249E99F26970BD00095828E /* Sources */,
 				5249E9A026970BD00095828E /* Frameworks */,
 				5249E9A126970BD00095828E /* Resources */,
@@ -532,55 +545,38 @@
 			buildRules = (
 			);
 			dependencies = (
-				52D1BAB9269C6BA800219230 /* PBXTargetDependency */,
 			);
 			name = StartCleaning;
+			packageProductDependencies = (
+				521C73FD269DD0C60098D71A /* RoborockApi */,
+			);
 			productName = StartCleaning;
 			productReference = 5249E9A326970BD00095828E /* StartCleaning.appex */;
 			productType = "com.apple.product-type.app-extension";
-		};
-		52D1BA7D269C574800219230 /* RoborockApi */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 52D1BA88269C574800219230 /* Build configuration list for PBXNativeTarget "RoborockApi" */;
-			buildPhases = (
-				52D1BA7A269C574800219230 /* Sources */,
-				52D1BA7B269C574800219230 /* Frameworks */,
-				52D1BA79269C574800219230 /* Headers */,
-				52D1BA7C269C574800219230 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = RoborockApi;
-			packageProductDependencies = (
-				52D1BAA8269C627E00219230 /* NWWebSocket */,
-			);
-			productName = RoborockApi;
-			productReference = 52D1BA7E269C574800219230 /* RoborockApi.framework */;
-			productType = "com.apple.product-type.framework";
 		};
 		654289372646B78B009B8BE5 /* Roborock */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 654289472646B78C009B8BE5 /* Build configuration list for PBXNativeTarget "Roborock" */;
 			buildPhases = (
+				52EE04C6269CA24A00C677AA /* ShellScript */,
 				654289342646B78B009B8BE5 /* Sources */,
 				654289352646B78B009B8BE5 /* Frameworks */,
 				654289362646B78B009B8BE5 /* Resources */,
 				5249E99E2696E7A70095828E /* Embed App Extensions */,
 				52D1BAB5269C6BA100219230 /* Embed Frameworks */,
-				52EE04C6269CA24A00C677AA /* ShellScript */,
+				5237FC77269DA2FD00266CD9 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				5249E9BB26970BD10095828E /* PBXTargetDependency */,
-				52D1BAB4269C6BA100219230 /* PBXTargetDependency */,
+				521C7423269DD3CF0098D71A /* PBXTargetDependency */,
 			);
 			name = Roborock;
 			packageProductDependencies = (
 				52D1BAAD269C6AB900219230 /* ComposableArchitecture */,
 				52D1BAAF269C6AB900219230 /* Gzip */,
+				521C73FB269DD0C10098D71A /* RoborockApi */,
 			);
 			productName = Roborock;
 			productReference = 654289382646B78B009B8BE5 /* Roborock.app */;
@@ -592,13 +588,16 @@
 		654289302646B78B009B8BE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1300;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
-					5249E9A226970BD00095828E = {
-						CreatedOnToolsVersion = 13.0;
+					521C7402269DD3CC0098D71A = {
+						CreatedOnToolsVersion = 12.5.1;
 					};
-					52D1BA7D269C574800219230 = {
+					521C740B269DD3CE0098D71A = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
+					5249E9A226970BD00095828E = {
 						CreatedOnToolsVersion = 13.0;
 					};
 					654289372646B78B009B8BE5 = {
@@ -627,20 +626,31 @@
 			targets = (
 				654289372646B78B009B8BE5 /* Roborock */,
 				5249E9A226970BD00095828E /* StartCleaning */,
-				52D1BA7D269C574800219230 /* RoborockApi */,
+				521C7402269DD3CC0098D71A /* WatchApp */,
+				521C740B269DD3CE0098D71A /* WatchApp Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		5249E9A126970BD00095828E /* Resources */ = {
+		521C7401269DD3CC0098D71A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				521C7406269DD3CD0098D71A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		52D1BA7C269C574800219230 /* Resources */ = {
+		521C740A269DD3CE0098D71A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				521C741F269DD3CF0098D71A /* Preview Assets.xcassets in Resources */,
+				521C741C269DD3CF0098D71A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5249E9A126970BD00095828E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -660,6 +670,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		52B9B22A269DC369002411BF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		52EE04C6269CA24A00C677AA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -680,6 +707,20 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		521C7408269DD3CE0098D71A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				521C7416269DD3CE0098D71A /* NotificationController.swift in Sources */,
+				521C7414269DD3CE0098D71A /* HomeView.swift in Sources */,
+				521C741A269DD3CE0098D71A /* ComplicationController.swift in Sources */,
+				521C7430269DD8680098D71A /* ApiRestClient.swift in Sources */,
+				521C7412269DD3CE0098D71A /* RoborockApp.swift in Sources */,
+				521C742E269DD77B0098D71A /* Home.swift in Sources */,
+				521C7418269DD3CE0098D71A /* NotificationView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5249E99F26970BD00095828E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -687,36 +728,6 @@
 				5297E3A82698956E00680D9A /* Intents.intentdefinition in Sources */,
 				5249E9A826970BD00095828E /* IntentHandler.swift in Sources */,
 				52D1BA8C269C57BD00219230 /* CleanRoomIntentHandler.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		52D1BA7A269C574800219230 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				52D1BA9B269C591800219230 /* MapData+Size.swift in Sources */,
-				52D1BA8D269C591800219230 /* MapData+Path.swift in Sources */,
-				52D1BA8F269C591800219230 /* ApiWebSocketEvent.swift in Sources */,
-				520801B6269CB2FB00C3CE52 /* MapData+Segments.swift in Sources */,
-				52D1BA9F269C591E00219230 /* Response.swift in Sources */,
-				52D1BA90269C591800219230 /* MapData+SegmentType.swift in Sources */,
-				52D1BA99269C591800219230 /* MapData+Point.swift in Sources */,
-				52D1BA97269C591800219230 /* MapData+Pixel.swift in Sources */,
-				52D1BA9E269C591E00219230 /* Segments.swift in Sources */,
-				52D1BAA0269C592000219230 /* Fanspeed.swift in Sources */,
-				52D1BA98269C591800219230 /* MapData+Version.swift in Sources */,
-				52D1BA96269C591800219230 /* MapData+RobotPosition.swift in Sources */,
-				52D1BA9A269C591800219230 /* MapData+Position.swift in Sources */,
-				52D1BA91269C591800219230 /* MapData.swift in Sources */,
-				52D1BA94269C591800219230 /* Status.swift in Sources */,
-				52D1BA92269C591800219230 /* MapData+Meta.swift in Sources */,
-				520801B8269CB34000C3CE52 /* MapData+PathType.swift in Sources */,
-				52D1BAA3269C595400219230 /* ApiWebSocketDelegate.swift in Sources */,
-				520801B4269CB2D200C3CE52 /* MapData+Center.swift in Sources */,
-				52D1BA8E269C591800219230 /* MapData+ImageData.swift in Sources */,
-				52D1BA9C269C591800219230 /* VacuumState.swift in Sources */,
-				52D1BA93269C591800219230 /* MapData+Blocktype.swift in Sources */,
-				52D1BA95269C591800219230 /* MapData+ForbiddenZones.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,7 +753,6 @@
 				52DBCBAD2694BBE200D25CC6 /* Settings.swift in Sources */,
 				52046F2626494DA100E1C041 /* PrimaryButtonStyle.swift in Sources */,
 				6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */,
-				52D1BAA4269C598B00219230 /* ApiRestClient.swift in Sources */,
 				654289642646E631009B8BE5 /* HomeView.swift in Sources */,
 				52EE04CD269CA8E800C677AA /* Api+Action.swift in Sources */,
 				52EE04CB269CA8DD00C677AA /* Api+Reducer.swift in Sources */,
@@ -766,22 +776,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		521C740F269DD3CE0098D71A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 521C740B269DD3CE0098D71A /* WatchApp Extension */;
+			targetProxy = 521C740E269DD3CE0098D71A /* PBXContainerItemProxy */;
+		};
+		521C7423269DD3CF0098D71A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 521C7402269DD3CC0098D71A /* WatchApp */;
+			targetProxy = 521C7422269DD3CF0098D71A /* PBXContainerItemProxy */;
+		};
 		5249E9BB26970BD10095828E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5249E9A226970BD00095828E /* StartCleaning */;
 			targetProxy = 5249E9BA26970BD10095828E /* PBXContainerItemProxy */;
-		};
-		52D1BAB4269C6BA100219230 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 52D1BA7D269C574800219230 /* RoborockApi */;
-			targetProxy = 52D1BAB3269C6BA100219230 /* PBXContainerItemProxy */;
-		};
-		52D1BAB9269C6BA800219230 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 52D1BA7D269C574800219230 /* RoborockApi */;
-			targetProxy = 52D1BAB8269C6BA800219230 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -807,6 +815,94 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		521C7426269DD3CF0098D71A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"WatchApp Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = N9C9UAVR87;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Debug;
+		};
+		521C7427269DD3CF0098D71A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"WatchApp Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = N9C9UAVR87;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Release;
+		};
+		521C742A269DD3CF0098D71A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = N9C9UAVR87;
+				IBSC_MODULE = WatchApp_Extension;
+				INFOPLIST_FILE = WatchApp/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Debug;
+		};
+		521C742B269DD3CF0098D71A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = N9C9UAVR87;
+				IBSC_MODULE = WatchApp_Extension;
+				INFOPLIST_FILE = WatchApp/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Release;
+		};
 		5249E9C126970BD10095828E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -832,6 +928,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WATCHOS_DEPLOYMENT_TARGET = 7.1;
 			};
 			name = Debug;
 		};
@@ -860,78 +957,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		52D1BA89269C574800219230 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = N9C9UAVR87;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleExecutable = RoborockApi;
-				INFOPLIST_KEY_CFBundleName = RoborockApi;
-				INFOPLIST_KEY_CFBundleVersion = 20210706;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.RoborockApi;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		52D1BA8A269C574800219230 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = N9C9UAVR87;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleExecutable = RoborockApi;
-				INFOPLIST_KEY_CFBundleName = RoborockApi;
-				INFOPLIST_KEY_CFBundleVersion = 20210706;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.RoborockApi;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 7.1;
 			};
 			name = Release;
 		};
@@ -1076,6 +1102,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WATCHOS_DEPLOYMENT_TARGET = 7.1;
 			};
 			name = Debug;
 		};
@@ -1102,26 +1129,36 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WATCHOS_DEPLOYMENT_TARGET = 7.1;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		521C7425269DD3CF0098D71A /* Build configuration list for PBXNativeTarget "WatchApp Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				521C7426269DD3CF0098D71A /* Debug */,
+				521C7427269DD3CF0098D71A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		521C7429269DD3CF0098D71A /* Build configuration list for PBXNativeTarget "WatchApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				521C742A269DD3CF0098D71A /* Debug */,
+				521C742B269DD3CF0098D71A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5249E9C026970BD10095828E /* Build configuration list for PBXNativeTarget "StartCleaning" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5249E9C126970BD10095828E /* Debug */,
 				5249E9C226970BD10095828E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		52D1BA88269C574800219230 /* Build configuration list for PBXNativeTarget "RoborockApi" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				52D1BA89269C574800219230 /* Debug */,
-				52D1BA8A269C574800219230 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1174,10 +1211,22 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		52D1BAA8269C627E00219230 /* NWWebSocket */ = {
+		521C73FB269DD0C10098D71A /* RoborockApi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6510E8DB268888B9001E9230 /* XCRemoteSwiftPackageReference "NWWebSocket" */;
-			productName = NWWebSocket;
+			productName = RoborockApi;
+		};
+		521C73FD269DD0C60098D71A /* RoborockApi */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoborockApi;
+		};
+		521C7431269DFA6A0098D71A /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+		521C7433269DFB0D0098D71A /* RoborockApi */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoborockApi;
 		};
 		52D1BAAD269C6AB900219230 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;

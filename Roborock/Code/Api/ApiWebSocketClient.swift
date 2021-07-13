@@ -3,7 +3,7 @@
 //  Roborock
 //
 //  Created by Thomas Hack on 13.05.21.
-//
+//  swiftlint:disable weak_delegate
 
 import Combine
 import ComposableArchitecture
@@ -15,7 +15,6 @@ import RoborockApi
 private var dependencies: [AnyHashable: Dependencies] = [:]
 private struct Dependencies {
     let delegate: ApiWebSocketDelegate
-
     let socket: NWWebSocket
     let subscriber: Effect<Api.Action, Never>.Subscriber
 }

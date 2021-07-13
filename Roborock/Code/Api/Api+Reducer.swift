@@ -57,7 +57,7 @@ extension Api {
             state.status = status
 
         case .fetchSegments:
-            return environment.apiClient.fetchSegments(ApiId())
+            return environment.restClient.fetchSegments()
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.fetchSegmentsResponse)
@@ -72,7 +72,7 @@ extension Api {
             return .none
 
         case .startCleaningSegment:
-            return environment.apiClient.startCleaningSegment(ApiId(), state.rooms)
+            return environment.restClient.cleanSegments(state.rooms, repeats: 1, order: 1)
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.startCleaningSegmentResponse)
@@ -87,7 +87,7 @@ extension Api {
             return .none
 
         case .stopCleaning:
-            return environment.apiClient.stopCleaning(ApiId())
+            return environment.restClient.stopCleaning()
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.stopCleaningResponse)
@@ -102,7 +102,7 @@ extension Api {
             return .none
 
         case .pauseCleaning:
-            return environment.apiClient.pauseCleaning(ApiId())
+            return environment.restClient.pauseCleaning()
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.pauseCleaningResponse)
@@ -117,7 +117,7 @@ extension Api {
             return .none
 
         case .driveHome:
-            return environment.apiClient.driveHome(ApiId())
+            return environment.restClient.driveHome()
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.driveHomeResponse)
@@ -166,7 +166,7 @@ extension Api {
                 .map(Action.setMapData)
 
         case .setFanspeed(let fanspeed):
-            return environment.apiClient.setFanspeed(ApiId(), fanspeed)
+            return environment.restClient.setFanspeed(fanspeed)
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.setFanspeedResponse)
