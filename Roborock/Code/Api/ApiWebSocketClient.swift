@@ -10,7 +10,7 @@ import ComposableArchitecture
 import Foundation
 import Network
 import NWWebSocket
-import RoborockApi
+import Roborock_Api
 
 private var dependencies: [AnyHashable: Dependencies] = [:]
 private struct Dependencies {

@@ -8,7 +8,7 @@
 import Foundation
 import Intents
 import Network
-import RoborockApi
+import Roborock_Api
 import SwiftUI
 
 class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {

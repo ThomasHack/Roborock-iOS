@@ -5,7 +5,7 @@
 //  Created by Hack, Thomas on 28.06.21.
 //
 
-import RoborockApi
+import Roborock_Api
 import UIKit
 
 extension UIColor {

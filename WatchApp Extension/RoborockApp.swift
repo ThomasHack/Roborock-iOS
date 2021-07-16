@@ -12,7 +12,10 @@ struct RoborockApp: App {
     @SceneBuilder var body: some Scene {
         WindowGroup {
             NavigationView {
-                HomeView()
+                TabView {
+                    HomeView(store: Home.store)
+                    SegmentsView(store: Home.store)
+                }
             }
         }
 
