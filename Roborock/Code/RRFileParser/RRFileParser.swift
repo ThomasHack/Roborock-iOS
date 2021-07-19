@@ -8,7 +8,7 @@
 
 import Combine
 import Gzip
-import Roborock_Api
+import RoborockApi
 import SwiftUI
 import UIKit
 

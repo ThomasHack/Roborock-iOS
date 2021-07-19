@@ -6,7 +6,7 @@
 //
 
 import ComposableArchitecture
-import Roborock_Api
+import RoborockApi
 import UIKit
 
 struct ApiId: Hashable {}

@@ -6,7 +6,7 @@
 //
 
 import ComposableArchitecture
-import Roborock_Api
+import RoborockApi
 import UIKit
 
 extension Api {
@@ -15,33 +15,28 @@ extension Api {
         case didConnect
         case disconnect
         case didDisconnect
-        case resetState
         case didReceiveWebSocketEvent(ApiWebSocketEvent)
         case didUpdateStatus(Status)
 
         case fetchSegments
-
         case fetchSegmentsResponse(Result<Segments, RestClientError>)
-
         case startCleaningSegment
-        case startCleaningSegmentResponse(Result<String, RestClientError>)
+        case startCleaningSegmentResponse(Result<ResponseString, RestClientError>)
         case stopCleaning
-        case stopCleaningResponse(Result<String, RestClientError>)
+        case stopCleaningResponse(Result<ResponseString, RestClientError>)
         case pauseCleaning
-        case pauseCleaningResponse(Result<String, RestClientError>)
-
+        case pauseCleaningResponse(Result<ResponseString, RestClientError>)
         case driveHome
-        case driveHomeResponse(Result<String, RestClientError>)
-
-        case refreshMapImage
-
-        case setFanspeed(Int)
-        case setFanspeedResponse(Result<String, RestClientError>)
-
+        case driveHomeResponse(Result<ResponseString, RestClientError>)
+        case setFanspeed(Fanspeed)
+        case setFanspeedResponse(Result<ResponseString, RestClientError>)
         case toggleRoom(Int)
         case resetRooms
+        case resetState
 
+#if os(iOS)
         case generateMapImage
+        case refreshMapImage
         case generatePathImage
         case generateForbiddenZones
         case generateRobotImage
@@ -55,5 +50,6 @@ extension Api {
         case setRobotImage(Result<UIImage, ImageGenerationError>)
         case setChargerImage(Result<UIImage, ImageGenerationError>)
         case setSegmentLabelsImage(Result<UIImage, ImageGenerationError>)
+#endif
     }
 }

@@ -36,15 +36,15 @@ struct StatusItemView: View {
                 }
                 Spacer()
 
-                VStack(alignment: .trailing, spacing: 0) {
+                HStack(alignment: .lastTextBaseline, spacing: 0) {
                     Text(value)
                         .font(.body)
                     Text(unit)
-                        .font(.caption)
+                        .font(.system(size: 12))
                         .foregroundColor(Color.gray)
                 }
             }
-            .padding(.bottom, 8)
+            .padding(.vertical, 8)
         }
     }
 }

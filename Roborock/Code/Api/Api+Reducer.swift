@@ -6,7 +6,7 @@
 //
 
 import ComposableArchitecture
-import Roborock_Api
+import RoborockApi
 import UIKit
 
 extension Api {
@@ -31,27 +31,6 @@ extension Api {
         case .didDisconnect:
             state.connectivityState = .disconnected
             return Effect(value: .resetState)
-
-        case .resetState:
-            state.status = nil
-            state.rooms = []
-            state.mapImage = nil
-            state.pathImage = nil
-            state.forbiddenZonesImage = nil
-            state.robotImage = nil
-            state.chargerImage = nil
-            state.segmentLabelsImage = nil
-
-        case .didReceiveWebSocketEvent(let event):
-            switch event {
-            case .binary(let data):
-                return environment.rrFileParser.parse(data)
-                    .receive(on: environment.mainQueue)
-                    .catchToEffect()
-                    .map(Action.setMapData)
-            default:
-                break
-            }
 
         case .didUpdateStatus(let status):
             state.status = status
@@ -80,7 +59,7 @@ extension Api {
         case .startCleaningSegmentResponse(let result):
             switch result {
             case .success:
-                break
+                print("result: \(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -95,6 +74,7 @@ extension Api {
         case .stopCleaningResponse(let result):
             switch result {
             case .success:
+                print("result: \(result)")
                 return Effect(value: .resetRooms)
             case .failure(let error):
                 print(error.localizedDescription)
@@ -110,7 +90,7 @@ extension Api {
         case .pauseCleaningResponse(let result):
             switch result {
             case .success:
-                break
+                print("result: \(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -125,45 +105,11 @@ extension Api {
         case .driveHomeResponse(let result):
             switch result {
             case .success:
-                break
+                print("result: \(result)")
             case .failure(let error):
                 print(error.localizedDescription)
             }
             return .none
-
-        case .setMapData(let result):
-            switch result {
-            case .success(let mapData):
-                state.mapData = mapData
-                if state.initialUpdateDone {
-                    // Static images have been generated already
-                    // So just update the changed ones
-                    return .merge(
-                        Effect(value: Action.generateMapImage),
-                        Effect(value: Action.generatePathImage),
-                        Effect(value: Action.generateRobotImage)
-                    )
-                } else {
-                    // No images have been generated before
-                    // So generate all images including static ones
-                    return .merge(
-                        Effect(value: Action.generateMapImage),
-                        Effect(value: Action.generateChargerImage),
-                        Effect(value: Action.generateForbiddenZones),
-                        Effect(value: Action.generatePathImage),
-                        Effect(value: Action.generateRobotImage),
-                        Effect(value: Action.generateSegmentLabelsImage)
-                    )
-                }
-            case .failure(let error):
-                print("\(error.localizedDescription)")
-            }
-
-        case .refreshMapImage:
-            return environment.rrFileParser.refreshData()
-                .receive(on: environment.mainQueue)
-                .catchToEffect()
-                .map(Action.setMapData)
 
         case .setFanspeed(let fanspeed):
             return environment.restClient.setFanspeed(fanspeed)
@@ -171,6 +117,10 @@ extension Api {
                 .catchToEffect()
                 .map(Action.setFanspeedResponse)
 
+        case . setFanspeedResponse(let result):
+            print("result: \(result)")
+
+#if os(iOS)
         case .toggleRoom(let roomId):
             if let index = state.rooms.firstIndex(of: roomId) {
                 state.rooms.remove(at: index)
@@ -185,11 +135,38 @@ extension Api {
             environment.rrFileParser.segments = state.rooms
             return Effect(value: .refreshMapImage)
 
+        case .didReceiveWebSocketEvent(let event):
+            switch event {
+            case .binary(let data):
+                return environment.rrFileParser.parse(data)
+                    .receive(on: environment.mainQueue)
+                    .catchToEffect()
+                    .map(Action.setMapData)
+            default:
+                break
+            }
+
+        case .resetState:
+            state.status = nil
+            state.rooms = []
+            state.mapImage = nil
+            state.pathImage = nil
+            state.forbiddenZonesImage = nil
+            state.robotImage = nil
+            state.chargerImage = nil
+            state.segmentLabelsImage = nil
+
         case .generateMapImage:
             return environment.rrFileParser.drawMapImage()
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.setMapImage)
+
+        case .refreshMapImage:
+            return environment.rrFileParser.refreshData()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(Action.setMapData)
 
         case .generatePathImage:
             return environment.rrFileParser.drawPathsImage()
@@ -220,6 +197,34 @@ extension Api {
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.setSegmentLabelsImage)
+
+        case .setMapData(let result):
+            switch result {
+            case .success(let mapData):
+                state.mapData = mapData
+                if state.initialUpdateDone {
+                    // Static images have been generated already
+                    // So just update the changed ones
+                    return .merge(
+                        Effect(value: Action.generateMapImage),
+                        Effect(value: Action.generatePathImage),
+                        Effect(value: Action.generateRobotImage)
+                    )
+                } else {
+                    // No images have been generated before
+                    // So generate all images including static ones
+                    return .merge(
+                        Effect(value: Action.generateMapImage),
+                        Effect(value: Action.generateChargerImage),
+                        Effect(value: Action.generateForbiddenZones),
+                        Effect(value: Action.generatePathImage),
+                        Effect(value: Action.generateRobotImage),
+                        Effect(value: Action.generateSegmentLabelsImage)
+                    )
+                }
+            case .failure(let error):
+                print("\(error.localizedDescription)")
+            }
 
         case .setMapImage(let result):
             switch result {
@@ -268,8 +273,28 @@ extension Api {
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        default:
-            break
+#endif
+
+#if os(watchOS)
+        case .didReceiveWebSocketEvent:
+            return .none
+
+        case .toggleRoom(let roomId):
+            if let index = state.rooms.firstIndex(of: roomId) {
+                state.rooms.remove(at: index)
+            } else {
+                state.rooms.append(roomId)
+            }
+            return .none
+
+        case .resetRooms:
+            state.rooms = []
+            return .none
+
+        case .resetState:
+            state.status = nil
+            state.rooms = []
+#endif
         }
         return .none
     }

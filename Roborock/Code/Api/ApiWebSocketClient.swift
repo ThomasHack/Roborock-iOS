@@ -10,7 +10,7 @@ import ComposableArchitecture
 import Foundation
 import Network
 import NWWebSocket
-import Roborock_Api
+import RoborockApi
 
 private var dependencies: [AnyHashable: Dependencies] = [:]
 private struct Dependencies {
@@ -37,7 +37,8 @@ extension ApiWebSocketClient {
                     },
                     didReceiveWebSocketEvent: {
                         subscriber.send(.didReceiveWebSocketEvent($0 as ApiWebSocketEvent))
-                    }, didUpdateStatus: {
+                    },
+                    didUpdateStatus: {
                         subscriber.send(.didUpdateStatus($0 as Status))
                     }
                 )

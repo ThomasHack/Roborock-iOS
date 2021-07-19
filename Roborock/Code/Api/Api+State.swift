@@ -6,39 +6,14 @@
 //
 
 import ComposableArchitecture
-import Roborock_Api
+import RoborockApi
 import UIKit
 
 extension Api {
     struct State: Equatable {
         var connectivityState: ConnectivityState = .disconnected
-
         var segments: Segments?
-        var mapData: MapData?
-
-        var mapImage: UIImage?
-        var pathImage: UIImage?
-        var forbiddenZonesImage: UIImage?
-        var robotImage: UIImage?
-        var chargerImage: UIImage?
-        var segmentLabelsImage: UIImage?
-
-        var initialUpdateDone: Bool {
-            mapImage != nil
-            && pathImage != nil
-            && forbiddenZonesImage != nil
-            && robotImage != nil
-            && chargerImage != nil
-            && segmentLabelsImage != nil
-        }
-
-        var status: Status? {
-            willSet {
-                if self.inCleaning && newValue?.inCleaning == 0 {
-                    ViewStore(Main.store.api).send(.resetRooms)
-                }
-            }
-        }
+        var rooms: [Int] = []
 
         var state: VacuumState {
             guard let state = status?.vacuumState else {
@@ -88,6 +63,35 @@ extension Api {
             return String(format: "%.2f", Double(status.cleanArea) / 1000000)
         }
 
-        var rooms: [Int] = []
+#if os(iOS)
+        var status: Status? {
+            willSet {
+                if self.inCleaning && newValue?.inCleaning == 0 {
+                    ViewStore(Main.store.api).send(.resetRooms)
+                }
+            }
+        }
+
+        var mapData: MapData?
+        var mapImage: UIImage?
+        var pathImage: UIImage?
+        var forbiddenZonesImage: UIImage?
+        var robotImage: UIImage?
+        var chargerImage: UIImage?
+        var segmentLabelsImage: UIImage?
+
+        var initialUpdateDone: Bool {
+            mapImage != nil
+            && pathImage != nil
+            && forbiddenZonesImage != nil
+            && robotImage != nil
+            && chargerImage != nil
+            && segmentLabelsImage != nil
+        }
+#endif
+
+#if os(watchOS)
+        var status: Status?
+#endif
     }
 }

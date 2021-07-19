@@ -6,7 +6,7 @@
 //
 
 import ComposableArchitecture
-import Roborock_Api
+import RoborockApi
 import SwiftUI
 
 struct ButtonView: View {
@@ -19,18 +19,6 @@ struct ButtonView: View {
             VStack {
                 if viewStore.api.connectivityState == .connected {
                     HStack(alignment: .center, spacing: 16) {
-                        Button {
-                            viewStore.send(.driveHome)
-
-                        } label: {
-                            Image(systemName: "house.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
-                        }
-                        .disabled(viewStore.api.connectivityState != .connected || viewStore.api.state == .charging)
-                        .buttonStyle(SecondaryButtonStyle())
-
                         if !viewStore.api.inCleaning && !viewStore.api.inReturning {
                             Button {
                                 viewStore.send(.toggleRoomSelection(true))
