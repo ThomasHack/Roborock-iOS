@@ -12,13 +12,22 @@ import SwiftUI
 struct ButtonView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
 
-    @State private var showingPopover = false
-
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack {
                 if viewStore.api.connectivityState == .connected {
                     HStack(alignment: .center, spacing: 16) {
+                        Button {
+                            viewStore.send(.driveHome)
+                        } label: {
+                            Image(systemName: "house.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                        }
+                        .disabled(!viewStore.api.isConnected || viewStore.api.state == .charging)
+                        .buttonStyle(SecondaryButtonStyle())
+
                         if !viewStore.api.inCleaning && !viewStore.api.inReturning {
                             Button {
                                 viewStore.send(.toggleRoomSelection(true))
@@ -57,29 +66,7 @@ struct ButtonView: View {
                             .buttonStyle(SecondaryButtonStyle())
                         }
 
-                        Menu(content: {
-                            ForEach(Fanspeed.allCases.reversed(), id: \.self) { value in
-                                Button {
-                                    viewStore.send(.api(.setFanspeed(value.rawValue)))
-                                } label: {
-                                    HStack {
-                                        Text(value.label)
-                                        Spacer()
-                                        if viewStore.state.api.status?.fanPower == value.rawValue {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(.blue)
-                                        }
-                                    }
-                                }                        }
-                        }, label: {
-                            Image(systemName: "speedometer")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
-                        })
-                        .padding(16)
-                        .background(Color(.systemBackground))
-                        .clipShape(Circle())
+                        FanspeedSelection(store: self.store)
                     }
                 } else {
                     VStack {

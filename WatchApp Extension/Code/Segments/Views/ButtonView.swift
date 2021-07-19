@@ -15,63 +15,58 @@ struct ButtonView: View {
         WithViewStore(self.store) { viewStore in
             VStack {
                 Button {
-                    viewStore.send(.stopCleaning)
+                    viewStore.send(.driveHome)
                 } label: {
-                    Image(systemName: "stop.fill")
+                    Image(systemName: "house.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
                 }
-                .disabled(!viewStore.api.isConnected)
+                .disabled(!viewStore.api.isConnected || viewStore.api.state == .charging)
 
-                if viewStore.api.connectivityState == .connected {
+                if !viewStore.api.inCleaning && !viewStore.api.inReturning {
                     Button {
-                        viewStore.send(.driveHome)
+                        viewStore.send(.toggleSegmentsModal(true))
                     } label: {
-                        Image(systemName: "house.fill")
+                        Image(systemName: "play.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
+                            .offset(x: 2, y: 0)
+                            .padding(.vertical, 16)
+                    }
+                    .disabled(!viewStore.api.isConnected || viewStore.api.rooms.isEmpty)
+
+                } else {
+                    Button {
+                        viewStore.send(.stopCleaning)
+                    } label: {
+                        Image(systemName: "stop.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
                     }
-                    .disabled(viewStore.api.connectivityState != .connected || viewStore.api.state == .charging)
+                    .disabled(!viewStore.api.isConnected)
+                }
 
-                    if !viewStore.api.inCleaning && !viewStore.api.inReturning {
-                        Button {
-                            viewStore.send(.startCleaning)
-                        } label: {
-                            Image(systemName: "play.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
-                                .offset(x: 2, y: 0)
-                        }
-                        .disabled(!viewStore.api.isConnected || viewStore.api.rooms.isEmpty)
-
-                    } else {
-                        Button {
-                            viewStore.send(.stopCleaning)
-                        } label: {
-                            Image(systemName: "stop.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
-                        }
-                        .disabled(!viewStore.api.isConnected)
+                if viewStore.api.inCleaning && viewStore.api.inReturning {
+                    Button {
+                        viewStore.send(.pauseCleaning)
+                    } label: {
+                        Image(systemName: "pause.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
                     }
-
-                    if viewStore.api.inCleaning && viewStore.api.inReturning {
-                        Button {
-                            viewStore.send(.pauseCleaning)
-                        } label: {
-                            Image(systemName: "pause.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
-                        }
-                        .disabled(!viewStore.api.isConnected)
-                    }
+                    .disabled(!viewStore.api.isConnected)
                 }
             }
         }
+    }
+}
+
+struct ButtonView_Previews: PreviewProvider {
+    static var previews: some View {
+        ButtonView(store: Main.previewStoreHome)
     }
 }

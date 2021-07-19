@@ -10,7 +10,7 @@ import SwiftUI
 struct CircularProgressViewStyle: ProgressViewStyle {
     var tintColor: Color
 
-    private let strokeWidth = 4.0
+    private let strokeWidth = 5.0
 
     func makeBody(configuration: Configuration) -> some View {
         let fractionCompleted = configuration.fractionCompleted ?? 0
@@ -24,7 +24,7 @@ struct CircularProgressViewStyle: ProgressViewStyle {
                 .stroke(tintColor, style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
                 .rotationEffect(.degrees(-90))
         }
-        .frame(width: 24, height: 24, alignment: .center)
+        // .frame(width: 24, height: 24, alignment: .center)
         .padding(2)
     }
 }

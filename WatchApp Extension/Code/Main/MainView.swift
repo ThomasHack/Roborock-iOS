@@ -14,11 +14,9 @@ struct MainView: View {
     var body: some View {
         WithViewStore(self.store) { _ in
             NavigationView {
-                ScrollView {
-                    VStack {
-                        HomeView(store: Main.store.home)
-                        SegmentsView(store: Main.store.home)
-                    }
+                TabView {
+                    HomeView(store: Main.store.home)
+                    SegmentsView(store: Main.store.home)
                 }
             }
         }

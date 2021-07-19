@@ -10,9 +10,12 @@ import Foundation
 import RoborockApi
 
 enum Home {
-    struct State: Equatable {}
+    struct State: Equatable {
+        var showSegmentsModal: Bool
+    }
 
     enum Action {
+        case toggleSegmentsModal(Bool)
         case fetchSegments
         case startCleaning
         case stopCleaning
@@ -29,8 +32,11 @@ enum Home {
     typealias Environment = Main.Environment
 
     static let reducer = Reducer<HomeFeatureState, Action, Environment>.combine(
-        Reducer { _, action, _ in
+        Reducer { state, action, _ in
             switch action {
+            case .toggleSegmentsModal(let toggle):
+                state.showSegmentsModal = toggle
+                return .none
             case .fetchSegments:
                 return Effect(value: .api(.fetchSegments))
 
@@ -69,7 +75,9 @@ enum Home {
         )
     )
 
-    static let initialState = State()
+    static let initialState = State(
+        showSegmentsModal: false
+    )
 
     static let initialEnvironment = Environment(
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),

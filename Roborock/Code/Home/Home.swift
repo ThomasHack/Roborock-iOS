@@ -6,11 +6,13 @@
 //
 
 import ComposableArchitecture
+import RoborockApi
 import SwiftUI
 
 enum Home {
     struct State: Equatable {
         var presentRoomSelection = false
+        var fanspeeds = Fanspeed.allCases
     }
 
     enum Action {

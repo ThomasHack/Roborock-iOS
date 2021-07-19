@@ -51,7 +51,8 @@ extension Api {
             return .none
 
         case .startCleaningSegment:
-            return environment.restClient.cleanSegments(state.rooms, repeats: 1, order: 1)
+            let requestData = SegmentsRequestData(segments: state.rooms, repeats: 1, order: 1)
+            return environment.restClient.cleanSegments(requestData)
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.startCleaningSegmentResponse)
@@ -112,7 +113,8 @@ extension Api {
             return .none
 
         case .setFanspeed(let fanspeed):
-            return environment.restClient.setFanspeed(fanspeed)
+            let requestData = FanspeedRequestData(speed: fanspeed.rawValue)
+            return environment.restClient.setFanspeed(requestData)
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(Action.setFanspeedResponse)
