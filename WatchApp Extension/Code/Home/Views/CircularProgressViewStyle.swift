@@ -49,7 +49,7 @@ struct CircularProgressViewStyle: ProgressViewStyle {
                     .rotationEffect(.degrees(-90))
                     .shadow(color: Color(shadowGreen).opacity(0.4), radius: 2, x: 4, y: 0)
             )
-            .padding(CGFloat(strokeWidth) / 2)
+            .padding(4)
     }
 }
 
