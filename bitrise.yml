@@ -24,6 +24,9 @@ workflows:
         - export_method: $BITRISE_EXPORT_METHOD
     - deploy-to-bitrise-io@1: {}
     - cache-push@2: {}
+    meta:
+      bitrise.io:
+        stack: osx-xcode-12.5.x
 app:
   envs:
   - opts:
