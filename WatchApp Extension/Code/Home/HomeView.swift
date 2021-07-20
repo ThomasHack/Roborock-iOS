@@ -16,47 +16,49 @@ struct HomeView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            VStack(alignment: .leading, spacing: 8) {
-                if let status = viewStore.status {
-                    // LazyVGrid(columns: columns) {
-                    HStack {
-                        BatteryTileView(value: status.battery)
-                            .frame(minHeight: 70)
+            VStack(alignment: .leading, spacing: 16) {
+                if viewStore.api.isConnected, let status = viewStore.status {
+                    StateTileView(state: viewStore.api.state)
 
-                        VStack(alignment: .leading) {
+                    HStack(spacing: 4) {
+                        BatteryTileView(value: status.battery)
+                            .frame(width: 68, height: 68)
+
+                        VStack(alignment: .leading, spacing: 8) {
                             StatusTileView(iconName: "stopwatch",
                                            label: "Clean time",
                                            unit: "h",
-                                           color: Color.orange,
+                                           color: Color("primary"),
                                            value: viewStore.binding(get: { $0.api.cleanTime }, send: Home.Action.none))
+                                .fixedSize(horizontal: true, vertical: false)
 
                             StatusTileView(iconName: "square.dashed",
                                            label: "Clean area",
                                            unit: "qm",
-                                           color: Color.blue,
+                                           color: Color("primary"),
                                            value: viewStore.binding(get: { $0.api.cleanArea }, send: Home.Action.none))
+                                .fixedSize(horizontal: true, vertical: false)
                         }
-                    }
-
-                    if let state = status.vacuumState {
-                        // StateTileView(state: state, label: "roborock.state.\(status.state)")
-                        Text(LocalizedStringKey(String("roborock.state.\(state.rawValue)")))
-                            .font(.system(size: 18, weight: .bold, design: .default))
-                            .multilineTextAlignment(.leading)
-                            .fixedSize(horizontal: false, vertical: true)
+                        .padding(.leading, 8)
                     }
 
                     ButtonView(store: self.store)
                 } else {
-                    VStack {
+                    VStack(spacing: 0) {
                         Spacer()
-                        Text("Loading...")
+                        ProgressView()
+                        Text("Connecting...")
                         Spacer()
                     }
                 }
             }
+            .navigationTitle("Roborock")
+            .padding(.top, 16)
             .sheet(isPresented: viewStore.binding(get: \.showSegmentsModal, send: Home.Action.toggleSegmentsModal)) {
                 SegmentList(store: store)
+            }
+            .sheet(isPresented: viewStore.binding(get: \.showFanspeedModal, send: Home.Action.toggleFanspeedModal)) {
+                FanspeedList(store: store)
             }
         }
         .navigationTitle("Status")

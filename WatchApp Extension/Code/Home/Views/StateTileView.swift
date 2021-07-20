@@ -10,7 +10,6 @@ import SwiftUI
 
 struct StateTileView: View {
     @State var state: VacuumState
-    @State var label: String
 
     var iconName: String {
         switch state {
@@ -58,30 +57,35 @@ struct StateTileView: View {
     }
 
     var body: some View {
-        HStack(spacing: 8) {
-            VStack {
-                Image(systemName: iconName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
-            }
-            .background(Color.blue)
-            .clipShape(Circle())
+        HStack {
+            Spacer(minLength: 0)
 
-            Text(LocalizedStringKey(String("roborock.state.\(state.rawValue)")))
-                .font(.system(size: 12, weight: .bold, design: .default))
-                .foregroundColor(Color.gray)
+            HStack(spacing: 8) {
+                VStack {
+                    Image(systemName: iconName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 18, height: 18)
+                }
+                .padding(6)
+                .background(Color("primary"))
+                .clipShape(Circle())
+
+                Text(LocalizedStringKey(String("roborock.state.\(state.rawValue)")))
+                    .font(.system(size: 18, weight: .bold, design: .default))
+                    .multilineTextAlignment(.center)
+                    .frame(minHeight: 40)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color("secondarySystemBackground"))
-        .cornerRadius(22)
     }
 }
 
 struct StateTileView_Previews: PreviewProvider {
     static var previews: some View {
-        StateTileView(state: VacuumState.charging, label: "Charging")
+        StateTileView(state: VacuumState.charging)
             .previewLayout(.fixed(width: 100, height: 100))
     }
 }

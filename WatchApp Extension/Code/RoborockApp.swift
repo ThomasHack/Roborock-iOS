@@ -41,6 +41,9 @@ struct RoborockApp: App {
             MainView(store: self.store)
                 .onAppear { connect() }
         }
+        .onChange(of: scenePhase) { phase in
+            handlePhaseChange(phase)
+        }
 
         WKNotificationScene(controller: NotificationController.self, category: "myCategory")
     }

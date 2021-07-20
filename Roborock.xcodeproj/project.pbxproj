@@ -51,6 +51,8 @@
 		52DBCBAF2694BC6A00D25CC6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBAE2694BC6A00D25CC6 /* SettingsView.swift */; };
 		52DBCBB12694BC7300D25CC6 /* Settings+SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBB02694BC7300D25CC6 /* Settings+SettingsFeature.swift */; };
 		52DBCBB32694C20900D25CC6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBB22694C20900D25CC6 /* SectionHeader.swift */; };
+		52E890AB26A6E128004E9D7A /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E890AA26A6E128004E9D7A /* CircularButtonStyle.swift */; };
+		52E890AD26A6E320004E9D7A /* FanspeedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E890AC26A6E320004E9D7A /* FanspeedList.swift */; };
 		52EE04CF269CAE8D00C677AA /* SecondaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EE04CE269CAE8D00C677AA /* SecondaryButtonStyle.swift */; };
 		52F12B9A2689BF4300C5494E /* RRFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F12B992689BF4300C5494E /* RRFileParser.swift */; };
 		52F12B9F268A2D5400C5494E /* Data+ByteBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F12B9E268A2D5400C5494E /* Data+ByteBuffer.swift */; };
@@ -86,7 +88,6 @@
 		65B0EEF926A37F3A00924CB9 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEF826A37F3A00924CB9 /* ButtonView.swift */; };
 		65B0EEFC26A3816D00924CB9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEFB26A3816D00924CB9 /* MainView.swift */; };
 		65B0EEFE26A3825E00924CB9 /* SegmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEFD26A3825E00924CB9 /* SegmentList.swift */; };
-		65B0EF0226A383B500924CB9 /* SegmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EF0126A383B500924CB9 /* SegmentsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -218,6 +219,8 @@
 		52DBCBAE2694BC6A00D25CC6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		52DBCBB02694BC7300D25CC6 /* Settings+SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+SettingsFeature.swift"; sourceTree = "<group>"; };
 		52DBCBB22694C20900D25CC6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		52E890AA26A6E128004E9D7A /* CircularButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularButtonStyle.swift; sourceTree = "<group>"; };
+		52E890AC26A6E320004E9D7A /* FanspeedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanspeedList.swift; sourceTree = "<group>"; };
 		52EE04C5269CA00900C677AA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
 		52EE04C7269CA2AB00C677AA /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		52EE04CE269CAE8D00C677AA /* SecondaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButtonStyle.swift; sourceTree = "<group>"; };
@@ -246,7 +249,6 @@
 		65B0EEF826A37F3A00924CB9 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		65B0EEFB26A3816D00924CB9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		65B0EEFD26A3825E00924CB9 /* SegmentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentList.swift; sourceTree = "<group>"; };
-		65B0EF0126A383B500924CB9 /* SegmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,15 +293,6 @@
 				52EE04CE269CAE8D00C677AA /* SecondaryButtonStyle.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		5211D747269EE0A00095B00E /* Segments */ = {
-			isa = PBXGroup;
-			children = (
-				65B0EF0126A383B500924CB9 /* SegmentsView.swift */,
-				65B0EEFA26A380E800924CB9 /* Views */,
-			);
-			path = Segments;
 			sourceTree = "<group>";
 		};
 		521C7404269DD3CC0098D71A /* WatchApp */ = {
@@ -353,10 +346,13 @@
 		5238572426A056AD00B2FBEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				65B0EEF526A3749900924CB9 /* CircularProgressViewStyle.swift */,
-				5238572526A056B800B2FBEA /* StatusTileView.swift */,
 				52C658ED26A5D38F009C8D07 /* BatteryTileView.swift */,
+				65B0EEF826A37F3A00924CB9 /* ButtonView.swift */,
+				65B0EEF526A3749900924CB9 /* CircularProgressViewStyle.swift */,
+				52E890AC26A6E320004E9D7A /* FanspeedList.swift */,
+				65B0EEFD26A3825E00924CB9 /* SegmentList.swift */,
 				6510D92926A5E62C00FECC97 /* StateTileView.swift */,
+				5238572526A056B800B2FBEA /* StatusTileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -530,15 +526,6 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		65B0EEFA26A380E800924CB9 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				65B0EEF826A37F3A00924CB9 /* ButtonView.swift */,
-				65B0EEFD26A3825E00924CB9 /* SegmentList.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		65B0EEFF26A3835200924CB9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -554,10 +541,10 @@
 				521C7411269DD3CE0098D71A /* RoborockApp.swift */,
 				521C742C269DD7700098D71A /* Home */,
 				65B0EEFF26A3835200924CB9 /* Main */,
-				5211D747269EE0A00095B00E /* Segments */,
 				521C7419269DD3CE0098D71A /* ComplicationController.swift */,
 				521C7415269DD3CE0098D71A /* NotificationController.swift */,
 				521C7417269DD3CE0098D71A /* NotificationView.swift */,
+				52E890AA26A6E128004E9D7A /* CircularButtonStyle.swift */,
 				52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */,
 			);
 			path = Code;
@@ -775,7 +762,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "#if which swiftlint >/dev/null; then\n#  swiftlint\n#else\n#  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -789,7 +776,6 @@
 				521C7416269DD3CE0098D71A /* NotificationController.swift in Sources */,
 				6510D92A26A5E62C00FECC97 /* StateTileView.swift in Sources */,
 				65B0EEF726A3759000924CB9 /* Home+HomeFeature.swift in Sources */,
-				65B0EF0226A383B500924CB9 /* SegmentsView.swift in Sources */,
 				65B0EEF626A3749900924CB9 /* CircularProgressViewStyle.swift in Sources */,
 				65B0EECF26A35E1100924CB9 /* Home.swift in Sources */,
 				65B0EEE426A364B500924CB9 /* Shared.swift in Sources */,
@@ -800,10 +786,12 @@
 				65B0EEE326A364AA00924CB9 /* ApiWebSocketClient.swift in Sources */,
 				65B0EEF026A36FF400924CB9 /* Api+Action.swift in Sources */,
 				5238572626A056B800B2FBEA /* StatusTileView.swift in Sources */,
+				52E890AD26A6E320004E9D7A /* FanspeedList.swift in Sources */,
 				65B0EEFC26A3816D00924CB9 /* MainView.swift in Sources */,
 				65B0EEF126A36FF600924CB9 /* Api+Reducer.swift in Sources */,
 				521C7412269DD3CE0098D71A /* RoborockApp.swift in Sources */,
 				65B0EEF926A37F3A00924CB9 /* ButtonView.swift in Sources */,
+				52E890AB26A6E128004E9D7A /* CircularButtonStyle.swift in Sources */,
 				65B0EEFE26A3825E00924CB9 /* SegmentList.swift in Sources */,
 				521C7418269DD3CE0098D71A /* NotificationView.swift in Sources */,
 				65B0EEEF26A36F4400924CB9 /* Api+State.swift in Sources */,
@@ -926,7 +914,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Debug;
 		};
@@ -951,7 +939,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Release;
 		};
@@ -972,7 +960,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Debug;
 		};
@@ -993,7 +981,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.0;
 			};
 			name = Release;
 		};
@@ -1009,7 +997,7 @@
 				INFOPLIST_KEY_CFBundleName = StartCleaning;
 				INFOPLIST_KEY_CFBundleVersion = 20210706;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1038,7 +1026,7 @@
 				INFOPLIST_KEY_CFBundleName = StartCleaning;
 				INFOPLIST_KEY_CFBundleVersion = 20210706;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1187,7 +1175,7 @@
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Roborock/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1214,7 +1202,7 @@
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Roborock/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

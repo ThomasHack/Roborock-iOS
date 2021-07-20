@@ -44,7 +44,7 @@ extension Home {
     }
 
     static let previewState = HomeFeatureState(
-        home: Home.State(showSegmentsModal: false),
+        home: Home.State(showSegmentsModal: false, showFanspeedModal: false),
         shared: Shared.State(
             host: "http://preview.host",
             showSettingsModal: false

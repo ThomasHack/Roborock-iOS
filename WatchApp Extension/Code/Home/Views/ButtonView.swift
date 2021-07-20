@@ -22,6 +22,7 @@ struct ButtonView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
                 }
+                .buttonStyle(CircularButtonStyle())
                 .disabled(!viewStore.api.isConnected || viewStore.api.state == .charging)
 
                 if !viewStore.api.inCleaning && !viewStore.api.inReturning {
@@ -60,6 +61,17 @@ struct ButtonView: View {
                     }
                     .disabled(!viewStore.api.isConnected)
                 }
+
+                Button {
+                    viewStore.send(.toggleFanspeedModal(true))
+                } label: {
+                    Image(systemName: "speedometer")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
+                }
+                .buttonStyle(CircularButtonStyle())
+                .disabled(!viewStore.api.isConnected)
             }
         }
     }

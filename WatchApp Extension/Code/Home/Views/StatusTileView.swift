@@ -23,20 +23,25 @@ struct StatusTileView: View {
                 Image(systemName: iconName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
+                    .frame(width: 18, height: 18)
             }
-            .padding(4)
+            .padding(6)
             .background(color)
             .clipShape(Circle())
 
-            HStack(alignment: .lastTextBaseline, spacing: 0) {
-                Text(value)
-                    .font(.system(size: 12, weight: .bold, design: .default))
-                Text(unit)
-                    .font(.system(size: 9, weight: .bold, design: .default))
-            }
+            VStack(alignment: .leading, spacing: 0) {
+                Text(label)
+                    .font(.system(size: 11, weight: .regular, design: .default))
+                    .foregroundColor(Color.gray)
 
-            Spacer()
+                HStack(alignment: .lastTextBaseline, spacing: 0) {
+                    Text(value)
+                        .font(.system(size: 15, weight: .bold, design: .default))
+                    Text(unit)
+                        .font(.system(size: 10, weight: .bold, design: .default))
+                }
+            }
+            Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity)
     }
@@ -45,11 +50,12 @@ struct StatusTileView: View {
 struct StatusItemView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            HStack {
+            VStack(spacing: 8) {
                 StatusTileView(iconName: "stopwatch", label: "Clean Time", unit: "h", color: Color.orange, value: .constant("00:52"))
                 StatusTileView(iconName: "square.dashed", label: "Clean Area", unit: "qm", color: Color.green, value: .constant("56.8"))
             }
+            .padding()
         }
-        .previewLayout(.fixed(width: 200, height: 200))
+        .previewLayout(.fixed(width: 110, height: 70))
     }
 }

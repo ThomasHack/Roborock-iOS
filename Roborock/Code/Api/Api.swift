@@ -29,5 +29,27 @@ enum Api {
                                         Segment(id: 4, name: "Küche")
                                     ]),
                                     rooms: [],
-                                    status: Status(state: 2, otaState: "", messageVersion: 1, battery: 100, cleanTime: 60, cleanArea: 10, errorCode: 0, mapPresent: 1, inCleaning: 0, inReturning: 0, inFreshState: 1, waterBoxStatus: 0, fanPower: 101, dndEnabled: 0, mapStatus: 1, mainBrushLife: 100, sideBrushLife: 200, filterLife: 300, stateHumanReadable: "Charging", model: "roborock.s5", errorHumanReadable: ""))
+                                    status: Status(state: 8,
+                                                   otaState: "",
+                                                   messageVersion: 1,
+                                                   battery: 86,
+                                                   cleanTime: 60,
+                                                   cleanArea: 10,
+                                                   errorCode: 0,
+                                                   mapPresent: 1,
+                                                   inCleaning: 0,
+                                                   inReturning: 0,
+                                                   inFreshState: 1,
+                                                   waterBoxStatus: 0,
+                                                   fanPower: 101,
+                                                   dndEnabled: 0,
+                                                   mapStatus: 1,
+                                                   mainBrushLife: 100,
+                                                   sideBrushLife: 200,
+                                                   filterLife: 300,
+                                                   stateHumanReadable: "Charging",
+                                                   model: "roborock.s5",
+                                                   errorHumanReadable: ""
+                                                  )
+    )
 }

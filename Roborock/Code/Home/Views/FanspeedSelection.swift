@@ -28,7 +28,8 @@ struct FanspeedSelection: View {
                                         .foregroundColor(.blue)
                                 }
                             }
-                        }                        }
+                        }
+                    }
                 }, label: {
                     Image(systemName: "speedometer")
                         .resizable()

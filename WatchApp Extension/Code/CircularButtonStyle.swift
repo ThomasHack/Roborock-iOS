@@ -1,5 +1,5 @@
 //
-//  PrimaryButtonStyle.swift
+//  CircularButtonStyle.swift
 //  WatchApp Extension
 //
 //  Created by Hack, Thomas on 19.07.21.
@@ -8,37 +8,36 @@
 import SwiftUI
 import UIKit
 
-struct PrimaryButtonStyle: ButtonStyle {
+struct CircularButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
 
     func makeBody(configuration: Self.Configuration) -> some View {
         let foregroundColor = isEnabled ? Color.white : Color.gray
-        let backgroundColor = isEnabled ? Color("primary") : Color("secondarySystemBackground")
+        let backgroundColor = isEnabled ? Color("secondarySystemBackground") : Color.black
 
         return configuration.label
             .fixedSize(horizontal: true, vertical: false)
-            .frame(maxWidth: .infinity)
+            .frame(minWidth: 44)
             .frame(minHeight: 44)
             .foregroundColor(foregroundColor)
             .background(backgroundColor)
-            .cornerRadius(22.0)
+            .cornerRadius(44)
     }
 }
 
-struct PrimaryButton: View {
+struct CircularButton: View {
     var body: some View {
         Button {} label: {
-            Text("Test 123")
+            Image(systemName: "house.fill")
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(CircularButtonStyle())
     }
 }
 
-struct PrimaryButton_Previews: PreviewProvider {
+struct CircularButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            PrimaryButton()
-                .disabled(true)
+            CircularButton()
         }
         .previewLayout(.fixed(width: 224, height: 184))
     }

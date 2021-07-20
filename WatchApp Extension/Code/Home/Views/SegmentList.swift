@@ -24,12 +24,24 @@ struct SegmentList: View {
                                     viewStore.send(.toggleRoom(id))
                                 } label: {
                                     HStack {
-                                        Text(name)
-                                        Spacer()
                                         if viewStore.api.rooms.contains(id) {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(.blue)
+                                            let index = Int(viewStore.api.rooms.firstIndex(of: id) ?? 0)
+                                            ZStack {
+                                                Circle()
+                                                    .foregroundColor(Color("primary"))
+                                                    .frame(width: 24, height: 24)
+                                                Text("\(index + 1)")
+                                            }
+                                        } else {
+                                            Circle()
+                                                .strokeBorder(Color("primary"), lineWidth: 2)
+                                                .frame(width: 24, height: 24)
                                         }
+
+                                        Text(name)
+                                            .padding(.leading, 4)
+
+                                        Spacer()
                                     }
                                 }
                             }
@@ -37,15 +49,6 @@ struct SegmentList: View {
                     }
                     .padding(.bottom, 44)
                 }
-                .toolbar(content: {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button {
-                            viewStore.send(.startCleaning)
-                        } label: {
-                            Text("Start")
-                        }
-                    }
-                })
                 .overlay(
                     VStack {
                         Spacer()
@@ -56,6 +59,7 @@ struct SegmentList: View {
                                 Text("Start")
                             }
                             .buttonStyle(PrimaryButtonStyle())
+                            .disabled(viewStore.api.rooms.isEmpty)
                         }
                         .padding()
                         .background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))
