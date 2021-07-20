@@ -189,6 +189,7 @@
 		521C7420269DD3CF0098D71A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		521C7421269DD3CF0098D71A /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		521C742D269DD77B0098D71A /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		52232ADC26A74C250024D072 /* bitrise.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bitrise.yml; sourceTree = "<group>"; };
 		5238572526A056B800B2FBEA /* StatusTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTileView.swift; sourceTree = "<group>"; };
 		5249E97D2695D6930095828E /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		5249E97F2695D6ED0095828E /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
@@ -452,6 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				52EE04C7269CA2AB00C677AA /* .swiftlint.yml */,
+				52232ADC26A74C250024D072 /* bitrise.yml */,
 				5249E98E2696E7A70095828E /* Frameworks */,
 				654289392646B78B009B8BE5 /* Products */,
 				6542893A2646B78B009B8BE5 /* Roborock */,
