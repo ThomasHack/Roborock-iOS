@@ -13,12 +13,7 @@ struct MainView: View {
 
     var body: some View {
         WithViewStore(self.store) { _ in
-            NavigationView {
-                TabView {
-                    HomeView(store: Main.store.home)
-                    SegmentsView(store: Main.store.home)
-                }
-            }
+            HomeView(store: Main.store.home)
         }
     }
 }

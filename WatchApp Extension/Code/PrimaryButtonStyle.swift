@@ -13,12 +13,12 @@ struct PrimaryButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Self.Configuration) -> some View {
         let foregroundColor = isEnabled ? Color.white : Color.gray
-        let backgroundColor = isEnabled ? Color.blue : Color.black
+        let backgroundColor = isEnabled ? Color("primary") : Color.black
 
         return configuration.label
             .fixedSize(horizontal: true, vertical: false)
             .frame(maxWidth: .infinity)
-            .frame(minHeight: 40)
+            .frame(minHeight: 44)
             .foregroundColor(foregroundColor)
             .background(backgroundColor)
             .cornerRadius(22.0)

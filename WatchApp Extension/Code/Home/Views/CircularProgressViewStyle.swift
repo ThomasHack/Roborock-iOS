@@ -24,7 +24,6 @@ struct CircularProgressViewStyle: ProgressViewStyle {
                 .stroke(tintColor, style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
                 .rotationEffect(.degrees(-90))
         }
-        // .frame(width: 24, height: 24, alignment: .center)
         .padding(2)
     }
 }

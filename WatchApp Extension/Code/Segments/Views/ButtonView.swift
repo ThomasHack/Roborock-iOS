@@ -13,7 +13,7 @@ struct ButtonView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            VStack {
+            HStack {
                 Button {
                     viewStore.send(.driveHome)
                 } label: {
@@ -33,9 +33,9 @@ struct ButtonView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
                             .offset(x: 2, y: 0)
-                            .padding(.vertical, 16)
                     }
-                    .disabled(!viewStore.api.isConnected || viewStore.api.rooms.isEmpty)
+                    .buttonStyle(PrimaryButtonStyle())
+                    .disabled(!viewStore.api.isConnected)
 
                 } else {
                     Button {

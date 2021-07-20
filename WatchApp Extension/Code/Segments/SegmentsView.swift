@@ -12,14 +12,11 @@ struct SegmentsView: View {
     let store: Store<Home.HomeFeatureState, Home.Action>
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(self.store) { _ in
             ScrollView {
                 ButtonView(store: store)
             }
             .navigationTitle("Clean Room")
-            .sheet(isPresented: viewStore.binding(get: \.showSegmentsModal, send: Home.Action.toggleSegmentsModal)) {
-                SegmentList(store: store)
-            }
         }
     }
 }

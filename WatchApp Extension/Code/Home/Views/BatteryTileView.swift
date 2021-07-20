@@ -11,9 +11,10 @@ struct BatteryTileView: View {
     @State var value: Int
 
     var body: some View {
-        VStack(spacing: 8) {
+        GeometryReader { geometry in
             ProgressView("\(value)", value: Float(value), total: Float(100))
                 .progressViewStyle(CircularProgressViewStyle(tintColor: Color.green))
+                .frame(width: geometry.size.width, height: geometry.size.height)
                 .overlay(
                     HStack(alignment: .lastTextBaseline, spacing: 0) {
                         Text("\(value)")
@@ -24,8 +25,6 @@ struct BatteryTileView: View {
                     }
                 )
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.vertical, 8)
     }
 }
 
