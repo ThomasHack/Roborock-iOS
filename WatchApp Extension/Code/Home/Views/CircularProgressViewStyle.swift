@@ -13,21 +13,23 @@ struct CircularProgressViewStyle: ProgressViewStyle {
     func makeBody(configuration: Configuration) -> some View {
         let fractionCompleted = configuration.fractionCompleted ?? 0
         let background = #colorLiteral(red: 0.06939987838, green: 0.07400544733, blue: 0.06823639572, alpha: 1)
+        let yellow = #colorLiteral(red: 0.9960246682, green: 0.9582805037, blue: 0, alpha: 1)
         let orange = #colorLiteral(red: 0.9875745177, green: 0.659271419, blue: 0.2163393199, alpha: 1)
+        let lightGreen = #colorLiteral(red: 0.5500606894, green: 1, blue: 0, alpha: 1)
         let green = #colorLiteral(red: 0, green: 1, blue: 0, alpha: 1)
-        let shadowGreen = #colorLiteral(red: 0.03670389205, green: 0.1547718048, blue: 0.02876702696, alpha: 1)
+        let darkGreen = #colorLiteral(red: 0.03670389205, green: 0.1547718048, blue: 0.02876702696, alpha: 1)
 
-        Circle()
+        return Circle()
             .stroke(Color(background), style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
             .overlay(
                 Circle()
                     .trim(from: 0, to: CGFloat(fractionCompleted))
                     .stroke(AngularGradient(
                         gradient: Gradient(colors: [
-                            Color(#colorLiteral(red: 0.9875745177, green: 0.659271419, blue: 0.2163393199, alpha: 1)),
-                            Color(#colorLiteral(red: 0.9960246682, green: 0.9582805037, blue: 0, alpha: 1)),
-                            Color(#colorLiteral(red: 0.5500606894, green: 1, blue: 0, alpha: 1)),
-                            Color(#colorLiteral(red: 0, green: 1, blue: 0, alpha: 1))
+                            Color(orange),
+                            Color(yellow),
+                            Color(lightGreen),
+                            Color(green)
                         ]),
                         center: .center,
                         startAngle: .degrees(0),
@@ -47,7 +49,7 @@ struct CircularProgressViewStyle: ProgressViewStyle {
                     .stroke(fractionCompleted > 0.9 ? Color(green) : Color.clear,
                             style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
                     .rotationEffect(.degrees(-90))
-                    .shadow(color: Color(shadowGreen).opacity(0.4), radius: 2, x: 4, y: 0)
+                    .shadow(color: Color(darkGreen).opacity(0.4), radius: 2, x: 4, y: 0)
             )
             .padding(4)
     }
