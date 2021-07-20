@@ -506,7 +506,7 @@ public class RRFileParser {
 
         guard let providerRef = CGDataProvider(data: Data(bytes: pixels, count: count) as CFData) else { return nil }
 
-        guard let cgImage = CGImage(
+        guard let pixelImage = CGImage(
                     width: Int(imageSize.width),
                     height: Int(imageSize.height),
                     bitsPerComponent: 8,
@@ -524,7 +524,7 @@ public class RRFileParser {
 
         guard let context = UIGraphicsGetCurrentContext() else { return nil }
         context.interpolationQuality = .none
-        context.draw(cgImage, in: CGRect(origin: .zero, size: size))
+        context.draw(pixelImage, in: CGRect(origin: .zero, size: size))
 
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
