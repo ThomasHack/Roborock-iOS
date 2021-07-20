@@ -39,7 +39,6 @@ struct RoborockApp: App {
     @SceneBuilder var body: some Scene {
         WindowGroup {
             MainView(store: self.store)
-                .onAppear { connect() }
         }
         .onChange(of: scenePhase) { phase in
             handlePhaseChange(phase)
