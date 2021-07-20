@@ -12,9 +12,13 @@ struct CircularProgressViewStyle: ProgressViewStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         let fractionCompleted = configuration.fractionCompleted ?? 0
+        let background = #colorLiteral(red: 0.06939987838, green: 0.07400544733, blue: 0.06823639572, alpha: 1)
+        let orange = #colorLiteral(red: 0.9875745177, green: 0.659271419, blue: 0.2163393199, alpha: 1)
+        let green = #colorLiteral(red: 0, green: 1, blue: 0, alpha: 1)
+        let shadowGreen = #colorLiteral(red: 0.03670389205, green: 0.1547718048, blue: 0.02876702696, alpha: 1)
 
         Circle()
-            .stroke(Color(#colorLiteral(red: 0.06939987838, green: 0.07400544733, blue: 0.06823639572, alpha: 1)), style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
+            .stroke(Color(background), style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
             .overlay(
                 Circle()
                     .trim(from: 0, to: CGFloat(fractionCompleted))
@@ -33,19 +37,19 @@ struct CircularProgressViewStyle: ProgressViewStyle {
             .overlay(Circle()
                         .trim(from: 0, to: 0.01)
                         .stroke(
-                            Color(#colorLiteral(red: 0.9875745177, green: 0.659271419, blue: 0.2163393199, alpha: 1)),
+                            Color(orange),
                             style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
                         .rotationEffect(.degrees(-90))
             )
-            .overlay(content: {
-                if fractionCompleted > 0.9 {
-                    Circle()
-                        .trim(from: 0.9, to: CGFloat(fractionCompleted))
-                        .stroke(Color(#colorLiteral(red: 0, green: 1, blue: 0, alpha: 1)), style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
-                        .rotationEffect(.degrees(-90))
-                }
-            })
-            .padding(strokeWidth / 2)
+            .overlay(
+                Circle()
+                    .trim(from: 0.9, to: CGFloat(fractionCompleted))
+                    .stroke(fractionCompleted > 0.9 ? Color(green) : Color.clear,
+                            style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                    .shadow(color: Color(shadowGreen).opacity(0.4), radius: 2, x: 4, y: 0)
+            )
+            .padding(CGFloat(strokeWidth) / 2)
     }
 }
 
