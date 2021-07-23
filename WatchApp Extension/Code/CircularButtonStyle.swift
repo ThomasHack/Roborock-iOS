@@ -20,8 +20,9 @@ struct CircularButtonStyle: ButtonStyle {
             .frame(minWidth: 44)
             .frame(minHeight: 44)
             .foregroundColor(foregroundColor)
-            .background(backgroundColor)
+            .background(backgroundColor.opacity(configuration.isPressed ? 0.9 : 1.0))
             .cornerRadius(44)
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
     }
 }
 

@@ -9,6 +9,8 @@ import ComposableArchitecture
 import Foundation
 import RoborockApi
 
+struct WatchKitId: Hashable {}
+
 enum Main {
 
     struct State: Equatable {
@@ -29,6 +31,11 @@ enum Main {
     }
 
     enum Action {
+        case connect
+        case watchSessionDidActivate
+        case watchSessionDidDeactivate
+        case didReceiveMessage([String: Any])
+
         case home(Home.Action)
         case api(Api.Action)
         case shared(Shared.Action)
@@ -39,6 +46,7 @@ enum Main {
         let mainQueue: AnySchedulerOf<DispatchQueue>
         let restClient: RestClient
         let websocketClient: ApiWebSocketClient
+        let watchkitSessionClient: WatchKitSessionClient
         let rrFileParser: RRFileParser
     }
 
@@ -46,15 +54,30 @@ enum Main {
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
         restClient: RestClient(baseUrl: "http://roborock/api/"),
         websocketClient: ApiWebSocketClient.live,
+        watchkitSessionClient: WatchKitSessionClient.live,
         rrFileParser: RRFileParser()
     )
 
     static let reducer = Reducer<State, Action, Environment>.combine(
-        Reducer { _, action, _ in
+        Reducer { state, action, environment in
             switch action {
+            case .connect:
+                return environment.watchkitSessionClient.connect(WatchKitId())
+
+            case .watchSessionDidActivate:
+                print("didConnect")
+
+            case .watchSessionDidDeactivate:
+                print("didDisconnect")
+
+            case .didReceiveMessage(let message):
+                let response = ["response": state.shared.host]
+                return environment.watchkitSessionClient.sendMessage(WatchKitId(), message)
+
             case .home, . api, .shared, .settings:
                 return .none
             }
+            return .none
         },
         Api.reducer.pullback(
             state: \State.api,
@@ -92,23 +115,13 @@ enum Main {
     static let previewStoreHome = Store(
         initialState: Home.previewState,
         reducer: Home.reducer,
-        environment: Main.Environment(
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            restClient: RestClient(baseUrl: "http://roborock/api/"),
-            websocketClient: ApiWebSocketClient.live,
-            rrFileParser: RRFileParser()
-        )
+        environment: initialEnvironment
     )
 
     static let previewStoreSettings = Store<Settings.SettingsFeatureState, Settings.Action>(
         initialState: Settings.previewState,
         reducer: Settings.reducer,
-        environment: Main.Environment(
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            restClient: RestClient(baseUrl: "http://roborock/api/"),
-            websocketClient: ApiWebSocketClient.live,
-            rrFileParser: RRFileParser()
-        )
+        environment: initialEnvironment
     )
 }
 

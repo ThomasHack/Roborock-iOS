@@ -70,6 +70,10 @@ struct RoborockApp: App {
     var body: some Scene {
         WindowGroup {
             MainView(store: store)
+                .onAppear {
+                    let viewStore = ViewStore(self.store)
+                    viewStore.send(.connect)
+                }
         }
         .onChange(of: scenePhase) { phase in
             handlePhaseChange(phase)

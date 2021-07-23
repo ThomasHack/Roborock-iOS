@@ -43,12 +43,13 @@ enum Home {
             case .toggleSegmentsModal(let toggle):
                 WKInterfaceDevice.current().play(.click)
                 state.showSegmentsModal = toggle
-
                 return .none
+
             case .toggleFanspeedModal(let toggle):
                 WKInterfaceDevice.current().play(.click)
                 state.showFanspeedModal = toggle
                 return .none
+
             case .fetchSegments:
                 return Effect(value: .api(.fetchSegments))
 
@@ -79,6 +80,7 @@ enum Home {
                 state.showFanspeedModal = false
                 WKInterfaceDevice.current().play(.success)
                 return Effect(value: .api(.setFanspeed(fanspeed)))
+
             case .none, .api, .shared:
                 break
             }
@@ -101,9 +103,9 @@ enum Home {
         showFanspeedModal: false
     )
 
-    static let initialEnvironment = Environment(
-        mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-        restClient: RestClient(baseUrl: "http://roborock/api/"),
-        websocketClient: ApiWebSocketClient.live
+    static let previewStore = Store(
+        initialState: Home.previewState,
+        reducer: Home.reducer,
+        environment: Main.initialEnvironment
     )
 }

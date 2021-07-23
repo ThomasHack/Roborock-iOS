@@ -14,7 +14,7 @@ struct ButtonView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             HStack {
-                Button {
+                 Button {
                     viewStore.send(.driveHome)
                 } label: {
                     Image(systemName: "house.fill")
@@ -79,6 +79,6 @@ struct ButtonView: View {
 
 struct ButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonView(store: Main.previewStoreHome)
+        ButtonView(store: Home.previewStore)
     }
 }

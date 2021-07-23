@@ -9,7 +9,7 @@ import ComposableArchitecture
 import Foundation
 
 enum Shared {
-    static let appGroupName = "group.roborock"
+    static let appGroupName = "group.thomashack.valetudo"
     static let hostDefaultsKeyName = "roborock.hostname"
 
     static let userDefaults = UserDefaults(suiteName: appGroupName)

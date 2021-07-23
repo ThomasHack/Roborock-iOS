@@ -9,6 +9,8 @@ import ComposableArchitecture
 import Foundation
 import RoborockApi
 
+struct WatchKitId: Hashable {}
+
 enum Main {
     struct State: Equatable {
         var home: Home.State
@@ -22,6 +24,12 @@ enum Main {
     }
 
     enum Action {
+        case connect
+        case watchSessionDidActivate
+        case watchSessionDidDeactivate
+        case requestDataSync
+        case didReceiveMessage([String: Any])
+
         case home(Home.Action)
         case api(Api.Action)
         case shared(Shared.Action)
@@ -31,20 +39,40 @@ enum Main {
         let mainQueue: AnySchedulerOf<DispatchQueue>
         let restClient: RestClient
         let websocketClient: ApiWebSocketClient
+        let watchkitSessionClient: WatchKitSessionClient
     }
 
     static let initialEnvironment = Environment(
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
         restClient: RestClient(baseUrl: "http://roborock/api/"),
-        websocketClient: ApiWebSocketClient.live
+        websocketClient: ApiWebSocketClient.live,
+        watchkitSessionClient: WatchKitSessionClient.live
     )
 
     static let reducer = Reducer<State, Action, Environment>.combine(
-        Reducer { _, action, _ in
+        Reducer { state, action, environment in
             switch action {
+            case .connect:
+                return environment.watchkitSessionClient.connect(WatchKitId())
+
+            case .watchSessionDidActivate:
+                return Effect(value: .requestDataSync)
+
+            case .watchSessionDidDeactivate:
+                print("didDisconnect")
+
+            case .requestDataSync:
+                let message = ["command": "requestSync"]
+                return environment.watchkitSessionClient.sendMessage(WatchKitId(), message)
+
+            case .didReceiveMessage(let message):
+                guard let host = message["response"] as? String else { return .none }
+                state.shared.host = host
+
             case .home, . api, .shared:
                 return .none
             }
+            return .none
         },
         Api.reducer.pullback(
             state: \State.api,
@@ -71,16 +99,6 @@ enum Main {
         ),
         reducer: reducer,
         environment: initialEnvironment
-    )
-
-    static let previewStoreHome = Store(
-        initialState: Home.previewState,
-        reducer: Home.reducer,
-        environment: Main.Environment(
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            restClient: RestClient(baseUrl: "http://roborock/api/"),
-            websocketClient: ApiWebSocketClient.live
-        )
     )
 }
 

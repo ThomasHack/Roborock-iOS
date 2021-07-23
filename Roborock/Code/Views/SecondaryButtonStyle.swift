@@ -16,9 +16,10 @@ struct SecondaryButtonStyle: ButtonStyle {
 
         return configuration.label
             .padding(16)
-            .foregroundColor(foregroundColor)
+            .foregroundColor(foregroundColor.opacity(configuration.isPressed ? 0.9 : 1.0))
             .background(backgroundColor)
             .clipShape(Circle())
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
     }
 }
 

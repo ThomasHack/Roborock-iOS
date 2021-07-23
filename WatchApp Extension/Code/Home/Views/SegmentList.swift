@@ -74,6 +74,6 @@ struct SegmentList: View {
 
 struct SegmentList_Previews: PreviewProvider {
     static var previews: some View {
-        SegmentList(store: Main.previewStoreHome)
+        SegmentList(store: Home.previewStore)
     }
 }

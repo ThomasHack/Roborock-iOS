@@ -106,4 +106,10 @@ enum Home {
     )
 
     static let initialState = State()
+
+    static let previewStore = Store(
+        initialState: Home.previewState,
+        reducer: Home.reducer,
+        environment: Main.initialEnvironment
+    )
 }

@@ -17,8 +17,9 @@ struct PrimaryButtonStyle: ButtonStyle {
         return configuration.label
             .padding(24)
             .foregroundColor(foregroundColor)
-            .background(backgroundColor)
+            .background(backgroundColor.opacity(configuration.isPressed ? 0.9 : 1.0))
             .clipShape(Circle())
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
     }
 }
 

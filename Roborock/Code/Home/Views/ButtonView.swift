@@ -16,6 +16,7 @@ struct ButtonView: View {
         WithViewStore(self.store) { viewStore in
             VStack {
                 if viewStore.api.connectivityState == .connected {
+
                     HStack(alignment: .center, spacing: 16) {
                         Button {
                             viewStore.send(.driveHome)

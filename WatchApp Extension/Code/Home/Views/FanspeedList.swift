@@ -37,6 +37,6 @@ struct FanspeedList: View {
 
 struct FanspeedList_Previews: PreviewProvider {
     static var previews: some View {
-        FanspeedList(store: Main.previewStoreHome)
+        FanspeedList(store: Home.previewStore)
     }
 }

@@ -21,13 +21,17 @@
 		521C741F269DD3CF0098D71A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 521C741E269DD3CF0098D71A /* Preview Assets.xcassets */; };
 		521C7424269DD3CF0098D71A /* WatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 521C7403269DD3CC0098D71A /* WatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		521C7432269DFA6A0098D71A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 521C7431269DFA6A0098D71A /* ComposableArchitecture */; };
+		52232AE126A81C2A0024D072 /* WatchkitSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52232AE026A81C2A0024D072 /* WatchkitSessionDelegate.swift */; };
+		52232AE626A81ECD0024D072 /* WatchkitSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52232AE026A81C2A0024D072 /* WatchkitSessionDelegate.swift */; };
+		52232AE826A87F310024D072 /* WatchKitSessionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52232AE726A87F310024D072 /* WatchKitSessionClient.swift */; };
+		52232AE926A881050024D072 /* WatchKitSessionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52232AE726A87F310024D072 /* WatchKitSessionClient.swift */; };
 		5238572626A056B800B2FBEA /* StatusTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5238572526A056B800B2FBEA /* StatusTileView.swift */; };
 		5249E97E2695D6930095828E /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E97D2695D6930095828E /* HeaderView.swift */; };
 		5249E9802695D6ED0095828E /* NotConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E97F2695D6ED0095828E /* NotConnectedView.swift */; };
 		5249E9822695D7C00095828E /* RoomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9812695D7C00095828E /* RoomSelectionView.swift */; };
 		5249E9A526970BD00095828E /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5249E9A426970BD00095828E /* Intents.framework */; };
 		5249E9A826970BD00095828E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9A726970BD00095828E /* IntentHandler.swift */; };
-		5249E9BC26970BD10095828E /* StartCleaning.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5249E9A326970BD00095828E /* StartCleaning.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5249E9BC26970BD10095828E /* CleaningIntent.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5249E9A326970BD00095828E /* CleaningIntent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		525079D2268F82E6000F7095 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D1268F82E6000F7095 /* UIColor+Hex.swift */; };
 		525079D4268F82ED000F7095 /* UIImage+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D3268F82ED000F7095 /* UIImage+Rotate.swift */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
@@ -38,6 +42,8 @@
 		52B7250226A72B460092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250126A72B460092B818 /* RoborockApi */; };
 		52B7250426A72B580092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250326A72B580092B818 /* RoborockApi */; };
 		52B7250626A72B5C0092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250526A72B5C0092B818 /* RoborockApi */; };
+		52C35B3426A9C73500364089 /* WatchSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C35B3326A9C73500364089 /* WatchSync.swift */; };
+		52C35B3526A9C73500364089 /* WatchSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C35B3326A9C73500364089 /* WatchSync.swift */; };
 		52C658E426A5B390009C8D07 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */; };
 		52C658EA26A5C79B009C8D07 /* FanspeedSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */; };
 		52C658EE26A5D38F009C8D07 /* BatteryTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658ED26A5D38F009C8D07 /* BatteryTileView.swift */; };
@@ -144,7 +150,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				5249E9BC26970BD10095828E /* StartCleaning.appex in Embed App Extensions */,
+				5249E9BC26970BD10095828E /* CleaningIntent.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -190,13 +196,18 @@
 		521C7421269DD3CF0098D71A /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		521C742D269DD77B0098D71A /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		52232ADC26A74C250024D072 /* bitrise.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bitrise.yml; sourceTree = "<group>"; };
+		52232ADD26A751310024D072 /* WatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WatchApp.entitlements; sourceTree = "<group>"; };
+		52232ADE26A752480024D072 /* StartCleaning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StartCleaning.entitlements; sourceTree = "<group>"; };
+		52232ADF26A753380024D072 /* WatchApp Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "WatchApp Extension.entitlements"; sourceTree = "<group>"; };
+		52232AE026A81C2A0024D072 /* WatchkitSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchkitSessionDelegate.swift; sourceTree = "<group>"; };
+		52232AE726A87F310024D072 /* WatchKitSessionClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchKitSessionClient.swift; sourceTree = "<group>"; };
 		5238572526A056B800B2FBEA /* StatusTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTileView.swift; sourceTree = "<group>"; };
 		5249E97D2695D6930095828E /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		5249E97F2695D6ED0095828E /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
 		5249E9812695D7C00095828E /* RoomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSelectionView.swift; sourceTree = "<group>"; };
 		5249E984269609FA0095828E /* Roborock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Roborock.entitlements; sourceTree = "<group>"; };
 		5249E98F2696E7A70095828E /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
-		5249E9A326970BD00095828E /* StartCleaning.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StartCleaning.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5249E9A326970BD00095828E /* CleaningIntent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CleaningIntent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5249E9A426970BD00095828E /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		5249E9A726970BD00095828E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		5249E9A926970BD00095828E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -210,6 +221,7 @@
 		52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+PixelData.swift"; sourceTree = "<group>"; };
 		52AD4DAB2695D2C700D5C839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52AD4DAD2695D2D200D5C839 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		52C35B3326A9C73500364089 /* WatchSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSync.swift; sourceTree = "<group>"; };
 		52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
 		52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanspeedSelection.swift; sourceTree = "<group>"; };
 		52C658ED26A5D38F009C8D07 /* BatteryTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryTileView.swift; sourceTree = "<group>"; };
@@ -299,6 +311,7 @@
 		521C7404269DD3CC0098D71A /* WatchApp */ = {
 			isa = PBXGroup;
 			children = (
+				52232ADD26A751310024D072 /* WatchApp.entitlements */,
 				521C7405269DD3CD0098D71A /* Assets.xcassets */,
 				521C7407269DD3CD0098D71A /* Info.plist */,
 			);
@@ -308,6 +321,7 @@
 		521C7410269DD3CE0098D71A /* WatchApp Extension */ = {
 			isa = PBXGroup;
 			children = (
+				52232ADF26A753380024D072 /* WatchApp Extension.entitlements */,
 				65B0EF0026A3835D00924CB9 /* Code */,
 				521C741B269DD3CF0098D71A /* Assets.xcassets */,
 				521C7420269DD3CF0098D71A /* Info.plist */,
@@ -336,6 +350,38 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		52232AE326A81E840024D072 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				52232AE426A81EB30024D072 /* Api */,
+				52232AE526A81EBA0024D072 /* Shared */,
+				52232AE726A87F310024D072 /* WatchKitSessionClient.swift */,
+				52232AE026A81C2A0024D072 /* WatchkitSessionDelegate.swift */,
+				52C35B3326A9C73500364089 /* WatchSync.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		52232AE426A81EB30024D072 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				6542895E2646C623009B8BE5 /* Api.swift */,
+				65B0EEEA26A36D0D00924CB9 /* Api+Action.swift */,
+				65B0EEE926A36D0D00924CB9 /* Api+Reducer.swift */,
+				65B0EEEB26A36D0D00924CB9 /* Api+State.swift */,
+				652FA91F264D2EE1007C67F6 /* ApiWebSocketClient.swift */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		52232AE526A81EBA0024D072 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				52DBCBA92694BA7600D25CC6 /* Shared.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		522336C9269351B300748AFD /* RRFileParser */ = {
 			isa = PBXGroup;
 			children = (
@@ -362,7 +408,6 @@
 			isa = PBXGroup;
 			children = (
 				6542893B2646B78B009B8BE5 /* RoborockApp.swift */,
-				6542894D2646C1CF009B8BE5 /* Api */,
 				52F12B9D268A2D4400C5494E /* Helper */,
 				654289562646C402009B8BE5 /* Home */,
 				654289592646C438009B8BE5 /* Main */,
@@ -418,6 +463,7 @@
 		5249E9A626970BD00095828E /* StartCleaning */ = {
 			isa = PBXGroup;
 			children = (
+				52232ADE26A752480024D072 /* StartCleaning.entitlements */,
 				5297E3A52698949300680D9A /* Intents.intentdefinition */,
 				5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */,
 				5249E9A726970BD00095828E /* IntentHandler.swift */,
@@ -452,6 +498,7 @@
 		6542892F2646B78B009B8BE5 = {
 			isa = PBXGroup;
 			children = (
+				52232AE326A81E840024D072 /* Shared */,
 				52EE04C7269CA2AB00C677AA /* .swiftlint.yml */,
 				52232ADC26A74C250024D072 /* bitrise.yml */,
 				5249E98E2696E7A70095828E /* Frameworks */,
@@ -467,7 +514,7 @@
 			isa = PBXGroup;
 			children = (
 				654289382646B78B009B8BE5 /* Roborock.app */,
-				5249E9A326970BD00095828E /* StartCleaning.appex */,
+				5249E9A326970BD00095828E /* CleaningIntent.appex */,
 				521C7403269DD3CC0098D71A /* WatchApp.app */,
 				521C740C269DD3CE0098D71A /* WatchApp Extension.appex */,
 			);
@@ -493,18 +540,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		6542894D2646C1CF009B8BE5 /* Api */ = {
-			isa = PBXGroup;
-			children = (
-				6542895E2646C623009B8BE5 /* Api.swift */,
-				65B0EEEA26A36D0D00924CB9 /* Api+Action.swift */,
-				65B0EEE926A36D0D00924CB9 /* Api+Reducer.swift */,
-				65B0EEEB26A36D0D00924CB9 /* Api+State.swift */,
-				652FA91F264D2EE1007C67F6 /* ApiWebSocketClient.swift */,
-			);
-			path = Api;
-			sourceTree = "<group>";
-		};
 		654289562646C402009B8BE5 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,7 +557,6 @@
 			children = (
 				6542895A2646C442009B8BE5 /* Main.swift */,
 				654289672646E884009B8BE5 /* MainView.swift */,
-				52DBCBA92694BA7600D25CC6 /* Shared.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -592,9 +626,9 @@
 			productReference = 521C740C269DD3CE0098D71A /* WatchApp Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
-		5249E9A226970BD00095828E /* StartCleaning */ = {
+		5249E9A226970BD00095828E /* CleaningIntent */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5249E9C026970BD10095828E /* Build configuration list for PBXNativeTarget "StartCleaning" */;
+			buildConfigurationList = 5249E9C026970BD10095828E /* Build configuration list for PBXNativeTarget "CleaningIntent" */;
 			buildPhases = (
 				52B9B22A269DC369002411BF /* ShellScript */,
 				5249E99F26970BD00095828E /* Sources */,
@@ -606,12 +640,12 @@
 			);
 			dependencies = (
 			);
-			name = StartCleaning;
+			name = CleaningIntent;
 			packageProductDependencies = (
 				52B7250326A72B580092B818 /* RoborockApi */,
 			);
 			productName = StartCleaning;
-			productReference = 5249E9A326970BD00095828E /* StartCleaning.appex */;
+			productReference = 5249E9A326970BD00095828E /* CleaningIntent.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		654289372646B78B009B8BE5 /* Roborock */ = {
@@ -687,8 +721,8 @@
 			targets = (
 				654289372646B78B009B8BE5 /* Roborock */,
 				521C7402269DD3CC0098D71A /* WatchApp */,
-				5249E9A226970BD00095828E /* StartCleaning */,
 				521C740B269DD3CE0098D71A /* WatchApp Extension */,
+				5249E9A226970BD00095828E /* CleaningIntent */,
 			);
 		};
 /* End PBXProject section */
@@ -765,7 +799,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "#if which swiftlint >/dev/null; then\n#  swiftlint\n#else\n#  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -780,17 +814,20 @@
 				6510D92A26A5E62C00FECC97 /* StateTileView.swift in Sources */,
 				65B0EEF726A3759000924CB9 /* Home+HomeFeature.swift in Sources */,
 				65B0EEF626A3749900924CB9 /* CircularProgressViewStyle.swift in Sources */,
+				52232AE826A87F310024D072 /* WatchKitSessionClient.swift in Sources */,
 				65B0EECF26A35E1100924CB9 /* Home.swift in Sources */,
 				65B0EEE426A364B500924CB9 /* Shared.swift in Sources */,
 				521C7414269DD3CE0098D71A /* HomeView.swift in Sources */,
 				65B0EEF226A3703E00924CB9 /* Main.swift in Sources */,
 				521C741A269DD3CE0098D71A /* ComplicationController.swift in Sources */,
 				65B0EEDA26A362F900924CB9 /* Api.swift in Sources */,
+				52C35B3526A9C73500364089 /* WatchSync.swift in Sources */,
 				65B0EEE326A364AA00924CB9 /* ApiWebSocketClient.swift in Sources */,
 				65B0EEF026A36FF400924CB9 /* Api+Action.swift in Sources */,
 				5238572626A056B800B2FBEA /* StatusTileView.swift in Sources */,
 				52E890AD26A6E320004E9D7A /* FanspeedList.swift in Sources */,
 				65B0EEFC26A3816D00924CB9 /* MainView.swift in Sources */,
+				52232AE126A81C2A0024D072 /* WatchkitSessionDelegate.swift in Sources */,
 				65B0EEF126A36FF600924CB9 /* Api+Reducer.swift in Sources */,
 				521C7412269DD3CE0098D71A /* RoborockApp.swift in Sources */,
 				65B0EEF926A37F3A00924CB9 /* ButtonView.swift in Sources */,
@@ -819,11 +856,13 @@
 				52046F2926494DC400E1C041 /* BlurView.swift in Sources */,
 				52F12B9A2689BF4300C5494E /* RRFileParser.swift in Sources */,
 				52C658EA26A5C79B009C8D07 /* FanspeedSelection.swift in Sources */,
+				52232AE926A881050024D072 /* WatchKitSessionClient.swift in Sources */,
 				6510E8DF2688AD02001E9230 /* ButtonView.swift in Sources */,
 				65B0EEEE26A36D0D00924CB9 /* Api+State.swift in Sources */,
 				5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */,
 				52DBCBA626946C0300D25CC6 /* UIColor+Custom.swift in Sources */,
 				52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */,
+				52C35B3426A9C73500364089 /* WatchSync.swift in Sources */,
 				654289682646E884009B8BE5 /* MainView.swift in Sources */,
 				654289662646E6DF009B8BE5 /* Home+HomeFeature.swift in Sources */,
 				525079D4268F82ED000F7095 /* UIImage+Rotate.swift in Sources */,
@@ -837,6 +876,7 @@
 				6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */,
 				654289642646E631009B8BE5 /* HomeView.swift in Sources */,
 				52D1BAA5269C598B00219230 /* ApiWebSocketClient.swift in Sources */,
+				52232AE626A81ECD0024D072 /* WatchkitSessionDelegate.swift in Sources */,
 				5249E9802695D6ED0095828E /* NotConnectedView.swift in Sources */,
 				52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */,
 				52DBCBA82694B1AB00D25CC6 /* String+Size.swift in Sources */,
@@ -869,7 +909,7 @@
 		};
 		5249E9BB26970BD10095828E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5249E9A226970BD00095828E /* StartCleaning */;
+			target = 5249E9A226970BD00095828E /* CleaningIntent */;
 			targetProxy = 5249E9BA26970BD10095828E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -900,6 +940,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "WatchApp Extension/WatchApp Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_ASSET_PATHS = "\"WatchApp Extension/Preview Content\"";
@@ -911,7 +952,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.WatchApp.WatchAppExtension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -925,6 +966,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "WatchApp Extension/WatchApp Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_ASSET_PATHS = "\"WatchApp Extension/Preview Content\"";
@@ -936,7 +978,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.WatchApp.WatchAppExtension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -952,12 +994,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WatchApp/WatchApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.WatchApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -973,12 +1016,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WatchApp/WatchApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.WatchApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -991,6 +1035,7 @@
 		5249E9C126970BD10095828E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = StartCleaning/StartCleaning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
@@ -1007,7 +1052,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.StartCleaning;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.CleaningIntent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1020,6 +1065,7 @@
 		5249E9C226970BD10095828E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = StartCleaning/StartCleaning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210706;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
@@ -1036,7 +1082,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.StartCleaning;
+				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo.CleaningIntent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1239,7 +1285,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5249E9C026970BD10095828E /* Build configuration list for PBXNativeTarget "StartCleaning" */ = {
+		5249E9C026970BD10095828E /* Build configuration list for PBXNativeTarget "CleaningIntent" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5249E9C126970BD10095828E /* Debug */,

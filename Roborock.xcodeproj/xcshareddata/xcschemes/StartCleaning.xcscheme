@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5249E9A226970BD00095828E"
-               BuildableName = "StartCleaning.appex"
-               BlueprintName = "StartCleaning"
+               BuildableName = "CleaningIntent.appex"
+               BlueprintName = "CleaningIntent"
                ReferencedContainer = "container:Roborock.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

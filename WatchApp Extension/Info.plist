@@ -44,7 +44,7 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>WKAppBundleIdentifier</key>
-			<string>de.thomashack.Valetudo.watchkitapp</string>
+			<string>de.thomashack.Valetudo.WatchApp</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
