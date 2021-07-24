@@ -167,7 +167,7 @@ public class RRFileParser {
                 self.data = try data.gunzipped()
                 parseBlocks()
             } catch {
-                print(String(describing: error))
+                print(error.localizedDescription)
             }
         }
     }

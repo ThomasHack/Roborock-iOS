@@ -91,7 +91,7 @@ extension WatchKitSessionClient {
                     replyHandler(response)
                     // subscriber.send(.didReceiveMessage(response))
                 }, errorHandler: { error in
-                    print("Error: \(error.localizedDescription)")
+                    print(error.localizedDescription)
                 })
                 return AnyCancellable {}
             }
@@ -114,7 +114,7 @@ extension WatchKitSessionClient {
                     replyHandler(response)
                     // subscriber.send(.didReceiveMessageData(response))
                 }, errorHandler: { error in
-                    print("Error: \(error.localizedDescription)")
+                    print(error.localizedDescription)
                 })
                 return AnyCancellable {}
             }

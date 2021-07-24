@@ -50,7 +50,7 @@ extension Api {
             case .success(let segments):
                 state.segments = segments
             case .failure(let error):
-                print("error: \(error.localizedDescription)")
+                print(error.localizedDescription)
             }
             return .none
 
@@ -64,7 +64,7 @@ extension Api {
         case .startCleaningSegmentResponse(let result):
             switch result {
             case .success:
-                print("result: \(result)")
+                break
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -79,7 +79,6 @@ extension Api {
         case .stopCleaningResponse(let result):
             switch result {
             case .success:
-                print("result: \(result)")
                 return Effect(value: .resetRooms)
             case .failure(let error):
                 print(error.localizedDescription)
@@ -95,7 +94,7 @@ extension Api {
         case .pauseCleaningResponse(let result):
             switch result {
             case .success:
-                print("result: \(result)")
+                break
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -110,7 +109,7 @@ extension Api {
         case .driveHomeResponse(let result):
             switch result {
             case .success:
-                print("result: \(result)")
+                break
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -124,7 +123,7 @@ extension Api {
                 .map(Action.setFanspeedResponse)
 
         case . setFanspeedResponse(let result):
-            print("result: \(result)")
+            break
 
 #if os(iOS)
         case .toggleRoom(let roomId):
@@ -229,7 +228,7 @@ extension Api {
                     )
                 }
             case .failure(let error):
-                print("\(error.localizedDescription)")
+                print(error.localizedDescription)
             }
 
         case .setMapImage(let result):

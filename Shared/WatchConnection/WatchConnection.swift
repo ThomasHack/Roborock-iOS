@@ -34,17 +34,15 @@ enum WatchConnection {
                 .eraseToEffect()
 
         case .watchSessionDidActivate:
-            print(#function)
             return Effect(value: .requestDataSync)
 
         case .watchSessionDidDeactivate:
-            print(#function)
+            break
 
         case .didReceiveMessage(let message):
-            print(#function)
+            break
 
         case .didReceiveMessageData(let data):
-            print("\(#function)")
             switch data {
             case .requestData(let response):
                 switch response.action {
@@ -59,14 +57,14 @@ enum WatchConnection {
                 state.shared.host = response.host
 
             case .responseWatchData(let watchData):
-                print("responseWatchData")
+                break
             }
 
         case .watchSessionDidBecomeInactive:
-            print(#function)
+            break
 
         case .watchSessionWatchStateDidChange:
-            print(#function)
+            break
 
         case .requestDataSync:
             let requestData = WCSessionRequestData(action: .synchronizeUserDefaults)
@@ -81,7 +79,7 @@ enum WatchConnection {
             do {
                 return try environment.watchkitSessionClient.sendMessageData(WatchKitId(), data)
             } catch {
-                print("Error: \(error.localizedDescription)")
+                print(error.localizedDescription)
             }
         }
         return .none
