@@ -14,19 +14,19 @@ struct StatusView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             HStack(spacing: 0) {
-                StatusItemView(iconName: viewStore.batteryIcon,
-                               label: "home.battery",
+                StatusItemView(label: "home.battery",
                                unit: "%",
+                               iconName: viewStore.binding(get: { $0.batteryIcon }, send: Home.Action.none),
                                value: viewStore.binding(get: { $0.api.battery }, send: Home.Action.none))
 
-                StatusItemView(iconName: "stopwatch",
-                               label: "home.cleanTime",
+                StatusItemView(label: "home.cleanTime",
                                unit: "min",
+                               iconName: .constant("stopwatch"),
                                value: viewStore.binding(get: { $0.api.cleanTime }, send: Home.Action.none))
 
-                StatusItemView(iconName: "square.dashed",
-                               label: "home.cleanArea",
+                StatusItemView(label: "home.cleanArea",
                                unit: "qm",
+                               iconName: .constant("square.dashed"),
                                value: viewStore.binding(get: { $0.api.cleanArea }, send: Home.Action.none))
             }
         }

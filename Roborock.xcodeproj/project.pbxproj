@@ -46,14 +46,14 @@
 		5260D9F226AB282900901A10 /* WCSessionAppResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */; };
 		5260D9F326AB282A00901A10 /* WCSessionWatchResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EC26AB27F500901A10 /* WCSessionWatchResponseData.swift */; };
 		5260D9F426AB282A00901A10 /* WCSessionAppResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */; };
+		526712C726AC55D80095CF26 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 526712C626AC55D80095CF26 /* RoborockApi */; };
+		526712C926AC55DC0095CF26 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 526712C826AC55DC0095CF26 /* RoborockApi */; };
+		526712CB26AC55E10095CF26 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 526712CA26AC55E10095CF26 /* RoborockApi */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
 		5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
 		5297E3A82698956E00680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
 		52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */; };
 		52AD4DAA2695D2C700D5C839 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52AD4DAC2695D2C700D5C839 /* Localizable.strings */; };
-		52B7250226A72B460092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250126A72B460092B818 /* RoborockApi */; };
-		52B7250426A72B580092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250326A72B580092B818 /* RoborockApi */; };
-		52B7250626A72B5C0092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250526A72B5C0092B818 /* RoborockApi */; };
 		52C658E426A5B390009C8D07 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */; };
 		52C658EA26A5C79B009C8D07 /* FanspeedSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */; };
 		52C658EE26A5D38F009C8D07 /* BatteryTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658ED26A5D38F009C8D07 /* BatteryTileView.swift */; };
@@ -232,6 +232,7 @@
 		5260D9E826AB27C900901A10 /* WCSessionRequestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionRequestData.swift; sourceTree = "<group>"; };
 		5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAppResponseData.swift; sourceTree = "<group>"; };
 		5260D9EC26AB27F500901A10 /* WCSessionWatchResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionWatchResponseData.swift; sourceTree = "<group>"; };
+		526712C526AC55D10095CF26 /* Roborock-Api */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Roborock-Api"; path = "../Roborock-Api"; sourceTree = "<group>"; };
 		5275B16526499263008B4DC7 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -287,7 +288,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52B7250626A72B5C0092B818 /* RoborockApi in Frameworks */,
+				526712C926AC55DC0095CF26 /* RoborockApi in Frameworks */,
 				521C7432269DFA6A0098D71A /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,7 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5249E9A526970BD00095828E /* Intents.framework in Frameworks */,
-				52B7250426A72B580092B818 /* RoborockApi in Frameworks */,
+				526712CB26AC55E10095CF26 /* RoborockApi in Frameworks */,
 				52D1BABB269C6C4A00219230 /* IntentsUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,7 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52D1BAB0269C6AB900219230 /* Gzip in Frameworks */,
-				52B7250226A72B460092B818 /* RoborockApi in Frameworks */,
+				526712C726AC55D80095CF26 /* RoborockApi in Frameworks */,
 				52D1BAAE269C6AB900219230 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -535,9 +536,19 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		52F3B6E726AC67260092447E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				52E890AA26A6E128004E9D7A /* CircularButtonStyle.swift */,
+				52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		6542892F2646B78B009B8BE5 = {
 			isa = PBXGroup;
 			children = (
+				526712C526AC55D10095CF26 /* Roborock-Api */,
 				52232AE326A81E840024D072 /* Shared */,
 				52EE04C7269CA2AB00C677AA /* .swiftlint.yml */,
 				52232ADC26A74C250024D072 /* bitrise.yml */,
@@ -619,8 +630,7 @@
 				521C7419269DD3CE0098D71A /* ComplicationController.swift */,
 				521C7415269DD3CE0098D71A /* NotificationController.swift */,
 				521C7417269DD3CE0098D71A /* NotificationView.swift */,
-				52E890AA26A6E128004E9D7A /* CircularButtonStyle.swift */,
-				52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */,
+				52F3B6E726AC67260092447E /* Views */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -660,7 +670,7 @@
 			name = "WatchApp Extension";
 			packageProductDependencies = (
 				521C7431269DFA6A0098D71A /* ComposableArchitecture */,
-				52B7250526A72B5C0092B818 /* RoborockApi */,
+				526712C826AC55DC0095CF26 /* RoborockApi */,
 			);
 			productName = "WatchApp Extension";
 			productReference = 521C740C269DD3CE0098D71A /* WatchApp Extension.appex */;
@@ -682,7 +692,7 @@
 			);
 			name = CleaningIntent;
 			packageProductDependencies = (
-				52B7250326A72B580092B818 /* RoborockApi */,
+				526712CA26AC55E10095CF26 /* RoborockApi */,
 			);
 			productName = StartCleaning;
 			productReference = 5249E9A326970BD00095828E /* CleaningIntent.appex */;
@@ -710,7 +720,7 @@
 			packageProductDependencies = (
 				52D1BAAD269C6AB900219230 /* ComposableArchitecture */,
 				52D1BAAF269C6AB900219230 /* Gzip */,
-				52B7250126A72B460092B818 /* RoborockApi */,
+				526712C626AC55D80095CF26 /* RoborockApi */,
 			);
 			productName = Roborock;
 			productReference = 654289382646B78B009B8BE5 /* Roborock.app */;
@@ -753,7 +763,6 @@
 				6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				6510E8DB268888B9001E9230 /* XCRemoteSwiftPackageReference "NWWebSocket" */,
 				6510E8E12688B50C001E9230 /* XCRemoteSwiftPackageReference "GzipSwift" */,
-				52B7250026A72B460092B818 /* XCRemoteSwiftPackageReference "Roborock-Api" */,
 			);
 			productRefGroup = 654289392646B78B009B8BE5 /* Products */;
 			projectDirPath = "";
@@ -1367,14 +1376,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		52B7250026A72B460092B818 /* XCRemoteSwiftPackageReference "Roborock-Api" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ThomasHack/Roborock-Api";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		6510E8DB268888B9001E9230 /* XCRemoteSwiftPackageReference "NWWebSocket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pusher/NWWebSocket.git";
@@ -1407,19 +1408,16 @@
 			package = 6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
-		52B7250126A72B460092B818 /* RoborockApi */ = {
+		526712C626AC55D80095CF26 /* RoborockApi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 52B7250026A72B460092B818 /* XCRemoteSwiftPackageReference "Roborock-Api" */;
 			productName = RoborockApi;
 		};
-		52B7250326A72B580092B818 /* RoborockApi */ = {
+		526712C826AC55DC0095CF26 /* RoborockApi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 52B7250026A72B460092B818 /* XCRemoteSwiftPackageReference "Roborock-Api" */;
 			productName = RoborockApi;
 		};
-		52B7250526A72B5C0092B818 /* RoborockApi */ = {
+		526712CA26AC55E10095CF26 /* RoborockApi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 52B7250026A72B460092B818 /* XCRemoteSwiftPackageReference "Roborock-Api" */;
 			productName = RoborockApi;
 		};
 		52D1BAAD269C6AB900219230 /* ComposableArchitecture */ = {

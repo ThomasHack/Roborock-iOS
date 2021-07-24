@@ -13,10 +13,9 @@ enum StatusItemValue {
 }
 
 struct StatusItemView: View {
-    @State var iconName: String
     @State var label: String
     @State var unit: String
-
+    @Binding var iconName: String
     @Binding var value: String
 
     var body: some View {

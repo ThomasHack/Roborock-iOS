@@ -17,6 +17,10 @@ extension Api {
                 .receive(on: environment.mainQueue)
                 .eraseToEffect()
 
+        case .connectRest(let url):
+            environment.restClient.connect(url)
+            return .none
+
         case .didConnect:
             state.connectivityState = .connected
             return .merge(

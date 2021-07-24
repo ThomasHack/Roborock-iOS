@@ -12,6 +12,7 @@ import UIKit
 extension Api {
     enum Action: Equatable {
         case connect(URL)
+        case connectRest(URL)
         case didConnect
         case disconnect
         case didDisconnect

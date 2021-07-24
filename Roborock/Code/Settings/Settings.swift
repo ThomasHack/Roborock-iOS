@@ -42,9 +42,11 @@ enum Settings {
                     return Effect(value: Action.api(.disconnect))
 
                 case .disconnected:
-                    guard let url = URL(string: state.hostInput) else { return .none }
+                    guard let websocketUrl = URL(string: "ws://\(state.hostInput)"),
+                            let restUrl = URL(string: "http://\(state.hostInput)") else { return .none }
                     return .merge(
-                        Effect(value: Action.api(.connect(url))),
+                        Effect(value: Action.api(.connect(websocketUrl))),
+                        Effect(value: Action.api(.connectRest(restUrl))),
                         Effect(value: Action.hideSettingsModal)
                     )
                 }

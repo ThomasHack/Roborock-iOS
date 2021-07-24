@@ -45,7 +45,7 @@ enum Main {
 
     static let initialEnvironment = Environment(
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-        restClient: RestClient(baseUrl: "http://roborock/api/"),
+        restClient: RestClient.live,
         websocketClient: ApiWebSocketClient.live,
         watchkitSessionClient: WatchKitSessionClient.live
     )

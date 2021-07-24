@@ -57,6 +57,7 @@ enum WatchConnection {
                 }
             case .responseAppData(let response):
                 state.shared.host = response.host
+
             case .responseWatchData(let watchData):
                 print("responseWatchData")
             }

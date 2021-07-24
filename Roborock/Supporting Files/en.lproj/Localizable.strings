@@ -27,6 +27,8 @@
 // Settings
 "settings.title" = "Settings";
 "settings.host" = "Host";
+"settings.siriShortcut" = "Siri Shortcuts";
+"settings.donateSiriShortcut" = "Donate Siri Shortcut";
 
 // Roborock vaccum state
 "roborock.state.0" = "Connecting...";

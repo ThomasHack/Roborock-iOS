@@ -16,6 +16,9 @@ struct MainView: View {
         WithViewStore(self.store) { viewStore in
             if !(viewStore.shared.host ?? "").isEmpty {
                 HomeView(store: Main.store.home)
+                    .onAppear {
+                        connect()
+                    }
             } else {
                 VStack(spacing: 0) {
                     Spacer()
@@ -24,6 +27,15 @@ struct MainView: View {
                 }
             }
         }
+    }
+
+    private func connect() {
+        let viewStore = ViewStore(store)
+        guard let host = viewStore.state.shared.host,
+              let websocketUrl = URL(string: "ws://\(host)"),
+              let restUrl = URL(string: "http://\(host)") else { return }
+        viewStore.send(.api(.connect(websocketUrl)))
+        viewStore.send(.api(.connectRest(restUrl)))
     }
 }
 

@@ -19,14 +19,27 @@ struct SettingsView: View {
                         Section(header: Text("settings.host")) {
                             VStack(alignment: .leading) {
                                 SectionHeader(text: "settings.host")
-                                TextField("ws://roborock.home",
-                                          text: viewStore.binding(
-                                            get: { $0.hostInput },
-                                            send: Settings.Action.hostInputTextChanged)
-                                )
-                                    .keyboardType(.URL)
-                                    .disableAutocorrection(true)
-                                    .autocapitalization(.none)
+                                HStack(spacing: 0) {
+                                    Text("ws://")
+                                        .foregroundColor(Color(.quaternaryLabel))
+                                    TextField("roborock",
+                                              text: viewStore.binding(
+                                                get: { $0.hostInput },
+                                                send: Settings.Action.hostInputTextChanged)
+                                    )
+                                        .keyboardType(.URL)
+                                        .disableAutocorrection(true)
+                                        .autocapitalization(.none)
+                                }
+                            }
+                        }
+
+                        Section(header: Text("settings.siriShortcut")) {
+                            Button {
+                                viewStore.send(.requestSiriAuthorization)
+                            } label: {
+                                Text("settings.donateSiriShortcut")
+                                    .foregroundColor(Color.blue)
                             }
                         }
 
@@ -43,12 +56,6 @@ struct SettingsView: View {
                                 }
                                 Spacer()
                             }
-                        }
-
-                        Button {
-                            viewStore.send(.requestSiriAuthorization)
-                        } label: {
-                            Text("settings.donateSiriShortcut")
                         }
                     }
                 }

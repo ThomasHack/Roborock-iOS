@@ -9,14 +9,6 @@ import ComposableArchitecture
 import SwiftUI
 import WatchConnectivity
 
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        let viewStore = ViewStore(Main.store)
-        viewStore.send(.watchConnection(.connect))
-        return true
-    }
-}
-
 @main
 struct RoborockApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegat
@@ -47,12 +39,22 @@ struct RoborockApp: App {
 
     private func connect() {
         let viewStore = ViewStore(store)
-        guard let host = viewStore.state.shared.host, let url = URL(string: host) else { return }
-        viewStore.send(.api(.connect(url)))
-        viewStore.send(.watchConnection(.connect))
+        guard let host = viewStore.state.shared.host, !host.isEmpty,
+              let websocketUrl = URL(string: "ws://\(host)"),
+              let restUrl = URL(string: "http://\(host)") else { return }
+        viewStore.send(.api(.connect(websocketUrl)))
+        viewStore.send(.api(.connectRest(restUrl)))
     }
 
     private func disconnect() {
         ViewStore(store).send(.api(.disconnect))
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        let viewStore = ViewStore(Main.store)
+        viewStore.send(.watchConnection(.connect))
+        return true
     }
 }

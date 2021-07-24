@@ -12,12 +12,12 @@ struct CircularProgressViewStyle: ProgressViewStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         let fractionCompleted = configuration.fractionCompleted ?? 0
-        let background = #colorLiteral(red: 0.06939987838, green: 0.07400544733, blue: 0.06823639572, alpha: 1)
-        let yellow = #colorLiteral(red: 0.9960246682, green: 0.9582805037, blue: 0, alpha: 1)
-        let orange = #colorLiteral(red: 0.9875745177, green: 0.659271419, blue: 0.2163393199, alpha: 1)
-        let lightGreen = #colorLiteral(red: 0.5500606894, green: 1, blue: 0, alpha: 1)
-        let green = #colorLiteral(red: 0, green: 1, blue: 0, alpha: 1)
-        let darkGreen = #colorLiteral(red: 0.03670389205, green: 0.1547718048, blue: 0.02876702696, alpha: 1)
+        let background = #colorLiteral(red: 0.04051336511, green: 0.07919989333, blue: 0.1560822571, alpha: 1)
+        let north = #colorLiteral(red: 0.7809731364, green: 0.8558418155, blue: 1, alpha: 1)
+        let east = #colorLiteral(red: 0.5547400332, green: 0.6814477352, blue: 0.9380942583, alpha: 1)
+        let south = #colorLiteral(red: 0.1813787222, green: 0.7224964499, blue: 0.6189525723, alpha: 1)
+        let west = #colorLiteral(red: 0, green: 0.8174446225, blue: 0.618026793, alpha: 1)
+        let shadow = #colorLiteral(red: 0.06359451264, green: 0.1243214086, blue: 0.245004952, alpha: 1)
 
         return Circle()
             .stroke(Color(background), style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
@@ -26,10 +26,10 @@ struct CircularProgressViewStyle: ProgressViewStyle {
                     .trim(from: 0, to: CGFloat(fractionCompleted))
                     .stroke(AngularGradient(
                         gradient: Gradient(colors: [
-                            Color(orange),
-                            Color(yellow),
-                            Color(lightGreen),
-                            Color(green)
+                            Color(north),
+                            Color(east),
+                            Color(south),
+                            Color(west)
                         ]),
                         center: .center,
                         startAngle: .degrees(0),
@@ -39,17 +39,17 @@ struct CircularProgressViewStyle: ProgressViewStyle {
             .overlay(Circle()
                         .trim(from: 0, to: 0.01)
                         .stroke(
-                            Color(orange),
+                            Color(north),
                             style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
                         .rotationEffect(.degrees(-90))
             )
             .overlay(
                 Circle()
                     .trim(from: 0.9, to: CGFloat(fractionCompleted))
-                    .stroke(fractionCompleted > 0.9 ? Color(green) : Color.clear,
+                    .stroke(fractionCompleted > 0.9 ? Color(west) : Color.clear,
                             style: StrokeStyle(lineWidth: CGFloat(strokeWidth), lineCap: .round))
                     .rotationEffect(.degrees(-90))
-                    .shadow(color: Color(darkGreen).opacity(0.4), radius: 2, x: 4, y: 0)
+                    .shadow(color: Color(shadow).opacity(0.4), radius: 2, x: 4, y: 0)
             )
             .padding(4)
     }

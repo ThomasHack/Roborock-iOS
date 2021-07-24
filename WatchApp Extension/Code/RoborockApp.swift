@@ -19,15 +19,9 @@ struct RoborockApp: App {
         WindowGroup {
             MainView(store: self.store)
                 .onAppear {
-                    let viewStore = ViewStore(store)
-                    if !(viewStore.shared.host ?? "").isEmpty {
-                        connect()
-                    } else {
-                        requestSettings()
-                    }
+                    requestSettings()
                 }
                 .onChange(of: scenePhase) { phase in
-                    // Handle connect/reconnect when entering foreground/background
                     handlePhaseChange(phase)
                 }
         }
@@ -39,8 +33,6 @@ struct RoborockApp: App {
         switch phase {
         case .active:
             connect()
-        case .inactive:
-            break
         case .background:
             disconnect()
         default:
@@ -50,8 +42,11 @@ struct RoborockApp: App {
 
     private func connect() {
         let viewStore = ViewStore(store)
-        guard let host = viewStore.shared.host, let url = URL(string: host) else { return }
-        viewStore.send(.api(.connect(url)))
+        guard let host = viewStore.state.shared.host,
+              let websocketUrl = URL(string: "ws://\(host)"),
+              let restUrl = URL(string: "http://\(host)") else { return }
+        viewStore.send(.api(.connect(websocketUrl)))
+        viewStore.send(.api(.connectRest(restUrl)))
     }
 
     private func disconnect() {

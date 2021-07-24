@@ -18,7 +18,7 @@ extension Home {
 
         var batteryIcon: String {
             guard let status = api.status else { return "exclamationmark.circle" }
-            if status.stateHumanReadable == "Charging" {
+            if status.state == 8 { // Charging
                 return "battery.100.bolt"
             } else if status.battery < 25 {
                 return "battery.25"

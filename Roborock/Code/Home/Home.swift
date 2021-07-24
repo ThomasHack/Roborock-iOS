@@ -16,7 +16,6 @@ enum Home {
     }
 
     enum Action {
-        case connect
         case connectButtonTapped
         case fetchSegments
         case startCleaning
@@ -38,10 +37,6 @@ enum Home {
     static let reducer = Reducer<HomeFeatureState, Action, Environment>.combine(
         Reducer { state, action, _ in
             switch action {
-            case .connect:
-                guard let url = URL(string: "http://roborock/") else { return .none }
-                return Effect(value: Action.api(.connect(url)))
-
             case .connectButtonTapped:
                 switch state.connectivityState {
                 case .connected, .connecting:
@@ -49,9 +44,13 @@ enum Home {
                     return Effect(value: Action.api(.disconnect))
 
                 case .disconnected:
-                    guard let url = URL(string: state.hostInput) else { return .none }
+                    guard let websocketUrl = URL(string: "ws://\(state.hostInput)"),
+                            let restUrl = URL(string: "http://\(state.hostInput)") else { return .none }
                     state.showSettingsModal = false
-                    return Effect(value: Action.api(.connect(url)))
+                    return .merge(
+                        Effect(value: Action.api(.connect(websocketUrl))),
+                        Effect(value: Action.api(.connectRest(restUrl)))
+                    )
                 }
 
             case .fetchSegments:
