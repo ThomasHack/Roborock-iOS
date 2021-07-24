@@ -34,6 +34,18 @@
 		5249E9BC26970BD10095828E /* CleaningIntent.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5249E9A326970BD00095828E /* CleaningIntent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		525079D2268F82E6000F7095 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D1268F82E6000F7095 /* UIColor+Hex.swift */; };
 		525079D4268F82ED000F7095 /* UIImage+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D3268F82ED000F7095 /* UIImage+Rotate.swift */; };
+		5260D9DC26AB19C100901A10 /* WatchConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9DB26AB19C100901A10 /* WatchConnection.swift */; };
+		5260D9DD26AB19C100901A10 /* WatchConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9DB26AB19C100901A10 /* WatchConnection.swift */; };
+		5260D9DF26AB1A7700901A10 /* WatchConnection+Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9DE26AB1A7700901A10 /* WatchConnection+Feature.swift */; };
+		5260D9E026AB1A7700901A10 /* WatchConnection+Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9DE26AB1A7700901A10 /* WatchConnection+Feature.swift */; };
+		5260D9E326AB27AB00901A10 /* WCSessionAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9E226AB27AB00901A10 /* WCSessionAction.swift */; };
+		5260D9E426AB27AB00901A10 /* WCSessionAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9E226AB27AB00901A10 /* WCSessionAction.swift */; };
+		5260D9E926AB27C900901A10 /* WCSessionRequestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9E826AB27C900901A10 /* WCSessionRequestData.swift */; };
+		5260D9EF26AB282900901A10 /* WCSessionWatchResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EC26AB27F500901A10 /* WCSessionWatchResponseData.swift */; };
+		5260D9F026AB282900901A10 /* WCSessionRequestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9E826AB27C900901A10 /* WCSessionRequestData.swift */; };
+		5260D9F226AB282900901A10 /* WCSessionAppResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */; };
+		5260D9F326AB282A00901A10 /* WCSessionWatchResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EC26AB27F500901A10 /* WCSessionWatchResponseData.swift */; };
+		5260D9F426AB282A00901A10 /* WCSessionAppResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
 		5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
 		5297E3A82698956E00680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
@@ -42,8 +54,6 @@
 		52B7250226A72B460092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250126A72B460092B818 /* RoborockApi */; };
 		52B7250426A72B580092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250326A72B580092B818 /* RoborockApi */; };
 		52B7250626A72B5C0092B818 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52B7250526A72B5C0092B818 /* RoborockApi */; };
-		52C35B3426A9C73500364089 /* WatchSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C35B3326A9C73500364089 /* WatchSync.swift */; };
-		52C35B3526A9C73500364089 /* WatchSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C35B3326A9C73500364089 /* WatchSync.swift */; };
 		52C658E426A5B390009C8D07 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */; };
 		52C658EA26A5C79B009C8D07 /* FanspeedSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */; };
 		52C658EE26A5D38F009C8D07 /* BatteryTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658ED26A5D38F009C8D07 /* BatteryTileView.swift */; };
@@ -59,6 +69,8 @@
 		52DBCBAF2694BC6A00D25CC6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBAE2694BC6A00D25CC6 /* SettingsView.swift */; };
 		52DBCBB12694BC7300D25CC6 /* Settings+SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBB02694BC7300D25CC6 /* Settings+SettingsFeature.swift */; };
 		52DBCBB32694C20900D25CC6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBB22694C20900D25CC6 /* SectionHeader.swift */; };
+		52E0F62D26AADCF200C34206 /* WCSessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E0F62C26AADCF200C34206 /* WCSessionData.swift */; };
+		52E0F62E26AADCF200C34206 /* WCSessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E0F62C26AADCF200C34206 /* WCSessionData.swift */; };
 		52E890AB26A6E128004E9D7A /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E890AA26A6E128004E9D7A /* CircularButtonStyle.swift */; };
 		52E890AD26A6E320004E9D7A /* FanspeedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E890AC26A6E320004E9D7A /* FanspeedList.swift */; };
 		52E890AE26A723BA004E9D7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 521C741B269DD3CF0098D71A /* Assets.xcassets */; };
@@ -214,6 +226,12 @@
 		5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanRoomIntentHandler.swift; sourceTree = "<group>"; };
 		525079D1268F82E6000F7095 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		525079D3268F82ED000F7095 /* UIImage+Rotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotate.swift"; sourceTree = "<group>"; };
+		5260D9DB26AB19C100901A10 /* WatchConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnection.swift; sourceTree = "<group>"; };
+		5260D9DE26AB1A7700901A10 /* WatchConnection+Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchConnection+Feature.swift"; sourceTree = "<group>"; };
+		5260D9E226AB27AB00901A10 /* WCSessionAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAction.swift; sourceTree = "<group>"; };
+		5260D9E826AB27C900901A10 /* WCSessionRequestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionRequestData.swift; sourceTree = "<group>"; };
+		5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionAppResponseData.swift; sourceTree = "<group>"; };
+		5260D9EC26AB27F500901A10 /* WCSessionWatchResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionWatchResponseData.swift; sourceTree = "<group>"; };
 		5275B16526499263008B4DC7 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -221,7 +239,6 @@
 		52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+PixelData.swift"; sourceTree = "<group>"; };
 		52AD4DAB2695D2C700D5C839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52AD4DAD2695D2D200D5C839 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		52C35B3326A9C73500364089 /* WatchSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSync.swift; sourceTree = "<group>"; };
 		52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
 		52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanspeedSelection.swift; sourceTree = "<group>"; };
 		52C658ED26A5D38F009C8D07 /* BatteryTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryTileView.swift; sourceTree = "<group>"; };
@@ -232,6 +249,7 @@
 		52DBCBAE2694BC6A00D25CC6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		52DBCBB02694BC7300D25CC6 /* Settings+SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+SettingsFeature.swift"; sourceTree = "<group>"; };
 		52DBCBB22694C20900D25CC6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		52E0F62C26AADCF200C34206 /* WCSessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionData.swift; sourceTree = "<group>"; };
 		52E890AA26A6E128004E9D7A /* CircularButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularButtonStyle.swift; sourceTree = "<group>"; };
 		52E890AC26A6E320004E9D7A /* FanspeedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanspeedList.swift; sourceTree = "<group>"; };
 		52EE04C5269CA00900C677AA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
@@ -353,11 +371,9 @@
 		52232AE326A81E840024D072 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				5260D9E126AB278000901A10 /* WatchConnection */,
 				52232AE426A81EB30024D072 /* Api */,
 				52232AE526A81EBA0024D072 /* Shared */,
-				52232AE726A87F310024D072 /* WatchKitSessionClient.swift */,
-				52232AE026A81C2A0024D072 /* WatchkitSessionDelegate.swift */,
-				52C35B3326A9C73500364089 /* WatchSync.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -470,6 +486,30 @@
 				5249E9A926970BD00095828E /* Info.plist */,
 			);
 			path = StartCleaning;
+			sourceTree = "<group>";
+		};
+		5260D9E126AB278000901A10 /* WatchConnection */ = {
+			isa = PBXGroup;
+			children = (
+				5260D9F526AB283300901A10 /* Model */,
+				5260D9DB26AB19C100901A10 /* WatchConnection.swift */,
+				5260D9DE26AB1A7700901A10 /* WatchConnection+Feature.swift */,
+				52232AE726A87F310024D072 /* WatchKitSessionClient.swift */,
+				52232AE026A81C2A0024D072 /* WatchkitSessionDelegate.swift */,
+				5260D9E226AB27AB00901A10 /* WCSessionAction.swift */,
+				52E0F62C26AADCF200C34206 /* WCSessionData.swift */,
+			);
+			path = WatchConnection;
+			sourceTree = "<group>";
+		};
+		5260D9F526AB283300901A10 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5260D9E826AB27C900901A10 /* WCSessionRequestData.swift */,
+				5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */,
+				5260D9EC26AB27F500901A10 /* WCSessionWatchResponseData.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		52DBCBAB2694BBDA00D25CC6 /* Settings */ = {
@@ -812,24 +852,30 @@
 				52C658E426A5B390009C8D07 /* PrimaryButtonStyle.swift in Sources */,
 				521C7416269DD3CE0098D71A /* NotificationController.swift in Sources */,
 				6510D92A26A5E62C00FECC97 /* StateTileView.swift in Sources */,
+				5260D9E026AB1A7700901A10 /* WatchConnection+Feature.swift in Sources */,
 				65B0EEF726A3759000924CB9 /* Home+HomeFeature.swift in Sources */,
 				65B0EEF626A3749900924CB9 /* CircularProgressViewStyle.swift in Sources */,
 				52232AE826A87F310024D072 /* WatchKitSessionClient.swift in Sources */,
+				5260D9E426AB27AB00901A10 /* WCSessionAction.swift in Sources */,
 				65B0EECF26A35E1100924CB9 /* Home.swift in Sources */,
 				65B0EEE426A364B500924CB9 /* Shared.swift in Sources */,
 				521C7414269DD3CE0098D71A /* HomeView.swift in Sources */,
 				65B0EEF226A3703E00924CB9 /* Main.swift in Sources */,
+				5260D9F326AB282A00901A10 /* WCSessionWatchResponseData.swift in Sources */,
+				52E0F62E26AADCF200C34206 /* WCSessionData.swift in Sources */,
 				521C741A269DD3CE0098D71A /* ComplicationController.swift in Sources */,
 				65B0EEDA26A362F900924CB9 /* Api.swift in Sources */,
-				52C35B3526A9C73500364089 /* WatchSync.swift in Sources */,
 				65B0EEE326A364AA00924CB9 /* ApiWebSocketClient.swift in Sources */,
 				65B0EEF026A36FF400924CB9 /* Api+Action.swift in Sources */,
 				5238572626A056B800B2FBEA /* StatusTileView.swift in Sources */,
+				5260D9F426AB282A00901A10 /* WCSessionAppResponseData.swift in Sources */,
 				52E890AD26A6E320004E9D7A /* FanspeedList.swift in Sources */,
+				5260D9DD26AB19C100901A10 /* WatchConnection.swift in Sources */,
 				65B0EEFC26A3816D00924CB9 /* MainView.swift in Sources */,
 				52232AE126A81C2A0024D072 /* WatchkitSessionDelegate.swift in Sources */,
 				65B0EEF126A36FF600924CB9 /* Api+Reducer.swift in Sources */,
 				521C7412269DD3CE0098D71A /* RoborockApp.swift in Sources */,
+				5260D9E926AB27C900901A10 /* WCSessionRequestData.swift in Sources */,
 				65B0EEF926A37F3A00924CB9 /* ButtonView.swift in Sources */,
 				52E890AB26A6E128004E9D7A /* CircularButtonStyle.swift in Sources */,
 				65B0EEFE26A3825E00924CB9 /* SegmentList.swift in Sources */,
@@ -854,6 +900,7 @@
 			files = (
 				52DBCBAF2694BC6A00D25CC6 /* SettingsView.swift in Sources */,
 				52046F2926494DC400E1C041 /* BlurView.swift in Sources */,
+				5260D9E326AB27AB00901A10 /* WCSessionAction.swift in Sources */,
 				52F12B9A2689BF4300C5494E /* RRFileParser.swift in Sources */,
 				52C658EA26A5C79B009C8D07 /* FanspeedSelection.swift in Sources */,
 				52232AE926A881050024D072 /* WatchKitSessionClient.swift in Sources */,
@@ -862,7 +909,8 @@
 				5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */,
 				52DBCBA626946C0300D25CC6 /* UIColor+Custom.swift in Sources */,
 				52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */,
-				52C35B3426A9C73500364089 /* WatchSync.swift in Sources */,
+				5260D9DF26AB1A7700901A10 /* WatchConnection+Feature.swift in Sources */,
+				5260D9F226AB282900901A10 /* WCSessionAppResponseData.swift in Sources */,
 				654289682646E884009B8BE5 /* MainView.swift in Sources */,
 				654289662646E6DF009B8BE5 /* Home+HomeFeature.swift in Sources */,
 				525079D4268F82ED000F7095 /* UIImage+Rotate.swift in Sources */,
@@ -871,6 +919,7 @@
 				6542895B2646C442009B8BE5 /* Main.swift in Sources */,
 				52DBCBB12694BC7300D25CC6 /* Settings+SettingsFeature.swift in Sources */,
 				6510E8E02688AF15001E9230 /* StatusView.swift in Sources */,
+				5260D9EF26AB282900901A10 /* WCSessionWatchResponseData.swift in Sources */,
 				52DBCBAD2694BBE200D25CC6 /* Settings.swift in Sources */,
 				52046F2626494DA100E1C041 /* PrimaryButtonStyle.swift in Sources */,
 				6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */,
@@ -879,11 +928,14 @@
 				52232AE626A81ECD0024D072 /* WatchkitSessionDelegate.swift in Sources */,
 				5249E9802695D6ED0095828E /* NotConnectedView.swift in Sources */,
 				52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */,
+				52E0F62D26AADCF200C34206 /* WCSessionData.swift in Sources */,
 				52DBCBA82694B1AB00D25CC6 /* String+Size.swift in Sources */,
 				525079D2268F82E6000F7095 /* UIColor+Hex.swift in Sources */,
 				65B0EEEC26A36D0D00924CB9 /* Api+Reducer.swift in Sources */,
 				5249E9822695D7C00095828E /* RoomSelectionView.swift in Sources */,
+				5260D9F026AB282900901A10 /* WCSessionRequestData.swift in Sources */,
 				6542895F2646C623009B8BE5 /* Api.swift in Sources */,
+				5260D9DC26AB19C100901A10 /* WatchConnection.swift in Sources */,
 				52F12B9F268A2D5400C5494E /* Data+ByteBuffer.swift in Sources */,
 				65B0EEED26A36D0D00924CB9 /* Api+Action.swift in Sources */,
 				5249E97E2695D6930095828E /* HeaderView.swift in Sources */,

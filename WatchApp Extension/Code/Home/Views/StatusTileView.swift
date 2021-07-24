@@ -44,6 +44,7 @@ struct StatusTileView: View {
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity)
+        .fixedSize(horizontal: true, vertical: false)
     }
 }
 

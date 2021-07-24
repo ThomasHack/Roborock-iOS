@@ -15,16 +15,16 @@ private var dependencies: [AnyHashable: Dependencies] = [:]
 private struct Dependencies {
     let session: WCSession
     let delegate: WatchkitSessionDelegate
-    let subscriber: Effect<Main.Action, Never>.Subscriber
+    let subscriber: Effect<WatchConnection.Action, Never>.Subscriber
 }
 
 struct WatchKitSessionClient {
-    var connect: (AnyHashable) -> Effect<Main.Action, Never>
-    var disconnect: (AnyHashable) -> Effect<Main.Action, Never>
-    var sendMessage: (AnyHashable, [String: Any]) -> Effect<Main.Action, Never>
-    var sendMessageWithReplyHandler: (AnyHashable, [String: Any], @escaping ([String: Any]) -> Void) -> Effect<Main.Action, Never>
-    var sendMessageData: (AnyHashable, Data) -> Effect<Main.Action, Never>
-    var sendMessageDataWithReplyHandler: (AnyHashable, Data, @escaping (Data) -> Void) -> Effect<Main.Action, Never>
+    var connect: (AnyHashable) -> Effect<WatchConnection.Action, Never>
+    var disconnect: (AnyHashable) -> Effect<WatchConnection.Action, Never>
+    var sendMessage: (AnyHashable, [String: Any]) -> Effect<WatchConnection.Action, Never>
+    var sendMessageWithReplyHandler: (AnyHashable, [String: Any], @escaping ([String: Any]) -> Void) -> Effect<WatchConnection.Action, Never>
+    var sendMessageData: (AnyHashable, WCSessionData) throws -> Effect<WatchConnection.Action, Never>
+    var sendMessageDataWithReplyHandler: (AnyHashable, Data, @escaping (Data) -> Void) -> Effect<WatchConnection.Action, Never>
 }
 
 extension WatchKitSessionClient {
@@ -35,16 +35,25 @@ extension WatchKitSessionClient {
                     sessionDidActivate: {
                         subscriber.send(.watchSessionDidActivate)
                     },
+                    sessionDidDeactivate: {
+                        subscriber.send(.watchSessionDidDeactivate)
+                    },
+                    sessionDidBecomeInactive: {
+                        subscriber.send(.watchSessionDidBecomeInactive)
+                    },
+                    sessionWatchStateDidChange: {
+                        subscriber.send(.watchSessionWatchStateDidChange)
+                    },
                     didReceiveMessage: {
                         subscriber.send(.didReceiveMessage($0))
+                    },
+                    didReceiveMessageData: {
+                        subscriber.send(.didReceiveMessageData($0))
                     }/*,
                     didReceiveMessageWithReplyHandler: { message, replyHandler in
                         subscriber.send(.didReceiveMessageWithReplyHandler(message, { response in
                             replyHandler(response)
                         }))
-                    },
-                    didReceiveMessageData: {
-                        subscriber.send(.didReceiveMessageData($0))
                     },
                     didReceiveMessageDataWithReplyHandler: { message, replyHandler in
                         subscriber.send(.didReceiveMessageDataWithReplyHandler(message, { response in
@@ -87,9 +96,14 @@ extension WatchKitSessionClient {
                 return AnyCancellable {}
             }
         },
-        sendMessageData: { id, data in
+        sendMessageData: { id, sessionData in
             .run { _ in
-                dependencies[id]?.session.sendMessageData(data, replyHandler: nil, errorHandler: nil)
+                do {
+                    let data = try JSONEncoder().encode(sessionData)
+                    dependencies[id]?.session.sendMessageData(data, replyHandler: nil, errorHandler: nil)
+                } catch {
+                    assertionFailure("")
+                }
                 return AnyCancellable {}
             }
         },

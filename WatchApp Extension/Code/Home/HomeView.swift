@@ -17,40 +17,29 @@ struct HomeView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack(alignment: .leading, spacing: 16) {
-                if viewStore.api.isConnected, let status = viewStore.status {
-                    StateTileView(state: viewStore.api.state)
+                StateTileView(state: viewStore.binding(get: \.api.state, send: Home.Action.none))
 
-                    HStack(spacing: 4) {
-                        BatteryTileView(value: status.battery)
-                            .frame(width: 68, height: 68)
+                HStack(spacing: 4) {
+                    BatteryTileView(value: viewStore.binding(get: \.api.status?.battery, send: Home.Action.none))
+                        .frame(width: 68, height: 68)
 
-                        VStack(alignment: .leading, spacing: 8) {
-                            StatusTileView(iconName: "stopwatch",
-                                           label: "Clean time",
-                                           unit: "h",
-                                           color: Color("primary"),
-                                           value: viewStore.binding(get: { $0.api.cleanTime }, send: Home.Action.none))
-                                .fixedSize(horizontal: true, vertical: false)
+                    VStack(alignment: .leading, spacing: 8) {
+                        StatusTileView(iconName: "stopwatch",
+                                       label: "Clean time",
+                                       unit: "h",
+                                       color: Color("primary"),
+                                       value: viewStore.binding(get: { $0.api.cleanTime }, send: Home.Action.none))
 
-                            StatusTileView(iconName: "square.dashed",
-                                           label: "Clean area",
-                                           unit: "qm",
-                                           color: Color("primary"),
-                                           value: viewStore.binding(get: { $0.api.cleanArea }, send: Home.Action.none))
-                                .fixedSize(horizontal: true, vertical: false)
-                        }
-                        .padding(.leading, 8)
+                        StatusTileView(iconName: "square.dashed",
+                                       label: "Clean area",
+                                       unit: "qm",
+                                       color: Color("primary"),
+                                       value: viewStore.binding(get: { $0.api.cleanArea }, send: Home.Action.none))
                     }
-
-                    ButtonView(store: self.store)
-                } else {
-                    VStack(spacing: 0) {
-                        Spacer()
-                        ProgressView()
-                        Text("Connecting...")
-                        Spacer()
-                    }
+                    .padding(.leading, 8)
                 }
+
+                ButtonView(store: self.store)
             }
             .navigationTitle("Roborock")
             .padding(.top, 16)

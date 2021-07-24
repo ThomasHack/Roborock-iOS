@@ -63,7 +63,7 @@ extension Api {
             return String(format: "%.2f", Double(status.cleanArea) / 1000000)
         }
 
-#if os(iOS)
+        #if os(iOS)
         var status: Status? {
             willSet {
                 if self.inCleaning && newValue?.inCleaning == 0 {
@@ -82,16 +82,16 @@ extension Api {
 
         var initialUpdateDone: Bool {
             mapImage != nil
-            && pathImage != nil
-            && forbiddenZonesImage != nil
-            && robotImage != nil
-            && chargerImage != nil
-            && segmentLabelsImage != nil
+                && pathImage != nil
+                && forbiddenZonesImage != nil
+                && robotImage != nil
+                && chargerImage != nil
+                && segmentLabelsImage != nil
         }
-#endif
+        #endif
 
-#if os(watchOS)
+        #if os(watchOS)
         var status: Status?
-#endif
+        #endif
     }
 }

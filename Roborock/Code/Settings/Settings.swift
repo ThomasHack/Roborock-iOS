@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import Foundation
+import Intents
 
 enum Settings {
     struct State: Equatable {
@@ -18,6 +19,8 @@ enum Settings {
         case hideSettingsModal
         case connectButtonTapped
         case doneButtonTapped
+        case requestSiriAuthorization
+        case donateSiriShortcut
 
         case api(Api.Action)
         case shared(Shared.Action)
@@ -48,6 +51,40 @@ enum Settings {
             case .doneButtonTapped:
                 state.shared.host = state.hostInput
                 return Effect(value: .hideSettingsModal)
+
+            case .requestSiriAuthorization:
+                var request = false
+                INPreferences.requestSiriAuthorization({status in
+                    switch status {
+                    case .notDetermined:
+                        print("not determined")
+                    case .restricted:
+                        print("restricted")
+                    case .denied:
+                        print("denied")
+                    case .authorized:
+                        request = true
+                    @unknown default:
+                        fatalError("Unknown Siri authorization state.")
+                    }
+                })
+                if request {
+                    return Effect(value: Action.donateSiriShortcut)
+                }
+
+            case .donateSiriShortcut:
+                let intent = CleanRoomIntent()
+                intent.suggestedInvocationPhrase = "Staubsaugen starten"
+                intent.rooms = [Room(identifier: "17", display: "Wohnzimmer")]
+                let interaction = INInteraction(intent: intent, response: nil)
+                interaction.donate { error in
+                    if let error = error {
+                        print("Interaction donation failed: \(error.localizedDescription)")
+                        return
+                    }
+                    print("Successfully donated interaction")
+                }
+
             case .shared, .api:
                 break
             }

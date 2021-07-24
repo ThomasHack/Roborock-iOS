@@ -44,6 +44,12 @@ struct SettingsView: View {
                                 Spacer()
                             }
                         }
+
+                        Button {
+                            viewStore.send(.requestSiriAuthorization)
+                        } label: {
+                            Text("settings.donateSiriShortcut")
+                        }
                     }
                 }
                 .navigationBarTitle(Text("settings.title"), displayMode: .large)

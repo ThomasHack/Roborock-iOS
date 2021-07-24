@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct BatteryTileView: View {
-    @State var value: Int
+    @Binding var value: Int?
 
     var body: some View {
-        ProgressView("\(value)", value: Float(value), total: Float(100))
+        ProgressView("\(value ?? 0)", value: Float(value ?? 0), total: Float(100))
             .progressViewStyle(CircularProgressViewStyle())
             .overlay(
                 HStack(alignment: .lastTextBaseline, spacing: 0) {
-                    Text("\(value)")
+                    Text("\(value ?? 0)")
                         .font(.body)
                     Text("%")
                         .font(.system(size: 12))
@@ -27,7 +27,7 @@ struct BatteryTileView: View {
 
 struct BatteryTileView_Previews: PreviewProvider {
     static var previews: some View {
-        BatteryTileView(value: 100)
+        BatteryTileView(value: .constant(100))
             .previewLayout(.fixed(width: 50, height: 50))
     }
 }

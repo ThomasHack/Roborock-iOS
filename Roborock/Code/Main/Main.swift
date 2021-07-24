@@ -18,6 +18,7 @@ enum Main {
         var api: Api.State
         var shared: Shared.State
         var settings: Settings.State
+        var watchConnection: WatchConnection.State
 
         var homeFeature: Home.HomeFeatureState {
             get { Home.HomeFeatureState(home: self.home, settings: self.settings, shared: self.shared, api: self.api) }
@@ -28,18 +29,19 @@ enum Main {
             get { Settings.SettingsFeatureState(settings: self.settings, shared: self.shared, api: self.api) }
             set { self.settings = newValue.settings; self.shared = newValue.shared }
         }
+
+        var watchConnectionFeature: WatchConnection.WatchConnectionFeatureState {
+            get { WatchConnection.WatchConnectionFeatureState(watchConnection: self.watchConnection, shared: self.shared) }
+            set { self.watchConnection = newValue.watchConnection; self.shared = newValue.shared }
+        }
     }
 
     enum Action {
-        case connect
-        case watchSessionDidActivate
-        case watchSessionDidDeactivate
-        case didReceiveMessage([String: Any])
-
         case home(Home.Action)
         case api(Api.Action)
         case shared(Shared.Action)
         case settings(Settings.Action)
+        case watchConnection(WatchConnection.Action)
     }
 
     struct Environment {
@@ -59,23 +61,10 @@ enum Main {
     )
 
     static let reducer = Reducer<State, Action, Environment>.combine(
-        Reducer { state, action, environment in
+        Reducer { _, action, _ in
             switch action {
-            case .connect:
-                return environment.watchkitSessionClient.connect(WatchKitId())
-
-            case .watchSessionDidActivate:
-                print("didConnect")
-
-            case .watchSessionDidDeactivate:
-                print("didDisconnect")
-
-            case .didReceiveMessage(let message):
-                let response = ["response": state.shared.host]
-                return environment.watchkitSessionClient.sendMessage(WatchKitId(), message)
-
-            case .home, . api, .shared, .settings:
-                return .none
+            case .home, . api, .shared, .settings, .watchConnection:
+                break
             }
             return .none
         },
@@ -98,6 +87,11 @@ enum Main {
             state: \State.settingsFeature,
             action: /Action.settings,
             environment: { $0 }
+        ),
+        WatchConnection.reducer.pullback(
+            state: \State.watchConnectionFeature,
+            action: /Action.watchConnection,
+            environment: { $0 }
         )
     )
 
@@ -106,7 +100,8 @@ enum Main {
             home: Home.initialState,
             api: Api.initialState,
             shared: Shared.initialState,
-            settings: Settings.initialState
+            settings: Settings.initialState,
+            watchConnection: WatchConnection.initialState
         ),
         reducer: reducer,
         environment: initialEnvironment
@@ -136,5 +131,13 @@ extension Store where State == Main.State, Action == Main.Action {
 
     var api: Store<Api.State, Api.Action> {
         scope(state: \.api, action: Main.Action.api)
+    }
+
+    var shared: Store<Shared.State, Shared.Action> {
+        scope(state: \.shared, action: Main.Action.shared)
+    }
+
+    var watchConnection: Store<WatchConnection.WatchConnectionFeatureState, WatchConnection.Action> {
+        scope(state: \.watchConnectionFeature, action: Main.Action.watchConnection)
     }
 }

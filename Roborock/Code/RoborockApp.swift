@@ -6,23 +6,32 @@
 //
 
 import ComposableArchitecture
-import Intents
 import SwiftUI
+import WatchConnectivity
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        let viewStore = ViewStore(Main.store)
+        viewStore.send(.watchConnection(.connect))
+        return true
+    }
+}
 
 @main
 struct RoborockApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegat
     @Environment(\.scenePhase) var scenePhase
 
     var store: Store<Main.State, Main.Action> = Main.store
 
-    private func connect() {
-        let viewStore = ViewStore(store)
-        guard let host = viewStore.state.shared.host, let url = URL(string: host) else { return }
-        viewStore.send(.api(.connect(url)))
-    }
-
-    private func disconnect() {
-        ViewStore(store).send(.api(.disconnect))
+    @SceneBuilder
+    var body: some Scene {
+        WindowGroup {
+            MainView(store: store)
+        }
+        .onChange(of: scenePhase) { phase in
+            handlePhaseChange(phase)
+        }
     }
 
     private func handlePhaseChange(_ phase: ScenePhase) {
@@ -36,48 +45,14 @@ struct RoborockApp: App {
         }
     }
 
-    private func handleSiriAuthorization() {
-        INPreferences.requestSiriAuthorization({status in
-            switch status {
-            case .notDetermined:
-                print("not determined")
-            case .restricted:
-                print("restricted")
-            case .denied:
-                print("denied")
-            case .authorized:
-                donateShortcut()
-            @unknown default:
-                fatalError("Unknown Siri authorization state.")
-            }
-        })
+    private func connect() {
+        let viewStore = ViewStore(store)
+        guard let host = viewStore.state.shared.host, let url = URL(string: host) else { return }
+        viewStore.send(.api(.connect(url)))
+        viewStore.send(.watchConnection(.connect))
     }
 
-    private func donateShortcut() {
-        let intent = CleanRoomIntent()
-        intent.suggestedInvocationPhrase = "Staubsaugen starten"
-        intent.rooms = [Room(identifier: "17", display: "Wohnzimmer")]
-        let interaction = INInteraction(intent: intent, response: nil)
-        interaction.donate { error in
-            if let error = error {
-                print("Interaction donation failed: \(error.localizedDescription)")
-                return
-            }
-            print("Successfully donated interaction")
-        }
-    }
-
-    var body: some Scene {
-        WindowGroup {
-            MainView(store: store)
-                .onAppear {
-                    let viewStore = ViewStore(self.store)
-                    viewStore.send(.connect)
-                }
-        }
-        .onChange(of: scenePhase) { phase in
-            handlePhaseChange(phase)
-            handleSiriAuthorization()
-        }
+    private func disconnect() {
+        ViewStore(store).send(.api(.disconnect))
     }
 }
