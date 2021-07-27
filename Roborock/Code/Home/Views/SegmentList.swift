@@ -21,12 +21,24 @@ struct SegmentList: View {
                                 viewStore.send(.api(.toggleRoom(id)))
                             } label: {
                                 HStack {
-                                    Text(name)
-                                    Spacer()
                                     if viewStore.api.rooms.contains(id) {
-                                        Image(systemName: "checkmark.circle.fill")
-                                            .foregroundColor(.blue)
+                                        let index = Int(viewStore.api.rooms.firstIndex(of: id) ?? 0)
+                                        ZStack {
+                                            Circle()
+                                                .foregroundColor(Color("primary"))
+                                                .frame(width: 24, height: 24)
+                                            Text("\(index + 1)")
+                                        }
+                                    } else {
+                                        Circle()
+                                            .strokeBorder(Color("primary"), lineWidth: 2)
+                                            .frame(width: 24, height: 24)
                                     }
+
+                                    Text(name)
+                                        .padding(.leading, 4)
+
+                                    Spacer()
                                 }
                             }
                         }
