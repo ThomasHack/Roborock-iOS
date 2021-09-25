@@ -107,6 +107,7 @@
 		65B0EEF926A37F3A00924CB9 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEF826A37F3A00924CB9 /* ButtonView.swift */; };
 		65B0EEFC26A3816D00924CB9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEFB26A3816D00924CB9 /* MainView.swift */; };
 		65B0EEFE26A3825E00924CB9 /* SegmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEFD26A3825E00924CB9 /* SegmentList.swift */; };
+		65F6620F26FF37FB008472C4 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F6620E26FF37FB008472C4 /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -280,6 +281,7 @@
 		65B0EEF826A37F3A00924CB9 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		65B0EEFB26A3816D00924CB9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		65B0EEFD26A3825E00924CB9 /* SegmentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentList.swift; sourceTree = "<group>"; };
+		65F6620E26FF37FB008472C4 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52D1BAB0269C6AB900219230 /* Gzip in Frameworks */,
+				65F6620F26FF37FB008472C4 /* NetworkExtension.framework in Frameworks */,
 				5200DB3726AC76450026D69F /* RoborockApi in Frameworks */,
 				52D1BAAE269C6AB900219230 /* ComposableArchitecture in Frameworks */,
 			);
@@ -470,6 +473,7 @@
 		5249E98E2696E7A70095828E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				65F6620E26FF37FB008472C4 /* NetworkExtension.framework */,
 				5249E98F2696E7A70095828E /* IntentsUI.framework */,
 				5249E9A426970BD00095828E /* Intents.framework */,
 			);
@@ -1002,7 +1006,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "WatchApp Extension/WatchApp Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210706;
+				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_ASSET_PATHS = "\"WatchApp Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
@@ -1028,7 +1032,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "WatchApp Extension/WatchApp Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210706;
+				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_ASSET_PATHS = "\"WatchApp Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
@@ -1056,7 +1060,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WatchApp/WatchApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210706;
+				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
@@ -1078,7 +1082,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WatchApp/WatchApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210706;
+				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				IBSC_MODULE = WatchApp_Extension;
 				INFOPLIST_FILE = WatchApp/Info.plist;
@@ -1097,7 +1101,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = StartCleaning/StartCleaning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210706;
+				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StartCleaning/Info.plist;
@@ -1127,7 +1131,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = StartCleaning/StartCleaning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210706;
+				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StartCleaning/Info.plist;
@@ -1279,7 +1283,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Roborock/Supporting Files/Roborock.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210706;
+				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
@@ -1291,6 +1295,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WATCHOS_DEPLOYMENT_TARGET = 7.1;
@@ -1306,7 +1311,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Roborock/Supporting Files/Roborock.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210706;
+				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
@@ -1318,6 +1323,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.thomashack.Valetudo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WATCHOS_DEPLOYMENT_TARGET = 7.1;
@@ -1404,7 +1410,7 @@
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.18.0;
+				minimumVersion = 0.28.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
