@@ -17,12 +17,12 @@ workflows:
     - script@1:
         title: Do anything with Script step
     - certificate-and-profile-installer@1: {}
-    - xcode-archive@3:
+    - xcode-archive@4:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
         - scheme: $BITRISE_SCHEME
         - export_method: $BITRISE_EXPORT_METHOD
-    - deploy-to-bitrise-io@1: {}
+    - deploy-to-bitrise-io@2: {}
     - cache-push@2: {}
 app:
   envs:
