@@ -28,6 +28,7 @@ struct SegmentList: View {
                                                 .foregroundColor(Color("primary"))
                                                 .frame(width: 24, height: 24)
                                             Text("\(index + 1)")
+                                                .foregroundColor(Color(.systemBackground))
                                         }
                                     } else {
                                         Circle()
