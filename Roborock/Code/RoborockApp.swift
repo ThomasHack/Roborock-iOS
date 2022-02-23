@@ -11,7 +11,7 @@ import WatchConnectivity
 
 @main
 struct RoborockApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegat
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) var scenePhase
 
     var store: Store<Main.State, Main.Action> = Main.store
