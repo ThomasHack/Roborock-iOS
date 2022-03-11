@@ -36,3 +36,6 @@ app:
   - opts:
       is_expand: false
     BITRISE_EXPORT_METHOD: enterprise
+meta:
+  bitrise.io:
+    stack: osx-xcode-13.2.x
