@@ -1387,7 +1387,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ThomasHack/Roborock-Api";
 			requirement = {
-				branch = master;
+				branch = main;
 				kind = branch;
 			};
 		};
