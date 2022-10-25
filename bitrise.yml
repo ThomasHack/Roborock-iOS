@@ -38,4 +38,4 @@ app:
     BITRISE_EXPORT_METHOD: enterprise
 meta:
   bitrise.io:
-    stack: osx-xcode-13.2.x
+    stack: osx-xcode-14.1.x
