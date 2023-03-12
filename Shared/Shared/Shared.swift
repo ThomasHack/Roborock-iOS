@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import Foundation
 
-enum Shared {
+struct Shared: ReducerProtocol {
     static let appGroupName = "group.thomashack.valetudo"
     static let hostDefaultsKeyName = "roborock.hostname"
 
@@ -16,38 +16,33 @@ enum Shared {
 
     struct State: Equatable {
         var host: String? {
-            didSet {
-                userDefaults?.set(host, forKey: hostDefaultsKeyName)
-            }
+            didSet { userDefaults?.set(host, forKey: hostDefaultsKeyName) }
         }
+    }
 
-        var showSettingsModal = false
+    enum Action {
+        case updateHost(String)
+    }
+
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .updateHost(let host):
+                state.host = host
+            }
+            return .none
+        }
     }
 
     static let initialState = State(
         host: userDefaults?.string(forKey: hostDefaultsKeyName)
     )
+    static let previewState = State(
+        host: "roborock.friday.home"
+    )
 
-    enum Action {
-        case updateHost(String)
-        case showSettingsModal
-        case hideSettingsModal
-        case toggleSettingsModal(Bool)
-    }
-
-    typealias Environment = Main.Environment
-
-    static let reducer = Reducer<State, Action, Environment> { state, action, _ in
-        switch action {
-        case .updateHost(let string):
-            state.host = string
-        case .showSettingsModal:
-            state.showSettingsModal = true
-        case .hideSettingsModal:
-            state.showSettingsModal = false
-        case .toggleSettingsModal(let toggle):
-            state.showSettingsModal = toggle
-        }
-        return .none
-    }
+    static let previewStore = Store(
+        initialState: initialState,
+        reducer: Shared()
+    )
 }

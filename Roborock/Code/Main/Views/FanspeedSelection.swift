@@ -10,7 +10,7 @@ import RoborockApi
 import SwiftUI
 
 struct FanspeedSelection: View {
-    let store: Store<Home.HomeFeatureState, Home.Action>
+    let store: Store<Main.State, Main.Action>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -18,12 +18,12 @@ struct FanspeedSelection: View {
                 Menu(content: {
                     ForEach(viewStore.fanspeeds.reversed(), id: \.self) { value in
                         Button {
-                            viewStore.send(.api(.setFanspeed(value)))
+                            viewStore.send(.apiAction(.setFanspeed(value)))
                         } label: {
                             HStack {
                                 Text(value.label)
                                 Spacer()
-                                if viewStore.api.status?.fanPower == value.rawValue {
+                                if viewStore.apiState.status?.fanPower == value.rawValue {
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundColor(.blue)
                                 }
@@ -46,6 +46,6 @@ struct FanspeedSelection: View {
 
 struct FanspeedSelection_Previews: PreviewProvider {
     static var previews: some View {
-        FanspeedSelection(store: Main.previewStoreHome)
+        FanspeedSelection(store: Main.previewStore)
     }
 }

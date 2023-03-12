@@ -15,16 +15,16 @@ private var dependencies: [AnyHashable: Dependencies] = [:]
 private struct Dependencies {
     let session: WCSession
     let delegate: WatchkitSessionDelegate
-    let subscriber: Effect<WatchConnection.Action, Never>.Subscriber
+    let subscriber: EffectTask<WatchConnection.Action>.Subscriber
 }
 
 struct WatchKitSessionClient {
-    var connect: (AnyHashable) -> Effect<WatchConnection.Action, Never>
-    var disconnect: (AnyHashable) -> Effect<WatchConnection.Action, Never>
-    var sendMessage: (AnyHashable, [String: Any]) -> Effect<WatchConnection.Action, Never>
-    var sendMessageWithReplyHandler: (AnyHashable, [String: Any], @escaping ([String: Any]) -> Void) -> Effect<WatchConnection.Action, Never>
-    var sendMessageData: (AnyHashable, WCSessionData) throws -> Effect<WatchConnection.Action, Never>
-    var sendMessageDataWithReplyHandler: (AnyHashable, Data, @escaping (Data) -> Void) -> Effect<WatchConnection.Action, Never>
+    var connect: (AnyHashable) -> EffectTask<WatchConnection.Action>
+    var disconnect: (AnyHashable) -> EffectTask<WatchConnection.Action>
+    var sendMessage: (AnyHashable, [String: Any]) -> EffectTask<WatchConnection.Action>
+    var sendMessageWithReplyHandler: (AnyHashable, [String: Any], @escaping ([String: Any]) -> Void) -> EffectTask<WatchConnection.Action>
+    var sendMessageData: (AnyHashable, WCSessionData) throws -> EffectTask<WatchConnection.Action>
+    var sendMessageDataWithReplyHandler: (AnyHashable, Data, @escaping (Data) -> Void) -> EffectTask<WatchConnection.Action>
 }
 
 extension WatchKitSessionClient {

@@ -11,11 +11,11 @@ import ComposableArchitecture
 import SwiftUI
 
 struct SegmentList: View {
-    let store: Store<Home.HomeFeatureState, Home.Action>
+    let store: Store<Home.State, Home.Action>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            if let segments = viewStore.api.segments?.data {
+            if let segments = viewStore.apiState.segments?.data {
                 ScrollView {
                     VStack {
                         ForEach(segments, id: \.self) { segment in
@@ -24,8 +24,8 @@ struct SegmentList: View {
                                     viewStore.send(.toggleRoom(id))
                                 } label: {
                                     HStack {
-                                        if viewStore.api.rooms.contains(id) {
-                                            let index = Int(viewStore.api.rooms.firstIndex(of: id) ?? 0)
+                                        if viewStore.apiState.rooms.contains(id) {
+                                            let index = Int(viewStore.apiState.rooms.firstIndex(of: id) ?? 0)
                                             ZStack {
                                                 Circle()
                                                     .foregroundColor(Color("primary"))
@@ -59,7 +59,7 @@ struct SegmentList: View {
                                 Text("Start")
                             }
                             .buttonStyle(PrimaryButtonStyle())
-                            .disabled(viewStore.api.rooms.isEmpty)
+                            .disabled(viewStore.apiState.rooms.isEmpty)
                         }
                         .padding()
                         .background(LinearGradient(gradient: Gradient(colors: [.clear, .black]), startPoint: .top, endPoint: .bottom))

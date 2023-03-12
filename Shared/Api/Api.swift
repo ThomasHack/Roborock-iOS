@@ -17,8 +17,12 @@ enum ConnectivityState {
     case disconnected
 }
 
-enum Api {
-    typealias Environment = Main.Environment
+struct Api: ReducerProtocol {
+    @Dependency(\.restClient) var restClient
+    @Dependency(\.websocketClient) var websocketClient
+    #if os(iOS)
+    @Dependency(\.rrFileParser) var rrFileParser
+    #endif
 
     static let initialState = State()
     static let previewState = State(connectivityState: .connected,

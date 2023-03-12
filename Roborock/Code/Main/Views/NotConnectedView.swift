@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct NotConnectedView: View {
-    let store: Store<Home.HomeFeatureState, Home.Action>
+    let store: Store<Main.State, Main.Action>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -19,13 +19,13 @@ struct NotConnectedView: View {
                     Text("api.disconnected")
                 }.foregroundColor(.secondary)
                 Button {
-                    if viewStore.shared.host != nil {
-                        viewStore.send(.settingsButtonTapped)
+                    if viewStore.sharedState.host != nil {
+                        viewStore.send(.toggleSettings(true))
                     } else {
-                        viewStore.send(.settingsButtonTapped)
+                        viewStore.send(.toggleSettings(true))
                     }
                 } label: {
-                    Text((viewStore.shared.host ?? "").isEmpty ? "home.setHost" : "api.connect")
+                    Text((viewStore.sharedState.host ?? "").isEmpty ? "home.setHost" : "api.connect")
                 }
             }
         }
@@ -34,6 +34,6 @@ struct NotConnectedView: View {
 
 struct NotConnectedView_Previews: PreviewProvider {
     static var previews: some View {
-        NotConnectedView(store: Main.previewStoreHome)
+        NotConnectedView(store: Main.previewStore)
     }
 }

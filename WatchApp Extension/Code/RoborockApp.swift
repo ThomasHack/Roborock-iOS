@@ -42,7 +42,7 @@ struct RoborockApp: App {
 
     private func connect() {
         let viewStore = ViewStore(store)
-        guard let host = viewStore.state.shared.host,
+        guard let host = viewStore.sharedState.host,
               let websocketUrl = URL(string: "ws://\(host)"),
               let restUrl = URL(string: "http://\(host)") else { return }
         viewStore.send(.api(.connect(websocketUrl)))

@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct ButtonView: View {
-    let store: Store<Home.HomeFeatureState, Home.Action>
+    let store: Store<Home.State, Home.Action>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -23,9 +23,9 @@ struct ButtonView: View {
                         .frame(width: 20, height: 20)
                 }
                 .buttonStyle(CircularButtonStyle())
-                .disabled(!viewStore.api.isConnected || viewStore.api.state == .charging)
+                .disabled(!viewStore.apiState.isConnected || viewStore.apiState.state == .charging)
 
-                if !viewStore.api.inCleaning && !viewStore.api.inReturning {
+                if !viewStore.apiState.inCleaning && !viewStore.apiState.inReturning {
                     Button {
                         viewStore.send(.toggleSegmentsModal(true))
                     } label: {
@@ -36,7 +36,7 @@ struct ButtonView: View {
                             .offset(x: 2, y: 0)
                     }
                     .buttonStyle(PrimaryButtonStyle())
-                    .disabled(!viewStore.api.isConnected)
+                    .disabled(!viewStore.apiState.isConnected)
 
                 } else {
                     Button {
@@ -47,10 +47,10 @@ struct ButtonView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
                     }
-                    .disabled(!viewStore.api.isConnected)
+                    .disabled(!viewStore.apiState.isConnected)
                 }
 
-                if viewStore.api.inCleaning && viewStore.api.inReturning {
+                if viewStore.apiState.inCleaning && viewStore.apiState.inReturning {
                     Button {
                         viewStore.send(.pauseCleaning)
                     } label: {
@@ -59,7 +59,7 @@ struct ButtonView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
                     }
-                    .disabled(!viewStore.api.isConnected)
+                    .disabled(!viewStore.apiState.isConnected)
                 }
 
                 Button {
@@ -71,7 +71,7 @@ struct ButtonView: View {
                         .frame(width: 20, height: 20)
                 }
                 .buttonStyle(CircularButtonStyle())
-                .disabled(!viewStore.api.isConnected)
+                .disabled(!viewStore.apiState.isConnected)
             }
         }
     }

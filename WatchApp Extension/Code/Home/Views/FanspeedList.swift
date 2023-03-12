@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct FanspeedList: View {
-    let store: Store<Home.HomeFeatureState, Home.Action>
+    let store: Store<Home.State, Home.Action>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -22,7 +22,7 @@ struct FanspeedList: View {
                             HStack {
                                 Text(value.label)
                                 Spacer()
-                                if viewStore.api.status?.fanPower == value.rawValue {
+                                if viewStore.apiState.status?.fanPower == value.rawValue {
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundColor(.blue)
                                 }

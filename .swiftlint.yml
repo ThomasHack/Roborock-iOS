@@ -1,5 +1,6 @@
 excluded:
 - Carthage
+- "fastlane/SnapshotHelper.swift"
 opt_in_rules:
 - empty_count
 - first_where
@@ -21,7 +22,6 @@ opt_in_rules:
 - empty_string
 - empty_xctest_method
 - explicit_init
-- explicit_self
 - fallthrough
 - function_default_parameter_at_end
 - identical_operands
@@ -56,7 +56,6 @@ opt_in_rules:
 - toggle_bool
 - unavailable_function
 - unneeded_parentheses_in_closure_argument
-- unused_import
 - vertical_parameter_alignment_on_call
 - file_name
 - last_where
@@ -70,10 +69,19 @@ opt_in_rules:
 - contains_over_filter_is_empty
 - discouraged_optional_boolean
 - empty_collection_literal
+- expiring_todo
+- file_name_no_space
+- optional_enum_case_matching
+- prefer_zero_over_explicit_init
+- raw_value_for_camel_cased_codable_enum
+analyzer_rules:
+- explicit_self
 - unused_declaration
+- unused_import
 disabled_rules:
 - line_length
 - identifier_name
+- nesting
 custom_rules:
     future:
         included: ".*\\.swift"
@@ -81,3 +89,13 @@ custom_rules:
         regex: "(FUTURE: )"
         match_kinds:
         - comment
+#    disable_print:
+#        included: ".*\\.swift"
+#        name: "print verboten"
+#        regex: "((\\bprint)|(Swift\\.print))\\s*\\("
+#        message: "Prefer os_log over print"
+#    disable_nslog:
+#        included: ".*\\.swift"
+#        name: "NSLog verboten"
+#        regex: "((\\bNSLog))\\s*\\("
+#        message: "Prefer os_log over NSLog"

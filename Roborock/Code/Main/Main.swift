@@ -11,133 +11,212 @@ import RoborockApi
 
 struct WatchKitId: Hashable {}
 
-enum Main {
-
+struct Main: ReducerProtocol {
     struct State: Equatable {
-        var home: Home.State
-        var api: Api.State
-        var shared: Shared.State
-        var settings: Settings.State
-        var watchConnection: WatchConnection.State
+        var showSettings = false
+        var showRoomSelection = false
 
-        var homeFeature: Home.HomeFeatureState {
-            get { Home.HomeFeatureState(home: self.home, settings: self.settings, shared: self.shared, api: self.api) }
-            set { self.home = newValue.home; self.settings = newValue.settings; self.shared = newValue.shared; self.api = newValue.api }
+        var _apiState: Api.State?
+        var apiState: Api.State {
+            get {
+                if let tempState = _apiState {
+                    return tempState
+                }
+                return Api.initialState
+            }
+            set {
+                _apiState = newValue
+            }
         }
 
-        var settingsFeature: Settings.SettingsFeatureState {
-            get { Settings.SettingsFeatureState(settings: self.settings, shared: self.shared, api: self.api) }
-            set { self.settings = newValue.settings; self.shared = newValue.shared }
+        var _sharedState: Shared.State?
+        var sharedState: Shared.State {
+            get {
+                if let tempState = _sharedState {
+                    return tempState
+                }
+                return Shared.initialState
+            }
+            set {
+                _sharedState = newValue
+            }
         }
 
-        var watchConnectionFeature: WatchConnection.WatchConnectionFeatureState {
-            get { WatchConnection.WatchConnectionFeatureState(watchConnection: self.watchConnection, shared: self.shared) }
-            set { self.watchConnection = newValue.watchConnection; self.shared = newValue.shared }
+        var _settingsState: Settings.State?
+        var settingsState: Settings.State {
+            get {
+                if let tempState = _settingsState {
+                    return tempState
+                }
+                return Settings.State(
+                    hostInput: sharedState.host ?? "",
+                    apiState: apiState,
+                    sharedState: sharedState
+                )
+            }
+            set {
+                _settingsState = newValue
+            }
         }
+
+        var _watchConnectionState: WatchConnection.State?
+        var watchConnectionState: WatchConnection.State {
+            get {
+                if let tempState = _watchConnectionState {
+                    return tempState
+                }
+                return WatchConnection.State(
+                    sharedState: sharedState
+                )
+            }
+            set {
+                _watchConnectionState = newValue
+            }
+        }
+
+        var batteryIcon: String {
+            guard let status = apiState.status else { return "exclamationmark.circle" }
+            if status.state == 8 { // Charging
+                return "battery.100.bolt"
+            } else if status.battery < 25 {
+                return "battery.25"
+            } else {
+                return "battery.100"
+            }
+        }
+
+        var fanspeeds = Fanspeed.allCases
     }
 
     enum Action {
-        case home(Home.Action)
-        case api(Api.Action)
-        case shared(Shared.Action)
-        case settings(Settings.Action)
-        case watchConnection(WatchConnection.Action)
+        case toggleSettings(Bool)
+        case toggleRoomSelection(Bool)
+
+        case connectButtonTapped
+        case fetchSegments
+        case startCleaning
+        case stopCleaning
+        case pauseCleaning
+        case driveHome
+        case selectAll
+        case none
+
+        case apiAction(Api.Action)
+        case sharedAction(Shared.Action)
+        case settingsAction(Settings.Action)
+        case watchConnectionAction(WatchConnection.Action)
     }
 
-    struct Environment {
-        let mainQueue: AnySchedulerOf<DispatchQueue>
-        let restClient: RestClient
-        let websocketClient: ApiWebSocketClient
-        let watchkitSessionClient: WatchKitSessionClient
-        let rrFileParser: RRFileParser
-    }
-
-    static let initialEnvironment = Environment(
-        mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-        restClient: RestClient.live,
-        websocketClient: ApiWebSocketClient.live,
-        watchkitSessionClient: WatchKitSessionClient.live,
-        rrFileParser: RRFileParser()
-    )
-
-    static let reducer = Reducer<State, Action, Environment>.combine(
-        Reducer { _, action, _ in
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
             switch action {
-            case .home, . api, .shared, .settings, .watchConnection:
+            case .connectButtonTapped:
+                switch state.apiState.connectivityState {
+                case .connected, .connecting:
+                    state.showSettings = false
+                    return EffectTask(value: Action.apiAction(.disconnect))
+
+                case .disconnected:
+                    guard let websocketUrl = URL(string: "ws://\(state.settingsState.hostInput)"),
+                          let restUrl = URL(string: "http://\(state.settingsState.hostInput)") else { return .none }
+                    state.showSettings = false
+                    return .merge(
+                        EffectTask(value: Action.apiAction(.connect(websocketUrl))),
+                        EffectTask(value: Action.apiAction(.connectRest(restUrl)))
+                    )
+                }
+
+            case .fetchSegments:
+                return EffectTask(value: Action.apiAction(.fetchSegments))
+
+            case .startCleaning:
+                return EffectTask(value: Action.apiAction(.startCleaningSegment))
+
+            case .stopCleaning:
+                return EffectTask(value: Action.apiAction(.stopCleaning))
+
+            case .pauseCleaning:
+                return EffectTask(value: Action.apiAction(.pauseCleaning))
+
+            case .driveHome:
+                return EffectTask(value: Action.apiAction(.driveHome))
+
+            case .selectAll:
+                if state.apiState.rooms.isEmpty {
+                    guard let segments = state.apiState.segments else { return .none }
+                    let rooms = segments.data.map { $0.id }
+                    state.apiState.rooms = rooms
+                    return .none
+                }
+                state.apiState.rooms = []
+                return .none
+
+            case .toggleSettings(let toggle):
+                state.showSettings = toggle
+
+            case .toggleRoomSelection(let toggle):
+                state.showRoomSelection = toggle
+
+            case .apiAction, .sharedAction, .settingsAction, .watchConnectionAction:
+                break
+            case .none:
                 break
             }
             return .none
-        },
-        Api.reducer.pullback(
-            state: \State.api,
-            action: /Action.api,
-            environment: { $0 }
-        ),
-        Home.reducer.pullback(
-            state: \State.homeFeature,
-            action: /Action.home,
-            environment: { $0 }
-        ),
-        Shared.reducer.pullback(
-            state: \State.shared,
-            action: /Action.shared,
-            environment: { $0 }
-        ),
-        Settings.reducer.pullback(
-            state: \State.settingsFeature,
-            action: /Action.settings,
-            environment: { $0 }
-        ),
-        WatchConnection.reducer.pullback(
-            state: \State.watchConnectionFeature,
-            action: /Action.watchConnection,
-            environment: { $0 }
-        )
+        }
+        Scope(state: \.apiState, action: /Action.apiAction) {
+            Api()
+        }
+        Scope(state: \.sharedState, action: /Action.sharedAction) {
+            Shared()
+        }
+        Scope(state: \.settingsState, action: /Action.settingsAction) {
+            Settings()
+        }
+        Scope(state: \.watchConnectionState, action: /Action.watchConnectionAction) {
+            WatchConnection()
+        }
+    }
+
+    static let initialState = State(
+        _apiState: Api.initialState,
+        _sharedState: Shared.initialState,
+        _settingsState: Settings.initialState,
+        _watchConnectionState: WatchConnection.initialState
+    )
+
+    static let previewState = State(
+        _apiState: Api.previewState,
+        _sharedState: Shared.previewState,
+        _settingsState: Settings.initialState,
+        _watchConnectionState: WatchConnection.initialState
+    )
+
+    static let previewStore = Store(
+        initialState: previewState,
+        reducer: Main()
     )
 
     static let store = Store<Main.State, Main.Action>(
-        initialState: State(
-            home: Home.initialState,
-            api: Api.initialState,
-            shared: Shared.initialState,
-            settings: Settings.initialState,
-            watchConnection: WatchConnection.initialState
-        ),
-        reducer: reducer,
-        environment: initialEnvironment
-    )
-
-    static let previewStoreHome = Store(
-        initialState: Home.previewState,
-        reducer: Home.reducer,
-        environment: initialEnvironment
-    )
-
-    static let previewStoreSettings = Store<Settings.SettingsFeatureState, Settings.Action>(
-        initialState: Settings.previewState,
-        reducer: Settings.reducer,
-        environment: initialEnvironment
+        initialState: initialState,
+        reducer: Main()
     )
 }
 
 extension Store where State == Main.State, Action == Main.Action {
-    var home: Store<Home.HomeFeatureState, Home.Action> {
-        scope(state: \.homeFeature, action: Main.Action.home)
-    }
-
-    var settings: Store<Settings.SettingsFeatureState, Settings.Action> {
-        scope(state: \.settingsFeature, action: Main.Action.settings)
+    var settings: Store<Settings.State, Settings.Action> {
+        scope(state: \.settingsState, action: Main.Action.settingsAction)
     }
 
     var api: Store<Api.State, Api.Action> {
-        scope(state: \.api, action: Main.Action.api)
+        scope(state: \.apiState, action: Main.Action.apiAction)
     }
 
     var shared: Store<Shared.State, Shared.Action> {
-        scope(state: \.shared, action: Main.Action.shared)
+        scope(state: \.sharedState, action: Main.Action.sharedAction)
     }
 
-    var watchConnection: Store<WatchConnection.WatchConnectionFeatureState, WatchConnection.Action> {
-        scope(state: \.watchConnectionFeature, action: Main.Action.watchConnection)
+    var watchConnection: Store<WatchConnection.State, WatchConnection.Action> {
+        scope(state: \.watchConnectionState, action: Main.Action.watchConnectionAction)
     }
 }

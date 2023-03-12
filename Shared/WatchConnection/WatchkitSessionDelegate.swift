@@ -20,7 +20,7 @@ public class WatchkitSessionDelegate: NSObject, WCSessionDelegate {
     let sessionDidActivate: () -> Void
     let didReceiveMessage: ([String: Any]) -> Void
     let didReceiveMessageData: (WCSessionData) -> Void
-    let sessionDidDeactivate:() -> Void
+    let sessionDidDeactivate: () -> Void
     let sessionDidBecomeInactive: () -> Void
     let sessionWatchStateDidChange: () -> Void
 

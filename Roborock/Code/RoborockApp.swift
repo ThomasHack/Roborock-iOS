@@ -39,22 +39,22 @@ struct RoborockApp: App {
 
     private func connect() {
         let viewStore = ViewStore(store)
-        guard let host = viewStore.state.shared.host, !host.isEmpty,
+        guard let host = viewStore.state.sharedState.host, !host.isEmpty,
               let websocketUrl = URL(string: "ws://\(host)"),
               let restUrl = URL(string: "http://\(host)") else { return }
-        viewStore.send(.api(.connect(websocketUrl)))
-        viewStore.send(.api(.connectRest(restUrl)))
+        viewStore.send(.apiAction(.connect(websocketUrl)))
+        viewStore.send(.apiAction(.connectRest(restUrl)))
     }
 
     private func disconnect() {
-        ViewStore(store).send(.api(.disconnect))
+        ViewStore(store).send(.apiAction(.disconnect))
     }
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         let viewStore = ViewStore(Main.store)
-        viewStore.send(.watchConnection(.connect))
+        viewStore.send(.watchConnectionAction(.connect))
         return true
     }
 }

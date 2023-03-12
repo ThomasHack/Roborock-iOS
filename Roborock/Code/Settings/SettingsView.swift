@@ -9,7 +9,9 @@ import ComposableArchitecture
 import SwiftUI
 
 struct SettingsView: View {
-    let store: Store<Settings.SettingsFeatureState, Settings.Action>
+    let store: Store<Settings.State, Settings.Action>
+
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -48,7 +50,7 @@ struct SettingsView: View {
                         } label: {
                             HStack(alignment: .center) {
                                 Spacer()
-                                if viewStore.api.connectivityState == .disconnected {
+                                if viewStore.apiState.connectivityState == .disconnected {
                                     Text("api.connect")
                                 } else {
                                     Text("api.disconnect")
@@ -63,16 +65,15 @@ struct SettingsView: View {
                 .background(Color(.systemBackground))
                 .edgesIgnoringSafeArea(.all)
                 .padding([.top], 10)
-                .navigationBarItems(trailing:
-                                        HStack(spacing: 16) {
+                .toolbar {
                     Button {
                         viewStore.send(.doneButtonTapped)
+                        dismiss()
                     } label: {
                         Text("done")
                             .font(.system(size: 17, weight: .bold))
                     }
                 }
-                )
             }
         }
     }
@@ -80,6 +81,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(store: Main.previewStoreSettings)
+        SettingsView(store: Settings.previewStore)
     }
 }

@@ -40,7 +40,7 @@ class CleanRoomIntentHandler: NSObject, CleanRoomIntentHandling {
         }
 
         completion(rooms.map { room -> RoomResolutionResult in
-            return RoomResolutionResult.success(with: room)
+            RoomResolutionResult.success(with: room)
         })
     }
 

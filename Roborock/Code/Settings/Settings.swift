@@ -9,14 +9,16 @@ import ComposableArchitecture
 import Foundation
 import Intents
 
-enum Settings {
+struct Settings: ReducerProtocol {
     struct State: Equatable {
         var hostInput: String = ""
+
+        var apiState: Api.State
+        var sharedState: Shared.State
     }
 
     enum Action {
         case hostInputTextChanged(String)
-        case hideSettingsModal
         case connectButtonTapped
         case doneButtonTapped
         case requestSiriAuthorization
@@ -26,33 +28,27 @@ enum Settings {
         case shared(Shared.Action)
     }
 
-    typealias Environment = Main.Environment
-
-    static let reducer = Reducer<SettingsFeatureState, Action, Environment>.combine(
-        Reducer { state, action, _ in
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
             switch action {
             case .hostInputTextChanged(let text):
                 state.hostInput = text
-            case .hideSettingsModal:
-                state.showSettingsModal = false
+
             case .connectButtonTapped:
-                switch state.connectivityState {
+                switch state.apiState.connectivityState {
                 case .connected, .connecting:
-                    state.showSettingsModal = false
-                    return Effect(value: Action.api(.disconnect))
+                    return EffectTask(value: Action.api(.disconnect))
 
                 case .disconnected:
                     guard let websocketUrl = URL(string: "ws://\(state.hostInput)"),
-                            let restUrl = URL(string: "http://\(state.hostInput)") else { return .none }
+                          let restUrl = URL(string: "http://\(state.hostInput)") else { return .none }
                     return .merge(
-                        Effect(value: Action.api(.connect(websocketUrl))),
-                        Effect(value: Action.api(.connectRest(restUrl))),
-                        Effect(value: Action.hideSettingsModal)
+                        EffectTask(value: Action.api(.connect(websocketUrl))),
+                        EffectTask(value: Action.api(.connectRest(restUrl)))
                     )
                 }
             case .doneButtonTapped:
-                state.shared.host = state.hostInput
-                return Effect(value: .hideSettingsModal)
+                state.sharedState.host = state.hostInput
 
             case .requestSiriAuthorization:
                 var request = false
@@ -71,7 +67,7 @@ enum Settings {
                     }
                 })
                 if request {
-                    return Effect(value: Action.donateSiriShortcut)
+                    return EffectTask(value: Action.donateSiriShortcut)
                 }
 
             case .donateSiriShortcut:
@@ -91,20 +87,23 @@ enum Settings {
                 break
             }
             return .none
-        },
-        Shared.reducer.pullback(
-            state: \SettingsFeatureState.shared,
-            action: /Action.shared,
-            environment: { $0 }
-        ),
-        Api.reducer.pullback(
-            state: \SettingsFeatureState.api,
-            action: /Action.api,
-            environment: { $0 }
-        )
-    )
+        }
+    }
 
     static let initialState = State(
-        hostInput: UserDefaults(suiteName: Shared.appGroupName)?.string(forKey: Shared.hostDefaultsKeyName) ?? ""
+        hostInput: UserDefaults(suiteName: Shared.appGroupName)?.string(forKey: Shared.hostDefaultsKeyName) ?? "",
+        apiState: Api.initialState,
+        sharedState: Shared.initialState
+    )
+
+    static let previewState = State(
+        hostInput: "roborock.friday.home",
+        apiState: Api.previewState,
+        sharedState: Shared.previewState
+    )
+
+    static let previewStore = Store(
+        initialState: previewState,
+        reducer: Settings()
     )
 }

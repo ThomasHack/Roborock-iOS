@@ -1,8 +1,8 @@
 //
-//  Api+Action.swift
+//  Api.swift
 //  Roborock
 //
-//  Created by Hack, Thomas on 12.07.21.
+//  Created by Thomas Hack on 08.05.21.
 //
 
 import ComposableArchitecture
@@ -52,5 +52,4 @@ extension Api {
         case setChargerImage(Result<UIImage, ImageGenerationError>)
         case setSegmentLabelsImage(Result<UIImage, ImageGenerationError>)
 #endif
-    }
-}
+    }}

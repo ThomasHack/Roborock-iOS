@@ -1,8 +1,8 @@
 //
-//  Api+State.swift
+//  Api.swift
 //  Roborock
 //
-//  Created by Hack, Thomas on 12.07.21.
+//  Created by Thomas Hack on 08.05.21.
 //
 
 import ComposableArchitecture
@@ -13,6 +13,12 @@ extension Api {
     struct State: Equatable {
         var connectivityState: ConnectivityState = .disconnected
         var segments: Segments?
+
+        var sortedSegments: [Segment] {
+            guard let segments = segments?.data else { return [] }
+            return segments.sorted(by: { $0.name < $1.name })
+        }
+
         var rooms: [Int] = []
 
         var state: VacuumState {

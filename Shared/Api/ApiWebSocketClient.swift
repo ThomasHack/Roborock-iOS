@@ -16,12 +16,12 @@ private var dependencies: [AnyHashable: Dependencies] = [:]
 private struct Dependencies {
     let delegate: ApiWebSocketDelegate
     let socket: NWWebSocket
-    let subscriber: Effect<Api.Action, Never>.Subscriber
+    let subscriber: EffectTask<Api.Action>.Subscriber
 }
 
 struct ApiWebSocketClient {
-    var connect: (AnyHashable, URL) -> Effect<Api.Action, Never>
-    var disconnect: (AnyHashable) -> Effect<Api.Action, Never>
+    var connect: (AnyHashable, URL) -> EffectTask<Api.Action>
+    var disconnect: (AnyHashable) -> EffectTask<Api.Action>
 }
 
 extension ApiWebSocketClient {
@@ -53,7 +53,7 @@ extension ApiWebSocketClient {
             }
         },
         disconnect: { id in
-            .run { subscriber in
+            .run { _ in
                 dependencies[id]?.socket.disconnect()
                 dependencies[id]?.subscriber.send(.didDisconnect)
                 return AnyCancellable {

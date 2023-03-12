@@ -10,12 +10,12 @@ import RoborockApi
 import SwiftUI
 
 struct ButtonView: View {
-    let store: Store<Home.HomeFeatureState, Home.Action>
+    let store: Store<Main.State, Main.Action>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack {
-                if viewStore.api.connectivityState == .connected {
+                if viewStore.apiState.connectivityState == .connected {
 
                     HStack(alignment: .center, spacing: 16) {
                         Button {
@@ -26,10 +26,10 @@ struct ButtonView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 20, height: 20)
                         }
-                        .disabled(!viewStore.api.isConnected || viewStore.api.state == .charging)
+                        .disabled(!viewStore.apiState.isConnected || viewStore.apiState.state == .charging)
                         .buttonStyle(SecondaryButtonStyle())
 
-                        if !viewStore.api.inCleaning && !viewStore.api.inReturning {
+                        if !viewStore.apiState.inCleaning && !viewStore.apiState.inReturning {
                             Button {
                                 viewStore.send(.toggleRoomSelection(true))
                             } label: {
@@ -39,7 +39,7 @@ struct ButtonView: View {
                                     .frame(width: 20, height: 20)
                                     .offset(x: 2, y: 0)
                             }
-                            .disabled(!viewStore.api.isConnected)
+                            .disabled(!viewStore.apiState.isConnected)
                             .buttonStyle(PrimaryButtonStyle())
                         } else {
                             Button {
@@ -50,11 +50,11 @@ struct ButtonView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 20, height: 20)
                             }
-                            .disabled(!viewStore.api.isConnected)
+                            .disabled(!viewStore.apiState.isConnected)
                             .buttonStyle(PrimaryButtonStyle())
                         }
 
-                        if viewStore.api.inCleaning && viewStore.api.inReturning {
+                        if viewStore.apiState.inCleaning && viewStore.apiState.inReturning {
                             Button {
                                 viewStore.send(.pauseCleaning)
                             } label: {
@@ -63,7 +63,7 @@ struct ButtonView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 20, height: 20)
                             }
-                            .disabled(!viewStore.api.isConnected)
+                            .disabled(!viewStore.apiState.isConnected)
                             .buttonStyle(SecondaryButtonStyle())
                         }
 
@@ -76,7 +76,7 @@ struct ButtonView: View {
                         } label: {
                             HStack(alignment: .center) {
                                 Spacer()
-                                if viewStore.api.connectivityState == .disconnected {
+                                if viewStore.apiState.connectivityState == .disconnected {
                                     Text("api.connect")
                                 } else {
                                     Text("api.disconnect")
@@ -98,6 +98,6 @@ struct ButtonView: View {
 
 struct ButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonView(store: Main.previewStoreHome)
+        ButtonView(store: Main.previewStore)
     }
 }

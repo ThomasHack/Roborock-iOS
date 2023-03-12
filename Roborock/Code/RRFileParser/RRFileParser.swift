@@ -28,6 +28,9 @@ enum ImageGenerationError: Error {
 }
 
 public class RRFileParser {
+
+    static let live = RRFileParser()
+
     private var data: Data?
     private var mapData = MapData()
     public var segments: [Int] = []
@@ -135,9 +138,9 @@ public class RRFileParser {
 
     /// Draw segment names image
     /// - Returns: Promise with Image or Error
-    func drawSegmentLabelsImage() -> AnyPublisher<UIImage, ImageGenerationError> {
+    func drawSegmentLabelsImage(_ segments: Segments) -> AnyPublisher<UIImage, ImageGenerationError> {
         Future { promise in
-            self.drawSegmentLabelsImage { result in
+            self.drawSegmentLabelsImage(segments: segments) { result in
                 promise(result)
             }
         }
@@ -149,9 +152,10 @@ public class RRFileParser {
     /// Provides custom color for segment
     /// - Parameter segment: Segment object
     /// - Returns: Color
-    private func colorForSegmentId(segment: MapData.SegmentType?) -> UIColor {
-        switch segment {
-        case .studio, .bath, .bedroom, .corridor, .kitchen, .livingroom, .toilet, .supply:
+    private func colorForSegmentId(segmentId: Int) -> UIColor {
+        // TODO: add color coding for segments if preferred
+        switch segmentId {
+        case 0:
             return UIColor.floorColor
         default:
             return UIColor.floorColor
@@ -340,7 +344,7 @@ public class RRFileParser {
     private func parseImageBlock(_ block: Data, blockLength: Int, imageData: MapData.ImageData, offset: Int, g3offset: Int) -> MapData.ImageData {
         var tempImageData = imageData
 
-        let selectedColor = #colorLiteral(red: 121/255, green: 196/255, blue: 189/255, alpha: 1)
+        let selectedColor = #colorLiteral(red: 121 / 255, green: 196 / 255, blue: 189 / 255, alpha: 1)
 
         for index in 0 ..< blockLength {
             let x = (index % imageData.dimensions.width) + imageData.position.left
@@ -357,7 +361,7 @@ public class RRFileParser {
                 let segmentId = (type & 248) >> 3
                 if segmentId != 0 {
                     // Optional colors for each segment
-                    var color = colorForSegmentId(segment: MapData.SegmentType(rawValue: segmentId))
+                    var color = colorForSegmentId(segmentId: segmentId)
 
                     // Color if segment is currently selected
                     if segments.contains(segmentId) {
@@ -404,7 +408,7 @@ public class RRFileParser {
     ///   - offset: Map offset
     /// - Returns: Coordinate in map space
     private func convertToMapCoordinate(_ coordinate: Int, offset: Int) -> Int {
-        Int(Double(coordinate * scaleFactor) / 50.0 - Double(offset * scaleFactor))
+        Int(Double(coordinate / 50 * scaleFactor) - Double(offset * scaleFactor))
     }
 
     /// Internal method to draw map image
@@ -484,8 +488,8 @@ public class RRFileParser {
 
     /// Internal method to draw segment labels
     /// - Parameter completion: completion handler
-    private func drawSegmentLabelsImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
-        guard let segments = mapData.imageData?.segments, let image = drawSegmentLabels(segments: segments) else {
+    private func drawSegmentLabelsImage(segments: Segments, completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
+        guard let segmentsData = mapData.imageData?.segments, let image = drawSegmentLabels(labels: segments, segments: segmentsData) else {
             completion(.failure(ImageGenerationError.chargerImageError))
             return
         }
@@ -519,7 +523,7 @@ public class RRFileParser {
                     shouldInterpolate: false,
                     intent: .defaultIntent) else { return nil }
 
-        let size = CGSize(width: Int(imageSize.width) * scaleFactor, height: Int(imageSize.height) * scaleFactor)
+        let size = CGSize(width: retinaImageSize.width, height: retinaImageSize.height)
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
 
         guard let context = UIGraphicsGetCurrentContext() else { return nil }
@@ -615,6 +619,7 @@ public class RRFileParser {
     ///   - robot: Robot object containing angle and coordinates
     /// - Returns: Image containing robot
     private func drawRobot(robot: MapData.RobotPosition) -> UIImage? {
+        let robotSize = CGSize(width: 24, height: 24)
         let x = convertToMapCoordinate(robot.position.x, offset: imagePosition.left)
         let y = convertToMapCoordinate(robot.position.y, offset: imagePosition.top)
 
@@ -625,7 +630,7 @@ public class RRFileParser {
 
         let renderer = UIGraphicsImageRenderer(size: retinaImageSize)
         let tempImage = renderer.image { _ in
-            robotImage.draw(in: CGRect(origin: CGPoint(x: x - 12, y: y - 12), size: CGSize(width: 24, height: 24)))
+            robotImage.draw(in: CGRect(origin: CGPoint(x: x - Int(robotSize.width) / 2, y: y - Int(robotSize.height) / 2), size: robotSize))
         }
 
         return tempImage
@@ -652,9 +657,9 @@ public class RRFileParser {
     /// Draw segment names image
     /// - Parameter segments: Segments object
     /// - Returns: Image containing labels
-    private func drawSegmentLabels(segments: MapData.Segments) -> UIImage? {
+    private func drawSegmentLabels(labels: Segments, segments: MapData.Segments) -> UIImage? {
         let textColor = UIColor.white
-        let backgroundColor =  #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6).cgColor
+        let backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6).cgColor
         let textFont = UIFont.systemFont(ofSize: 14)
         let textFontAttributes = [
             NSAttributedString.Key.font: textFont,
@@ -664,16 +669,19 @@ public class RRFileParser {
 
         let tempImage = renderer.image { context in
             for center in segments.center {
-                guard let segmentType = MapData.SegmentType(rawValue: center.key) else { continue }
+                guard let segment = labels.data.first(where: { $0.id == center.key }) else { continue }
+
                 // Get text and text width
-                let text = segmentType.label
+                let text = segment.name
                 let textWidth = text.width(withConstrainedHeight: 14, font: UIFont.systemFont(ofSize: 14))
+                let textHeight = 20
 
                 // Calculate coordinates and remove offsets for correct center
                 let x = (center.value.position.x / center.value.count) * scaleFactor - imagePosition.left * scaleFactor - Int(textWidth / 2)
-                let y = Int(retinaImageSize.height) - (center.value.position.y / center.value.count) * 2 + imagePosition.top * 2 - 10
+                var y = (center.value.position.y / center.value.count) * scaleFactor - imagePosition.top * scaleFactor - Int(textHeight / 2)
+                y = Int(retinaImageSize.height) - y
 
-                let rect = CGRect(x: x - 4, y: y - 2, width: Int(textWidth) + 8, height: 20)
+                let rect = CGRect(x: x - 4, y: y - 2, width: Int(textWidth) + 8, height: textHeight)
                 let roundedRect = UIBezierPath(roundedRect: rect, cornerRadius: 4).cgPath
 
                 context.cgContext.setFillColor(backgroundColor)

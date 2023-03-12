@@ -8,5 +8,5 @@
 import Foundation
 
 public enum WCSessionAction: String, Codable {
-    case synchronizeUserDefaults
+    case synchronizeUserDefaults = "synchronize_user_defaults"
 }

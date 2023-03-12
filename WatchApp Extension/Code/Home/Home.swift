@@ -10,12 +10,15 @@ import Foundation
 import RoborockApi
 import WatchKit
 
-enum Home {
+struct Home: ReducerProtocol {
     struct State: Equatable {
-        var showSegmentsModal: Bool
-        var showFanspeedModal: Bool
+        var showSegmentsModal = false
+        var showFanspeedModal = false
 
         var fanspeeds = Fanspeed.allCases
+
+        var apiState: Api.State
+        var sharedState: Shared.State
     }
 
     enum Action {
@@ -35,10 +38,8 @@ enum Home {
         case shared(Shared.Action)
     }
 
-    typealias Environment = Main.Environment
-
-    static let reducer = Reducer<HomeFeatureState, Action, Environment>.combine(
-        Reducer { state, action, _ in
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
             switch action {
             case .toggleSegmentsModal(let toggle):
                 WKInterfaceDevice.current().play(.click)
@@ -51,61 +52,66 @@ enum Home {
                 return .none
 
             case .fetchSegments:
-                return Effect(value: .api(.fetchSegments))
+                return EffectTask(value: .api(.fetchSegments))
 
             case .startCleaning:
                 state.showFanspeedModal = false
                 WKInterfaceDevice.current().play(.success)
-                return Effect(value: .api(.startCleaningSegment))
+                return EffectTask(value: .api(.startCleaningSegment))
 
             case .stopCleaning:
                 WKInterfaceDevice.current().play(.success)
-                return Effect(value: .api(.stopCleaning))
+                return EffectTask(value: .api(.stopCleaning))
 
             case .pauseCleaning:
                 WKInterfaceDevice.current().play(.success)
-                return Effect(value: .api(.pauseCleaning))
+                return EffectTask(value: .api(.pauseCleaning))
 
             case .driveHome:
                 WKInterfaceDevice.current().play(.success)
-                return Effect(value: .api(.driveHome))
+                return EffectTask(value: .api(.driveHome))
 
             case .toggleRoom(let roomId):
-                return Effect(value: .api(.toggleRoom(roomId)))
+                return EffectTask(value: .api(.toggleRoom(roomId)))
 
             case .resetRooms:
-                return Effect(value: .api(.resetRooms))
+                return EffectTask(value: .api(.resetRooms))
 
             case .setFanspeed(let fanspeed):
                 state.showFanspeedModal = false
                 WKInterfaceDevice.current().play(.success)
-                return Effect(value: .api(.setFanspeed(fanspeed)))
+                return EffectTask(value: .api(.setFanspeed(fanspeed)))
 
             case .none, .api, .shared:
                 break
             }
             return .none
-        },
-        Shared.reducer.pullback(
-            state: \HomeFeatureState.shared,
-            action: /Action.shared,
-            environment: { $0 }
-        ),
-        Api.reducer.pullback(
-            state: \HomeFeatureState.api,
-            action: /Action.api,
-            environment: { $0 }
-        )
-    )
+        }
+        Scope(state: \.apiState, action: /Action.api) {
+            Api()
+        }
+        Scope(state: \.sharedState, action: /Action.shared) {
+            Shared()
+        }
+    }
 
     static let initialState = State(
         showSegmentsModal: false,
-        showFanspeedModal: false
+        showFanspeedModal: false,
+        apiState: Api.initialState,
+        sharedState: Shared.initialState
+
+    )
+
+    static let previewState = State(
+        showSegmentsModal: false,
+        showFanspeedModal: false,
+        apiState: Api.previewState,
+        sharedState: Shared.previewState
     )
 
     static let previewStore = Store(
         initialState: Home.previewState,
-        reducer: Home.reducer,
-        environment: Main.initialEnvironment
+        reducer: Home()
     )
 }
