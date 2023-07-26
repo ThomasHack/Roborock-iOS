@@ -15,47 +15,52 @@ struct Main: ReducerProtocol {
     struct State: Equatable {
         var showSettings = false
         var showRoomSelection = false
+        var host: String? {
+            didSet {
+                UserDefaultsHelper.setHost(host)
+            }
+        }
+        var connectivityState: ConnectivityState = .disconnected
+        var segments: Segments?
 
         var _apiState: Api.State?
         var apiState: Api.State {
             get {
-                if let tempState = _apiState {
+                if var tempState = _apiState {
+                    tempState.host = host
+                    tempState.connectivityState = connectivityState
+                    tempState.segments = segments
                     return tempState
                 }
-                return Api.initialState
+                return Api.State(
+                    host: host,
+                    connectivityState: connectivityState,
+                    segments: segments
+                )
             }
             set {
                 _apiState = newValue
-            }
-        }
-
-        var _sharedState: Shared.State?
-        var sharedState: Shared.State {
-            get {
-                if let tempState = _sharedState {
-                    return tempState
-                }
-                return Shared.initialState
-            }
-            set {
-                _sharedState = newValue
+                segments = newValue.segments
+                connectivityState = newValue.connectivityState
             }
         }
 
         var _settingsState: Settings.State?
         var settingsState: Settings.State {
             get {
-                if let tempState = _settingsState {
+                if var tempState = _settingsState {
+                    tempState.host = host
                     return tempState
                 }
                 return Settings.State(
-                    hostInput: sharedState.host ?? "",
-                    apiState: apiState,
-                    sharedState: sharedState
+                    host: host,
+                    hostInput: host ?? "",
+                    apiState: apiState
                 )
             }
             set {
                 _settingsState = newValue
+                host = newValue.host
             }
         }
 
@@ -65,9 +70,7 @@ struct Main: ReducerProtocol {
                 if let tempState = _watchConnectionState {
                     return tempState
                 }
-                return WatchConnection.State(
-                    sharedState: sharedState
-                )
+                return WatchConnection.State()
             }
             set {
                 _watchConnectionState = newValue
@@ -91,7 +94,6 @@ struct Main: ReducerProtocol {
     enum Action {
         case toggleSettings(Bool)
         case toggleRoomSelection(Bool)
-
         case connectButtonTapped
         case fetchSegments
         case startCleaning
@@ -102,7 +104,6 @@ struct Main: ReducerProtocol {
         case none
 
         case apiAction(Api.Action)
-        case sharedAction(Shared.Action)
         case settingsAction(Settings.Action)
         case watchConnectionAction(WatchConnection.Action)
     }
@@ -117,13 +118,9 @@ struct Main: ReducerProtocol {
                     return EffectTask(value: Action.apiAction(.disconnect))
 
                 case .disconnected:
-                    guard let websocketUrl = URL(string: "ws://\(state.settingsState.hostInput)"),
-                          let restUrl = URL(string: "http://\(state.settingsState.hostInput)") else { return .none }
+                    guard state.host != nil else { return .none }
                     state.showSettings = false
-                    return .merge(
-                        EffectTask(value: Action.apiAction(.connect(websocketUrl))),
-                        EffectTask(value: Action.apiAction(.connectRest(restUrl)))
-                    )
+                    return EffectTask(value: Action.apiAction(.connectRest))
                 }
 
             case .fetchSegments:
@@ -157,7 +154,7 @@ struct Main: ReducerProtocol {
             case .toggleRoomSelection(let toggle):
                 state.showRoomSelection = toggle
 
-            case .apiAction, .sharedAction, .settingsAction, .watchConnectionAction:
+            case .apiAction, .settingsAction, .watchConnectionAction:
                 break
             case .none:
                 break
@@ -166,9 +163,6 @@ struct Main: ReducerProtocol {
         }
         Scope(state: \.apiState, action: /Action.apiAction) {
             Api()
-        }
-        Scope(state: \.sharedState, action: /Action.sharedAction) {
-            Shared()
         }
         Scope(state: \.settingsState, action: /Action.settingsAction) {
             Settings()
@@ -179,15 +173,11 @@ struct Main: ReducerProtocol {
     }
 
     static let initialState = State(
-        _apiState: Api.initialState,
-        _sharedState: Shared.initialState,
-        _settingsState: Settings.initialState,
-        _watchConnectionState: WatchConnection.initialState
+        host: UserDefaultsHelper.host
     )
 
     static let previewState = State(
         _apiState: Api.previewState,
-        _sharedState: Shared.previewState,
         _settingsState: Settings.initialState,
         _watchConnectionState: WatchConnection.initialState
     )
@@ -210,10 +200,6 @@ extension Store where State == Main.State, Action == Main.Action {
 
     var api: Store<Api.State, Api.Action> {
         scope(state: \.apiState, action: Main.Action.apiAction)
-    }
-
-    var shared: Store<Shared.State, Shared.Action> {
-        scope(state: \.sharedState, action: Main.Action.sharedAction)
     }
 
     var watchConnection: Store<WatchConnection.State, WatchConnection.Action> {

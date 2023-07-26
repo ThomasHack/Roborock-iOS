@@ -27,7 +27,7 @@ struct ButtonView: View {
                                 .frame(width: 20, height: 20)
                         }
                         .disabled(!viewStore.apiState.isConnected || viewStore.apiState.state == .charging)
-                        .buttonStyle(SecondaryButtonStyle())
+                        .buttonStyle(SecondaryRoundedButtonStyle())
 
                         if !viewStore.apiState.inCleaning && !viewStore.apiState.inReturning {
                             Button {
@@ -40,7 +40,7 @@ struct ButtonView: View {
                                     .offset(x: 2, y: 0)
                             }
                             .disabled(!viewStore.apiState.isConnected)
-                            .buttonStyle(PrimaryButtonStyle())
+                            .buttonStyle(PrimaryRoundedButtonStyle())
                         } else {
                             Button {
                                 viewStore.send(.stopCleaning)
@@ -51,7 +51,7 @@ struct ButtonView: View {
                                     .frame(width: 20, height: 20)
                             }
                             .disabled(!viewStore.apiState.isConnected)
-                            .buttonStyle(PrimaryButtonStyle())
+                            .buttonStyle(PrimaryRoundedButtonStyle())
                         }
 
                         if viewStore.apiState.inCleaning && viewStore.apiState.inReturning {
@@ -64,7 +64,7 @@ struct ButtonView: View {
                                     .frame(width: 20, height: 20)
                             }
                             .disabled(!viewStore.apiState.isConnected)
-                            .buttonStyle(SecondaryButtonStyle())
+                            .buttonStyle(SecondaryRoundedButtonStyle())
                         }
 
                         FanspeedSelection(store: self.store)

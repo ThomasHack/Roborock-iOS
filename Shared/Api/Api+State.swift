@@ -11,6 +11,7 @@ import UIKit
 
 extension Api {
     struct State: Equatable {
+        var host: String?
         var connectivityState: ConnectivityState = .disconnected
         var segments: Segments?
 

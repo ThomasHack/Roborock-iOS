@@ -15,31 +15,29 @@ struct SegmentList: View {
         WithViewStore(self.store) { viewStore in
             List {
                 ForEach(viewStore.apiState.sortedSegments, id: \.self) { segment in
-                    if let name = segment.name, let id = segment.id {
-                        Button {
-                            viewStore.send(.apiAction(.toggleRoom(id)))
-                        } label: {
-                            HStack {
-                                if viewStore.apiState.rooms.contains(id) {
-                                    let index = Int(viewStore.apiState.rooms.firstIndex(of: id) ?? 0)
-                                    ZStack {
-                                        Circle()
-                                            .foregroundColor(Color("primary"))
-                                            .frame(width: 24, height: 24)
-                                        Text("\(index + 1)")
-                                            .foregroundColor(Color(.systemBackground))
-                                    }
-                                } else {
+                    Button {
+                        viewStore.send(.apiAction(.toggleRoom(segment.id)))
+                    } label: {
+                        HStack {
+                            if viewStore.apiState.rooms.contains(segment.id) {
+                                let index = Int(viewStore.apiState.rooms.firstIndex(of: segment.id) ?? 0)
+                                ZStack {
                                     Circle()
-                                        .strokeBorder(Color("primary"), lineWidth: 2)
+                                        .foregroundColor(Color("blue-primary"))
                                         .frame(width: 24, height: 24)
+                                    Text("\(index + 1)")
+                                        .foregroundColor(Color(.systemBackground))
                                 }
-
-                                Text(name)
-                                    .padding(.leading, 4)
-
-                                Spacer()
+                            } else {
+                                Circle()
+                                    .strokeBorder(Color("blue-primary"), lineWidth: 2)
+                                    .frame(width: 24, height: 24)
                             }
+
+                            Text(segment.name)
+                                .padding(.leading, 4)
+
+                            Spacer()
                         }
                     }
                 }

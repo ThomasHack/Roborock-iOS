@@ -38,12 +38,7 @@ struct RoborockApp: App {
     }
 
     private func connect() {
-        let viewStore = ViewStore(store)
-        guard let host = viewStore.state.sharedState.host, !host.isEmpty,
-              let websocketUrl = URL(string: "ws://\(host)"),
-              let restUrl = URL(string: "http://\(host)") else { return }
-        viewStore.send(.apiAction(.connect(websocketUrl)))
-        viewStore.send(.apiAction(.connectRest(restUrl)))
+        ViewStore(store).send(.apiAction(.connectRest))
     }
 
     private func disconnect() {
@@ -53,8 +48,7 @@ struct RoborockApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        let viewStore = ViewStore(Main.store)
-        viewStore.send(.watchConnectionAction(.connect))
+        ViewStore(Main.store).send(.watchConnectionAction(.connect))
         return true
     }
 }

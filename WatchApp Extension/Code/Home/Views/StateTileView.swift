@@ -9,7 +9,7 @@ import RoborockApi
 import SwiftUI
 
 struct StateTileView: View {
-    @Binding var state: VacuumState
+    var state: VacuumState
 
     var iconName: String {
         switch state {
@@ -68,7 +68,7 @@ struct StateTileView: View {
                         .frame(width: 18, height: 18)
                 }
                 .padding(6)
-                .background(Color("primary"))
+                .background(Color("blue-primary"))
                 .clipShape(Circle())
 
                 Text(LocalizedStringKey(String("roborock.state.\(state.rawValue)")))
@@ -85,7 +85,7 @@ struct StateTileView: View {
 
 struct StateTileView_Previews: PreviewProvider {
     static var previews: some View {
-        StateTileView(state: .constant(VacuumState.charging))
+        StateTileView(state: VacuumState.charging)
             .previewLayout(.fixed(width: 100, height: 100))
     }
 }

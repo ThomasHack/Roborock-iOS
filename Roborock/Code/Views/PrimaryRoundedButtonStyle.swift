@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PrimaryButtonStyle: ButtonStyle {
+struct PrimaryRoundedButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Self.Configuration) -> some View {
@@ -15,32 +15,31 @@ struct PrimaryButtonStyle: ButtonStyle {
         let backgroundColor = isEnabled ? Color("blue-primary") : Color(.tertiarySystemBackground)
 
         return configuration.label
-            .padding(.vertical, 8)
-            .padding(.horizontal, 16)
+            .padding(24)
             .foregroundColor(foregroundColor)
             .background(backgroundColor.opacity(configuration.isPressed ? 0.9 : 1.0))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(Circle())
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
     }
 }
 
-struct PrimaryButton: View {
+struct PrimaryRoundedButton: View {
     var body: some View {
         Button {} label: {
-            HStack {
-                Image(systemName: "house.fill")
-                Text("Label")
-            }
+            Image(systemName: "house.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 36, height: 36)
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(PrimaryRoundedButtonStyle())
     }
 }
 
-struct PrimaryButton_Previews: PreviewProvider {
+struct PrimaryRoundedButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color(.secondarySystemBackground)
-            PrimaryButton()
+            PrimaryRoundedButton()
         }
     }
 }

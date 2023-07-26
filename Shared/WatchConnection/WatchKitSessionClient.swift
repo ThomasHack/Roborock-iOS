@@ -3,7 +3,7 @@
 //  WatchApp Extension
 //
 //  Created by Hack, Thomas on 21.07.21.
-//  swiftlint:disable weak_delegate
+//  
 
 import Combine
 import ComposableArchitecture

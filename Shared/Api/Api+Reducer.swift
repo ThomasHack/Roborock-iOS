@@ -13,20 +13,22 @@ extension Api {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .connect(let url):
+            case .connectWebsocket:
+                guard let host = state.host,
+                      let url = URL(string: "ws://\(host)") else { return .none }
+
                 return websocketClient.connect(ApiId(), url)
                     .receive(on: DispatchQueue.main)
                     .eraseToEffect()
 
-            case .connectRest(let url):
+            case .connectRest:
+                guard let host = state.host,
+                      let url = URL(string: "http://\(host)") else { return .none }
                 restClient.connect(url)
-                return .none
+                return EffectTask(value: .fetchSegments)
 
             case .didConnect:
                 state.connectivityState = .connected
-                return .merge(
-                    EffectTask(value: .fetchSegments)
-                )
 
             case .disconnect:
                 return websocketClient.disconnect(ApiId())
@@ -50,6 +52,7 @@ extension Api {
                 switch response {
                 case .success(let segments):
                     state.segments = segments
+                    return EffectTask(value: .connectWebsocket)
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -163,6 +166,7 @@ extension Api {
                 state.segmentLabelsImage = nil
 
             case .generateMapImage:
+                print("generateMapImage")
                 return rrFileParser.drawMapImage()
                     .receive(on: DispatchQueue.main)
                     .catchToEffect()
@@ -199,6 +203,7 @@ extension Api {
                     .map(Action.setChargerImage)
 
             case .generateSegmentLabelsImage:
+                print("generateSegmentLabelsImage")
                 guard let segments = state.segments else { return .none }
                 return rrFileParser.drawSegmentLabelsImage(segments)
                     .receive(on: DispatchQueue.main)
@@ -209,25 +214,26 @@ extension Api {
                 switch result {
                 case .success(let mapData):
                     state.mapData = mapData
+                    print("mapData success")
                     if state.initialUpdateDone {
                         // Static images have been generated already
                         // So just update the changed ones
-                        return .merge(
-                            EffectTask(value: Action.generateMapImage),
-                            EffectTask(value: Action.generatePathImage),
-                            EffectTask(value: Action.generateRobotImage)
-                        )
+                        return .run { send in
+                            await send(.generateMapImage)
+                            await send(.generatePathImage)
+                            await send(.generateRobotImage)
+                        }
                     } else {
                         // No images have been generated before
                         // So generate all images including static ones
-                        return .merge(
-                            EffectTask(value: Action.generateMapImage),
-                            EffectTask(value: Action.generateChargerImage),
-                            EffectTask(value: Action.generateForbiddenZones),
-                            EffectTask(value: Action.generatePathImage),
-                            EffectTask(value: Action.generateRobotImage),
-                            EffectTask(value: Action.generateSegmentLabelsImage)
-                        )
+                        return .run { send in
+                            await send(.generateMapImage)
+                            await send(.generateChargerImage)
+                            await send(.generateForbiddenZones)
+                            await send(.generatePathImage)
+                            await send(.generateRobotImage)
+                            await send(.generateSegmentLabelsImage)
+                        }
                     }
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -236,6 +242,7 @@ extension Api {
             case .setMapImage(let result):
                 switch result {
                 case .success(let image):
+                    print("setMapImage")
                     state.mapImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -244,6 +251,7 @@ extension Api {
             case .setPathImage(let result):
                 switch result {
                 case .success(let image):
+                    print("setPathImage")
                     state.pathImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -252,6 +260,7 @@ extension Api {
             case .setForbiddenZonesImage(let result):
                 switch result {
                 case .success(let image):
+                    print("setForbiddenZonesImage")
                     state.forbiddenZonesImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -260,6 +269,7 @@ extension Api {
             case .setRobotImage(let result):
                 switch result {
                 case .success(let image):
+                    print("setRobotImage")
                     state.robotImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -268,6 +278,7 @@ extension Api {
             case .setChargerImage(let result):
                 switch result {
                 case .success(let image):
+                    print("setChargerImage")
                     state.chargerImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -276,6 +287,7 @@ extension Api {
             case .setSegmentLabelsImage(let result):
                 switch result {
                 case .success(let image):
+                    print("setSegmentLabelsImage")
                     state.segmentLabelsImage = image
                 case .failure(let error):
                     print(error.localizedDescription)

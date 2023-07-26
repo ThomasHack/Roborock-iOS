@@ -11,7 +11,7 @@
 		5200DB3926AC764E0026D69F /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 5200DB3826AC764E0026D69F /* RoborockApi */; };
 		5200DB3B26AC76540026D69F /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 5200DB3A26AC76540026D69F /* RoborockApi */; };
 		52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2226494C0000E1C041 /* StatusItemView.swift */; };
-		52046F2626494DA100E1C041 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2526494DA100E1C041 /* PrimaryButtonStyle.swift */; };
+		52046F2626494DA100E1C041 /* PrimaryRoundedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2526494DA100E1C041 /* PrimaryRoundedButtonStyle.swift */; };
 		52046F2926494DC400E1C041 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2826494DC400E1C041 /* BlurView.swift */; };
 		5214A18B29BCDAC400C3FD57 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 657FAE3328DB784000FFCACC /* ComposableArchitecture */; };
 		5214A18C29BCDAC400C3FD57 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 657FAE3428DB784000FFCACC /* RoborockApi */; };
@@ -61,6 +61,9 @@
 		5260D9F326AB282A00901A10 /* WCSessionWatchResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EC26AB27F500901A10 /* WCSessionWatchResponseData.swift */; };
 		5260D9F426AB282A00901A10 /* WCSessionAppResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
+		528A39FF2A7154A90005A4DF /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528A39FE2A7154A90005A4DF /* UserDefaultsKeys.swift */; };
+		528A3A022A716F530005A4DF /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528A3A012A716F530005A4DF /* UserDefaultsHelper.swift */; };
+		528A3A032A716F530005A4DF /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528A3A012A716F530005A4DF /* UserDefaultsHelper.swift */; };
 		5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
 		5297E3A82698956E00680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
 		52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */; };
@@ -68,6 +71,8 @@
 		52C658E426A5B390009C8D07 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */; };
 		52C658EA26A5C79B009C8D07 /* FanspeedSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */; };
 		52C658EE26A5D38F009C8D07 /* BatteryTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658ED26A5D38F009C8D07 /* BatteryTileView.swift */; };
+		52C7F1B32A08E3FD00D4E495 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F1B22A08E3FD00D4E495 /* PrimaryButtonStyle.swift */; };
+		52C7F1B52A08E48000D4E495 /* SecondaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F1B42A08E48000D4E495 /* SecondaryButtonStyle.swift */; };
 		52D1BA8C269C57BD00219230 /* CleanRoomIntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */; };
 		52D1BAA5269C598B00219230 /* ApiWebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652FA91F264D2EE1007C67F6 /* ApiWebSocketClient.swift */; };
 		52D1BAAE269C6AB900219230 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 52D1BAAD269C6AB900219230 /* ComposableArchitecture */; };
@@ -75,7 +80,6 @@
 		52D1BABB269C6C4A00219230 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5249E98F2696E7A70095828E /* IntentsUI.framework */; };
 		52DBCBA626946C0300D25CC6 /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA526946C0300D25CC6 /* UIColor+Custom.swift */; };
 		52DBCBA82694B1AB00D25CC6 /* String+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA72694B1AB00D25CC6 /* String+Size.swift */; };
-		52DBCBAA2694BA7600D25CC6 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA92694BA7600D25CC6 /* Shared.swift */; };
 		52DBCBAD2694BBE200D25CC6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBAC2694BBE200D25CC6 /* Settings.swift */; };
 		52DBCBAF2694BC6A00D25CC6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBAE2694BC6A00D25CC6 /* SettingsView.swift */; };
 		52DBCBB32694C20900D25CC6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBB22694C20900D25CC6 /* SectionHeader.swift */; };
@@ -84,7 +88,7 @@
 		52E890AB26A6E128004E9D7A /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E890AA26A6E128004E9D7A /* CircularButtonStyle.swift */; };
 		52E890AD26A6E320004E9D7A /* FanspeedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E890AC26A6E320004E9D7A /* FanspeedList.swift */; };
 		52E890AE26A723BA004E9D7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 521C741B269DD3CF0098D71A /* Assets.xcassets */; };
-		52EE04CF269CAE8D00C677AA /* SecondaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EE04CE269CAE8D00C677AA /* SecondaryButtonStyle.swift */; };
+		52EE04CF269CAE8D00C677AA /* SecondaryRoundedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EE04CE269CAE8D00C677AA /* SecondaryRoundedButtonStyle.swift */; };
 		52F12B9A2689BF4300C5494E /* RRFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F12B992689BF4300C5494E /* RRFileParser.swift */; };
 		52F12B9F268A2D5400C5494E /* Data+ByteBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F12B9E268A2D5400C5494E /* Data+ByteBuffer.swift */; };
 		6510D92A26A5E62C00FECC97 /* StateTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510D92926A5E62C00FECC97 /* StateTileView.swift */; };
@@ -98,10 +102,8 @@
 		6542895F2646C623009B8BE5 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542895E2646C623009B8BE5 /* Api.swift */; };
 		654289682646E884009B8BE5 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654289672646E884009B8BE5 /* MainView.swift */; };
 		6542896C264725F1009B8BE5 /* SegmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542896B264725F1009B8BE5 /* SegmentList.swift */; };
-		65B0EECF26A35E1100924CB9 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521C742D269DD77B0098D71A /* Home.swift */; };
 		65B0EEDA26A362F900924CB9 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542895E2646C623009B8BE5 /* Api.swift */; };
 		65B0EEE326A364AA00924CB9 /* ApiWebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652FA91F264D2EE1007C67F6 /* ApiWebSocketClient.swift */; };
-		65B0EEE426A364B500924CB9 /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBCBA92694BA7600D25CC6 /* Shared.swift */; };
 		65B0EEF226A3703E00924CB9 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEE126A3644500924CB9 /* Main.swift */; };
 		65B0EEF626A3749900924CB9 /* CircularProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEF526A3749900924CB9 /* CircularProgressViewStyle.swift */; };
 		65B0EEF926A37F3A00924CB9 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0EEF826A37F3A00924CB9 /* ButtonView.swift */; };
@@ -174,7 +176,7 @@
 
 /* Begin PBXFileReference section */
 		52046F2226494C0000E1C041 /* StatusItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemView.swift; sourceTree = "<group>"; };
-		52046F2526494DA100E1C041 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
+		52046F2526494DA100E1C041 /* PrimaryRoundedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryRoundedButtonStyle.swift; sourceTree = "<group>"; };
 		52046F2826494DC400E1C041 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		5214A18D29BCDBD400C3FD57 /* RestClient+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RestClient+Dependency.swift"; sourceTree = "<group>"; };
 		5214A19029BCDBD600C3FD57 /* ApiWebSocketClient+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApiWebSocketClient+Dependency.swift"; sourceTree = "<group>"; };
@@ -196,7 +198,6 @@
 		521C741E269DD3CF0098D71A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		521C7420269DD3CF0098D71A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		521C7421269DD3CF0098D71A /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		521C742D269DD77B0098D71A /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		52232ADC26A74C250024D072 /* bitrise.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bitrise.yml; sourceTree = "<group>"; };
 		52232ADD26A751310024D072 /* WatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WatchApp.entitlements; sourceTree = "<group>"; };
 		52232ADE26A752480024D072 /* StartCleaning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StartCleaning.entitlements; sourceTree = "<group>"; };
@@ -224,6 +225,8 @@
 		5275B16526499263008B4DC7 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		528A39FE2A7154A90005A4DF /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
+		528A3A012A716F530005A4DF /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
 		5297E3A42698949300680D9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Intents.intentdefinition; sourceTree = "<group>"; };
 		52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+PixelData.swift"; sourceTree = "<group>"; };
 		52AD4DAB2695D2C700D5C839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -231,9 +234,10 @@
 		52C658E326A5B390009C8D07 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
 		52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanspeedSelection.swift; sourceTree = "<group>"; };
 		52C658ED26A5D38F009C8D07 /* BatteryTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryTileView.swift; sourceTree = "<group>"; };
+		52C7F1B22A08E3FD00D4E495 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
+		52C7F1B42A08E48000D4E495 /* SecondaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButtonStyle.swift; sourceTree = "<group>"; };
 		52DBCBA526946C0300D25CC6 /* UIColor+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Custom.swift"; sourceTree = "<group>"; };
 		52DBCBA72694B1AB00D25CC6 /* String+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Size.swift"; sourceTree = "<group>"; };
-		52DBCBA92694BA7600D25CC6 /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		52DBCBAC2694BBE200D25CC6 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		52DBCBAE2694BC6A00D25CC6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		52DBCBB22694C20900D25CC6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -242,7 +246,7 @@
 		52E890AC26A6E320004E9D7A /* FanspeedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanspeedList.swift; sourceTree = "<group>"; };
 		52EE04C5269CA00900C677AA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
 		52EE04C7269CA2AB00C677AA /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
-		52EE04CE269CAE8D00C677AA /* SecondaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButtonStyle.swift; sourceTree = "<group>"; };
+		52EE04CE269CAE8D00C677AA /* SecondaryRoundedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryRoundedButtonStyle.swift; sourceTree = "<group>"; };
 		52F12B992689BF4300C5494E /* RRFileParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRFileParser.swift; sourceTree = "<group>"; };
 		52F12B9E268A2D5400C5494E /* Data+ByteBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+ByteBuffer.swift"; sourceTree = "<group>"; };
 		6510D92926A5E62C00FECC97 /* StateTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateTileView.swift; sourceTree = "<group>"; };
@@ -305,8 +309,10 @@
 			children = (
 				52DBCBB22694C20900D25CC6 /* SectionHeader.swift */,
 				52046F2826494DC400E1C041 /* BlurView.swift */,
-				52046F2526494DA100E1C041 /* PrimaryButtonStyle.swift */,
-				52EE04CE269CAE8D00C677AA /* SecondaryButtonStyle.swift */,
+				52046F2526494DA100E1C041 /* PrimaryRoundedButtonStyle.swift */,
+				52C7F1B22A08E3FD00D4E495 /* PrimaryButtonStyle.swift */,
+				52C7F1B42A08E48000D4E495 /* SecondaryButtonStyle.swift */,
+				52EE04CE269CAE8D00C677AA /* SecondaryRoundedButtonStyle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -345,7 +351,6 @@
 		521C742C269DD7700098D71A /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				521C742D269DD77B0098D71A /* Home.swift */,
 				521C7413269DD3CE0098D71A /* HomeView.swift */,
 				5238572426A056AD00B2FBEA /* Views */,
 			);
@@ -379,7 +384,7 @@
 		52232AE526A81EBA0024D072 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				52DBCBA92694BA7600D25CC6 /* Shared.swift */,
+				528A3A012A716F530005A4DF /* UserDefaultsHelper.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -582,6 +587,7 @@
 				6542895A2646C442009B8BE5 /* Main.swift */,
 				654289672646E884009B8BE5 /* MainView.swift */,
 				5249E9812695D7C00095828E /* RoomSelectionView.swift */,
+				528A39FE2A7154A90005A4DF /* UserDefaultsKeys.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -618,8 +624,8 @@
 			buildPhases = (
 				521C7401269DD3CC0098D71A /* Resources */,
 				521C7408269DD3CE0098D71A /* Sources */,
-				521C7409269DD3CE0098D71A /* Frameworks */,
 				5214A19629BCE83100C3FD57 /* Swiftlint */,
+				521C7409269DD3CE0098D71A /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -641,7 +647,7 @@
 				5249E99F26970BD00095828E /* Sources */,
 				5249E9A026970BD00095828E /* Frameworks */,
 				5249E9A126970BD00095828E /* Resources */,
-				52B9B22A269DC369002411BF /* Swiftlint */,
+				528A3A002A716AD40005A4DF /* Swiftlint */,
 				52D1BABA269C6BA800219230 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -690,8 +696,9 @@
 		654289302646B78B009B8BE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					521C7402269DD3CC0098D71A = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -782,7 +789,7 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/sh\n\n# Adds support for Apple Silicon brew directory\nexport PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		52B9B22A269DC369002411BF /* Swiftlint */ = {
+		528A3A002A716AD40005A4DF /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -834,12 +841,11 @@
 				65B0EEF626A3749900924CB9 /* CircularProgressViewStyle.swift in Sources */,
 				52232AE826A87F310024D072 /* WatchKitSessionClient.swift in Sources */,
 				5260D9E426AB27AB00901A10 /* WCSessionAction.swift in Sources */,
-				65B0EECF26A35E1100924CB9 /* Home.swift in Sources */,
-				65B0EEE426A364B500924CB9 /* Shared.swift in Sources */,
 				521C7414269DD3CE0098D71A /* HomeView.swift in Sources */,
 				65B0EEF226A3703E00924CB9 /* Main.swift in Sources */,
 				5214A1A229BCEA2B00C3FD57 /* WatchKitSessionClient+Dependency.swift in Sources */,
 				5260D9F326AB282A00901A10 /* WCSessionWatchResponseData.swift in Sources */,
+				528A3A032A716F530005A4DF /* UserDefaultsHelper.swift in Sources */,
 				52E0F62E26AADCF200C34206 /* WCSessionData.swift in Sources */,
 				521C741A269DD3CE0098D71A /* ComplicationController.swift in Sources */,
 				65B0EEDA26A362F900924CB9 /* Api.swift in Sources */,
@@ -888,19 +894,21 @@
 				5214A19329BCDE3C00C3FD57 /* RRFileParser+Dependency.swift in Sources */,
 				6510E8DF2688AD02001E9230 /* ButtonView.swift in Sources */,
 				5214A1A129BCEA2B00C3FD57 /* WatchKitSessionClient+Dependency.swift in Sources */,
+				528A39FF2A7154A90005A4DF /* UserDefaultsKeys.swift in Sources */,
 				5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */,
 				52DBCBA626946C0300D25CC6 /* UIColor+Custom.swift in Sources */,
 				52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */,
 				5260D9F226AB282900901A10 /* WCSessionAppResponseData.swift in Sources */,
 				654289682646E884009B8BE5 /* MainView.swift in Sources */,
 				525079D4268F82ED000F7095 /* UIImage+Rotate.swift in Sources */,
-				52EE04CF269CAE8D00C677AA /* SecondaryButtonStyle.swift in Sources */,
+				52EE04CF269CAE8D00C677AA /* SecondaryRoundedButtonStyle.swift in Sources */,
 				6542896C264725F1009B8BE5 /* SegmentList.swift in Sources */,
 				6542895B2646C442009B8BE5 /* Main.swift in Sources */,
+				52C7F1B32A08E3FD00D4E495 /* PrimaryButtonStyle.swift in Sources */,
 				6510E8E02688AF15001E9230 /* StatusView.swift in Sources */,
 				5260D9EF26AB282900901A10 /* WCSessionWatchResponseData.swift in Sources */,
 				52DBCBAD2694BBE200D25CC6 /* Settings.swift in Sources */,
-				52046F2626494DA100E1C041 /* PrimaryButtonStyle.swift in Sources */,
+				52046F2626494DA100E1C041 /* PrimaryRoundedButtonStyle.swift in Sources */,
 				6542893C2646B78B009B8BE5 /* RoborockApp.swift in Sources */,
 				52D1BAA5269C598B00219230 /* ApiWebSocketClient.swift in Sources */,
 				52232AE626A81ECD0024D072 /* WatchkitSessionDelegate.swift in Sources */,
@@ -915,13 +923,14 @@
 				5249E9822695D7C00095828E /* RoomSelectionView.swift in Sources */,
 				5260D9F026AB282900901A10 /* WCSessionRequestData.swift in Sources */,
 				6542895F2646C623009B8BE5 /* Api.swift in Sources */,
+				52C7F1B52A08E48000D4E495 /* SecondaryButtonStyle.swift in Sources */,
 				5260D9DC26AB19C100901A10 /* WatchConnection.swift in Sources */,
 				5214A19F29BCE93D00C3FD57 /* Api+Reducer.swift in Sources */,
+				528A3A022A716F530005A4DF /* UserDefaultsHelper.swift in Sources */,
 				52F12B9F268A2D5400C5494E /* Data+ByteBuffer.swift in Sources */,
 				5249E97E2695D6930095828E /* HeaderView.swift in Sources */,
 				5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */,
 				52DBCBB32694C20900D25CC6 /* SectionHeader.swift in Sources */,
-				52DBCBAA2694BA7600D25CC6 /* Shared.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -973,6 +982,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
@@ -999,6 +1009,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = WatchApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
@@ -1021,6 +1032,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StartCleaning/Info.plist;
 				INFOPLIST_KEY_CFBundleExecutable = StartCleaning;
@@ -1051,6 +1063,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210925;
 				DEVELOPMENT_TEAM = N9C9UAVR87;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StartCleaning/Info.plist;
 				INFOPLIST_KEY_CFBundleExecutable = StartCleaning;
@@ -1078,6 +1091,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1112,6 +1126,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1140,6 +1155,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1174,6 +1190,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1205,6 +1222,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Roborock/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1233,6 +1251,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Roborock/Preview Content\"";
 				DEVELOPMENT_TEAM = N9C9UAVR87;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Roborock/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (

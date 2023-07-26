@@ -13,20 +13,27 @@ struct NotConnectedView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            VStack(alignment: .center, spacing: 8) {
+            VStack(alignment: .center) {
+                Spacer()
                 HStack {
-                    Image(systemName: "bolt.slash.fill")
                     Text("api.disconnected")
-                }.foregroundColor(.secondary)
+                }
+                .foregroundColor(.secondary)
+
                 Button {
-                    if viewStore.sharedState.host != nil {
+                    if viewStore.host != nil {
                         viewStore.send(.toggleSettings(true))
                     } else {
                         viewStore.send(.toggleSettings(true))
                     }
                 } label: {
-                    Text((viewStore.sharedState.host ?? "").isEmpty ? "home.setHost" : "api.connect")
+                    HStack {
+                        Image(systemName: "bolt.fill")
+                        Text((viewStore.host ?? "").isEmpty ? "home.setHost" : "api.connect")
+                    }
                 }
+                .buttonStyle(PrimaryButtonStyle())
+                Spacer()
             }
         }
     }

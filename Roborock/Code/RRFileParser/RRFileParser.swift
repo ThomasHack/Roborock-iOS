@@ -695,3 +695,5 @@ public class RRFileParser {
         return tempImage
     }
 }
+
+//  swiftlint:enable type_body_length file_length

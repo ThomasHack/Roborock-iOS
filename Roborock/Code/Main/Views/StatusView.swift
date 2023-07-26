@@ -13,33 +13,23 @@ struct StatusView: View {
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            HStack(spacing: 0) {
+            HStack(spacing: 10) {
                 StatusItemView(label: "home.battery",
                                unit: "%",
-                               iconName: viewStore.binding(
-                                get: { $0.batteryIcon },
-                                send: Main.Action.none),
-                               value: viewStore.binding(
-                                get: { $0.apiState.battery },
-                                send: Main.Action.none)
+                               iconName: viewStore.batteryIcon,
+                               value: viewStore.apiState.battery
                 )
 
                 StatusItemView(label: "home.cleanTime",
                                unit: "min",
-                               iconName: .constant("stopwatch"),
-                               value: viewStore.binding(
-                                get: { $0.apiState.cleanTime },
-                                send: Main.Action.none
-                               )
+                               iconName: "stopwatch",
+                               value: viewStore.apiState.cleanTime
                 )
 
                 StatusItemView(label: "home.cleanArea",
                                unit: "qm",
-                               iconName: .constant("square.dashed"),
-                               value: viewStore.binding(
-                                get: { $0.apiState.cleanArea },
-                                send: Main.Action.none
-                               )
+                               iconName: "square.dashed",
+                               value: viewStore.apiState.cleanArea
                 )
             }
         }

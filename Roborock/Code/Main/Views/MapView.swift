@@ -9,19 +9,18 @@ import ComposableArchitecture
 import SwiftUI
 
 struct MapView: View {
-    let store: Store<Main.State, Main.Action>
+    let store: StoreOf<Api>
     let gradient = Gradient(colors: [Color("blue-light"), Color("blue-dark")])
 
     @State var zoom = 1.0
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
-            if let mapImage = viewStore.apiState.mapImage,
-               let forbiddenZonesImage = viewStore.apiState.forbiddenZonesImage,
-               let segmentLabelsImage = viewStore.apiState.segmentLabelsImage,
-               let chargerImage = viewStore.apiState.chargerImage,
-               let pathImage = viewStore.apiState.pathImage,
-               let robotImage = viewStore.apiState.robotImage {
+        WithViewStore(store) { viewStore in
+            if let mapImage = viewStore.mapImage,
+               let forbiddenZonesImage = viewStore.forbiddenZonesImage,
+               let chargerImage = viewStore.chargerImage,
+               let pathImage = viewStore.pathImage,
+               let robotImage = viewStore.robotImage {
                 GeometryReader { geometry in
                     ZStack(alignment: .center) {
                         LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom)
@@ -44,9 +43,11 @@ struct MapView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
 
-                                Image(uiImage: segmentLabelsImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
+                                if let segmentLabelsImage = viewStore.segmentLabelsImage {
+                                    Image(uiImage: segmentLabelsImage)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                }
 
                                 Image(uiImage: robotImage)
                                     .resizable()
@@ -60,11 +61,11 @@ struct MapView: View {
                             zoom = zoom > 1.0 ? 1.0 : 2.0
                         })
                     })
-                    .frame(width: geometry.size.width, height: geometry.size.height * 0.66)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
                 }
             } else {
                 Spacer()
-                if viewStore.apiState.connectivityState == .connected {
+                if viewStore.connectivityState == .connected {
                     ProgressView()
                         .foregroundColor(Color(UIColor.label))
                 }
@@ -76,6 +77,6 @@ struct MapView: View {
 
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
-        MapView(store: Main.previewStore)
+        MapView(store: Api.previewStore)
     }
 }

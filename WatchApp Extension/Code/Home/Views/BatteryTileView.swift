@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BatteryTileView: View {
-    @Binding var value: Int?
+    var value: Int?
 
     var body: some View {
         ProgressView("\(value ?? 0)", value: Float(value ?? 0), total: Float(100))
@@ -27,7 +27,7 @@ struct BatteryTileView: View {
 
 struct BatteryTileView_Previews: PreviewProvider {
     static var previews: some View {
-        BatteryTileView(value: .constant(100))
+        BatteryTileView(value: 100)
             .previewLayout(.fixed(width: 50, height: 50))
     }
 }

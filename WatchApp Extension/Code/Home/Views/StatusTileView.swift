@@ -9,12 +9,11 @@ import SwiftUI
 import UIKit
 
 struct StatusTileView: View {
-    @State var iconName: String
-    @State var label: String
-    @State var unit: String
-    @State var color: Color
-
-    @Binding var value: String
+    var iconName: String
+    var label: String
+    var unit: String
+    var color: Color
+    var value: String
 
     var body: some View {
         HStack(spacing: 8) {
@@ -52,8 +51,19 @@ struct StatusItemView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             VStack(spacing: 8) {
-                StatusTileView(iconName: "stopwatch", label: "Clean Time", unit: "h", color: Color.orange, value: .constant("00:52"))
-                StatusTileView(iconName: "square.dashed", label: "Clean Area", unit: "qm", color: Color.green, value: .constant("56.8"))
+                StatusTileView(
+                    iconName: "stopwatch",
+                    label: "Clean Time",
+                    unit: "h",
+                    color: Color.orange,
+                    value: "00:52")
+
+                StatusTileView(
+                    iconName: "square.dashed",
+                    label: "Clean Area",
+                    unit: "qm",
+                    color: Color.green,
+                    value: "56.8")
             }
             .padding()
         }

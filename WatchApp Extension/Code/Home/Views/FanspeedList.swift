@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct FanspeedList: View {
-    let store: Store<Home.State, Home.Action>
+    let store: StoreOf<Main>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -37,6 +37,6 @@ struct FanspeedList: View {
 
 struct FanspeedList_Previews: PreviewProvider {
     static var previews: some View {
-        FanspeedList(store: Home.previewStore)
+        FanspeedList(store: Main.previewStore)
     }
 }

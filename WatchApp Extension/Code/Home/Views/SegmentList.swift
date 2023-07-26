@@ -11,7 +11,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct SegmentList: View {
-    let store: Store<Home.State, Home.Action>
+    let store: StoreOf<Main>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -19,30 +19,28 @@ struct SegmentList: View {
                 ScrollView {
                     VStack {
                         ForEach(segments, id: \.self) { segment in
-                            if let name = segment.name, let id = segment.id {
-                                Button {
-                                    viewStore.send(.toggleRoom(id))
-                                } label: {
-                                    HStack {
-                                        if viewStore.apiState.rooms.contains(id) {
-                                            let index = Int(viewStore.apiState.rooms.firstIndex(of: id) ?? 0)
-                                            ZStack {
-                                                Circle()
-                                                    .foregroundColor(Color("primary"))
-                                                    .frame(width: 24, height: 24)
-                                                Text("\(index + 1)")
-                                            }
-                                        } else {
+                            Button {
+                                viewStore.send(.toggleRoom(segment.id))
+                            } label: {
+                                HStack {
+                                    if viewStore.apiState.rooms.contains(segment.id) {
+                                        let index = Int(viewStore.apiState.rooms.firstIndex(of: segment.id) ?? 0)
+                                        ZStack {
                                             Circle()
-                                                .strokeBorder(Color("primary"), lineWidth: 2)
+                                                .foregroundColor(Color("blue-primary"))
                                                 .frame(width: 24, height: 24)
+                                            Text("\(index + 1)")
                                         }
-
-                                        Text(name)
-                                            .padding(.leading, 4)
-
-                                        Spacer()
+                                    } else {
+                                        Circle()
+                                            .strokeBorder(Color("blue-primary"), lineWidth: 2)
+                                            .frame(width: 24, height: 24)
                                     }
+
+                                    Text(segment.name)
+                                        .padding(.leading, 4)
+
+                                    Spacer()
                                 }
                             }
                         }
@@ -74,6 +72,6 @@ struct SegmentList: View {
 
 struct SegmentList_Previews: PreviewProvider {
     static var previews: some View {
-        SegmentList(store: Home.previewStore)
+        SegmentList(store: Main.previewStore)
     }
 }

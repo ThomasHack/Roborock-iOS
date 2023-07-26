@@ -8,52 +8,38 @@
 import ComposableArchitecture
 import Foundation
 import RoborockApi
+import WatchKit
 
 struct WatchKitId: Hashable {}
 
 struct Main: ReducerProtocol {
     struct State: Equatable {
-        var _homeState: Home.State?
-        var homeState: Home.State {
-            get {
-                if var tempState = _homeState {
-                    tempState.apiState = apiState
-                    tempState.sharedState = sharedState
-                    return tempState
-                }
-                return Home.State(
-                    apiState: apiState,
-                    sharedState: sharedState
-                )
-            }
-            set {
-                _homeState = newValue
-            }
-        }
+        var host: String?
+        var connectivityState: ConnectivityState = .disconnected
+        var segments: Segments?
+        var fanspeeds = Fanspeed.allCases
+        var showSegmentsModal = false
+        var showFanspeedModal = false
 
         var _apiState: Api.State?
         var apiState: Api.State {
             get {
-                if let tempState = _apiState {
+                if var tempState = _apiState {
+                    tempState.host = host
+                    tempState.connectivityState = connectivityState
+                    tempState.segments = segments
                     return tempState
                 }
-                return Api.initialState
+                return Api.State(
+                    host: host,
+                    connectivityState: connectivityState,
+                    segments: segments
+                )
             }
             set {
                 _apiState = newValue
-            }
-        }
-
-        var _sharedState: Shared.State?
-        var sharedState: Shared.State {
-            get {
-                if let tempState = _sharedState {
-                    return tempState
-                }
-                return Shared.initialState
-            }
-            set {
-                _sharedState = newValue
+                segments = newValue.segments
+                connectivityState = newValue.connectivityState
             }
         }
 
@@ -61,11 +47,11 @@ struct Main: ReducerProtocol {
         var watchConnectionState: WatchConnection.State {
             get {
                 if var tempState = _watchConnectionState {
-                    tempState.sharedState = sharedState
+                    tempState.host = host
                     return tempState
                 }
                 return WatchConnection.State(
-                    sharedState: sharedState
+                    host: host
                 )
             }
             set {
@@ -75,16 +61,65 @@ struct Main: ReducerProtocol {
     }
 
     enum Action {
-        case home(Home.Action)
+        case toggleSegmentsModal(Bool)
+        case toggleFanspeedModal(Bool)
+        case fetchSegments
+        case startCleaning
+        case stopCleaning
+        case pauseCleaning
+        case driveHome
+        case toggleRoom(Int)
+        case resetRooms
+        case setFanspeed(Fanspeed)
         case api(Api.Action)
-        case shared(Shared.Action)
         case watchConnection(WatchConnection.Action)
     }
 
     var body: some ReducerProtocol<State, Action> {
-        Reduce { _, action in
+        Reduce { state, action in
             switch action {
-            case .home, . api, .shared, .watchConnection:
+            case .toggleSegmentsModal(let toggle):
+                WKInterfaceDevice.current().play(.click)
+                state.showSegmentsModal = toggle
+                return .none
+
+            case .toggleFanspeedModal(let toggle):
+                WKInterfaceDevice.current().play(.click)
+                state.showFanspeedModal = toggle
+                return .none
+
+            case .fetchSegments:
+                return EffectTask(value: .api(.fetchSegments))
+
+            case .startCleaning:
+                state.showFanspeedModal = false
+                WKInterfaceDevice.current().play(.success)
+                return EffectTask(value: .api(.startCleaningSegment))
+
+            case .stopCleaning:
+                WKInterfaceDevice.current().play(.success)
+                return EffectTask(value: .api(.stopCleaning))
+
+            case .pauseCleaning:
+                WKInterfaceDevice.current().play(.success)
+                return EffectTask(value: .api(.pauseCleaning))
+
+            case .driveHome:
+                WKInterfaceDevice.current().play(.success)
+                return EffectTask(value: .api(.driveHome))
+
+            case .toggleRoom(let roomId):
+                return EffectTask(value: .api(.toggleRoom(roomId)))
+
+            case .resetRooms:
+                return EffectTask(value: .api(.resetRooms))
+
+            case .setFanspeed(let fanspeed):
+                state.showFanspeedModal = false
+                WKInterfaceDevice.current().play(.success)
+                return EffectTask(value: .api(.setFanspeed(fanspeed)))
+
+            case .api, .watchConnection:
                 break
             }
             return .none
@@ -92,34 +127,32 @@ struct Main: ReducerProtocol {
         Scope(state: \.apiState, action: /Action.api) {
             Api()
         }
-        Scope(state: \.sharedState, action: /Action.shared) {
-            Shared()
-        }
-        Scope(state: \.homeState, action: /Action.home) {
-            Home()
-        }
         Scope(state: \.watchConnectionState, action: /Action.watchConnection) {
             WatchConnection()
         }
     }
 
-    static let store = Store(
-        initialState: State(
-            _homeState: Home.initialState,
-            _apiState: Api.initialState,
-            _sharedState: Shared.initialState,
-            _watchConnectionState: WatchConnection.initialState
+    static let initialState = State(
+        host: UserDefaultsHelper.host
+    )
 
-        ),
+    static let previewState = State(
+        host: "roborock.friday.home",
+        connectivityState: .connected
+    )
+
+    static let previewStore = Store(
+        initialState: previewState,
+        reducer: Main()
+    )
+
+    static let store = Store(
+        initialState: initialState,
         reducer: Main()
     )
 }
 
 extension Store where State == Main.State, Action == Main.Action {
-    var home: Store<Home.State, Home.Action> {
-        scope(state: \.homeState, action: Main.Action.home)
-    }
-
     var api: Store<Api.State, Api.Action> {
         scope(state: \.apiState, action: Main.Action.api)
     }

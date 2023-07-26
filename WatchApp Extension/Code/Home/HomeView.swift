@@ -9,63 +9,52 @@ import ComposableArchitecture
 import SwiftUI
 
 struct HomeView: View {
-    let store: Store<Home.State, Home.Action>
-    let columns = Array(repeating: GridItem(.flexible()), count: 2)
+    let store: StoreOf<Main>
+
+    private let columns = Array(repeating: GridItem(.flexible()), count: 2)
 
     @State private var currentPage = 0
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
             VStack(alignment: .leading, spacing: 16) {
-                StateTileView(state: viewStore.binding(
-                    get: \.apiState.state,
-                    send: Home.Action.none
-                ))
+                StateTileView(state: viewStore.apiState.state)
 
                 HStack(spacing: 4) {
-                    BatteryTileView(value: viewStore.binding(
-                        get: \.apiState.status?.battery,
-                        send: Home.Action.none
-                    ))
-                    .frame(width: 68, height: 68)
+                    BatteryTileView(value: viewStore.apiState.status?.battery)
+                        .frame(width: 68, height: 68)
 
                     VStack(alignment: .leading, spacing: 8) {
                         StatusTileView(iconName: "stopwatch",
                                        label: "Clean time",
                                        unit: "h",
-                                       color: Color("primary"),
-                                       value: viewStore.binding(
-                                        get: { $0.apiState.cleanTime },
-                                        send: Home.Action.none
-                                       )
+                                       color: Color("blue-primary"),
+                                       value: viewStore.apiState.cleanTime
                         )
 
                         StatusTileView(iconName: "square.dashed",
                                        label: "Clean area",
                                        unit: "qm",
-                                       color: Color("primary"),
-                                       value: viewStore.binding(
-                                        get: { $0.apiState.cleanArea },
-                                        send: Home.Action.none
-                                       )
+                                       color: Color("blue-primary"),
+                                       value: viewStore.apiState.cleanArea
                         )
                     }
                     .padding(.leading, 8)
                 }
 
-                ButtonView(store: self.store)
+                ButtonView(store: store)
             }
             .navigationTitle("Roborock")
             .padding(.top, 16)
             .sheet(isPresented: viewStore.binding(
                 get: \.showSegmentsModal,
-                send: Home.Action.toggleSegmentsModal
+                send: Main.Action.toggleSegmentsModal
             )) {
                 SegmentList(store: store)
             }
             .sheet(isPresented: viewStore.binding(
                 get: \.showFanspeedModal,
-                send: Home.Action.toggleFanspeedModal
+                send: Main.Action.toggleFanspeedModal
             )) {
                 FanspeedList(store: store)
             }
@@ -76,6 +65,6 @@ struct HomeView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView(store: Home.previewStore)
+        HomeView(store: Main.previewStore)
     }
 }

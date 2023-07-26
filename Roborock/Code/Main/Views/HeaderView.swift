@@ -28,7 +28,7 @@ struct HeaderView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
                     }
-                    .buttonStyle(SecondaryButtonStyle())
+                    .buttonStyle(SecondaryRoundedButtonStyle())
                 }
 
                 HStack {
@@ -42,7 +42,6 @@ struct HeaderView: View {
                             .font(.system(.headline))
                     }
                     Spacer()
-
                 }
             }
         }

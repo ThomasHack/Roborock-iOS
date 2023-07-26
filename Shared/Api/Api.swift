@@ -25,6 +25,7 @@ struct Api: ReducerProtocol {
     #endif
 
     static let initialState = State()
+
     static let previewState = State(connectivityState: .connected,
                                     segments: Segments(segment: [
                                         Segment(id: 1, name: "Wohnzimmer"),
@@ -55,5 +56,10 @@ struct Api: ReducerProtocol {
                                                    model: "roborock.s5",
                                                    errorHumanReadable: ""
                                                   )
+    )
+
+    static let previewStore = Store(
+        initialState: initialState,
+        reducer: Api()
     )
 }

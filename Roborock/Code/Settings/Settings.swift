@@ -11,10 +11,10 @@ import Intents
 
 struct Settings: ReducerProtocol {
     struct State: Equatable {
+        var host: String?
         var hostInput: String = ""
 
         var apiState: Api.State
-        var sharedState: Shared.State
     }
 
     enum Action {
@@ -23,9 +23,7 @@ struct Settings: ReducerProtocol {
         case doneButtonTapped
         case requestSiriAuthorization
         case donateSiriShortcut
-
         case api(Api.Action)
-        case shared(Shared.Action)
     }
 
     var body: some ReducerProtocol<State, Action> {
@@ -40,15 +38,10 @@ struct Settings: ReducerProtocol {
                     return EffectTask(value: Action.api(.disconnect))
 
                 case .disconnected:
-                    guard let websocketUrl = URL(string: "ws://\(state.hostInput)"),
-                          let restUrl = URL(string: "http://\(state.hostInput)") else { return .none }
-                    return .merge(
-                        EffectTask(value: Action.api(.connect(websocketUrl))),
-                        EffectTask(value: Action.api(.connectRest(restUrl)))
-                    )
+                    return EffectTask(value: Action.api(.connectRest))
                 }
             case .doneButtonTapped:
-                state.sharedState.host = state.hostInput
+                state.host = state.hostInput
 
             case .requestSiriAuthorization:
                 var request = false
@@ -83,7 +76,7 @@ struct Settings: ReducerProtocol {
                     print("Successfully donated interaction")
                 }
 
-            case .shared, .api:
+            case .api:
                 break
             }
             return .none
@@ -91,15 +84,13 @@ struct Settings: ReducerProtocol {
     }
 
     static let initialState = State(
-        hostInput: UserDefaults(suiteName: Shared.appGroupName)?.string(forKey: Shared.hostDefaultsKeyName) ?? "",
-        apiState: Api.initialState,
-        sharedState: Shared.initialState
+        hostInput: UserDefaultsHelper.host ?? "",
+        apiState: Api.initialState
     )
 
     static let previewState = State(
         hostInput: "roborock.friday.home",
-        apiState: Api.previewState,
-        sharedState: Shared.previewState
+        apiState: Api.previewState
     )
 
     static let previewStore = Store(

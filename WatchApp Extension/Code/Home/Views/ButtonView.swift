@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct ButtonView: View {
-    let store: Store<Home.State, Home.Action>
+    let store: StoreOf<Main>
 
     var body: some View {
         WithViewStore(self.store) { viewStore in
@@ -79,6 +79,6 @@ struct ButtonView: View {
 
 struct ButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonView(store: Home.previewStore)
+        ButtonView(store: Main.previewStore)
     }
 }

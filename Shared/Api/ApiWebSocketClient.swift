@@ -3,7 +3,7 @@
 //  Roborock
 //
 //  Created by Thomas Hack on 13.05.21.
-//  swiftlint:disable weak_delegate
+//
 
 import Combine
 import ComposableArchitecture
