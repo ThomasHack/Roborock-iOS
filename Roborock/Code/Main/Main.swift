@@ -177,6 +177,7 @@ struct Main: ReducerProtocol {
     )
 
     static let previewState = State(
+        host: "roborock.friday.home",
         _apiState: Api.previewState,
         _settingsState: Settings.initialState,
         _watchConnectionState: WatchConnection.initialState
