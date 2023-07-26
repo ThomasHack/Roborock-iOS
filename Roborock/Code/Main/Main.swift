@@ -67,10 +67,11 @@ struct Main: ReducerProtocol {
         var _watchConnectionState: WatchConnection.State?
         var watchConnectionState: WatchConnection.State {
             get {
-                if let tempState = _watchConnectionState {
+                if var tempState = _watchConnectionState {
+                    tempState.host = host
                     return tempState
                 }
-                return WatchConnection.State()
+                return WatchConnection.initialState
             }
             set {
                 _watchConnectionState = newValue

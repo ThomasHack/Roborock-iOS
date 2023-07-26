@@ -13,7 +13,7 @@ struct CircularButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Self.Configuration) -> some View {
         let foregroundColor = isEnabled ? Color.white : Color.gray
-        let backgroundColor = isEnabled ? Color("secondarySystemBackground") : Color.black
+        let backgroundColor = isEnabled ? Color(.secondaryBackground) : Color.black
 
         return configuration.label
             .fixedSize(horizontal: true, vertical: false)

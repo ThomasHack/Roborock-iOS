@@ -9,7 +9,7 @@ import ComposableArchitecture
 import Foundation
 
 struct WatchConnection: ReducerProtocol {
-    @Dependency(\.watchkitSessionClient) var watchkitSessionClient
+    @Dependency(\.watchKitSessionClient) var watchkitSessionClient
 
     struct State: Equatable {
         var host: String?
@@ -47,12 +47,12 @@ struct WatchConnection: ReducerProtocol {
 
             case .didReceiveMessageData(let data):
                 switch data {
-                case .requestData(let response):
-                    switch response.action {
+                case .requestData(let request):
+                    switch request.action {
                     case .synchronizeUserDefaults:
                         guard let host = state.host else { return .none }
-                        let requestData = WCSessionAppResponseData(host: host)
-                        return EffectTask(value: .sendMessageData(WCSessionData.responseAppData(requestData)))
+                        let responseData = WCSessionAppResponseData(host: host)
+                        return EffectTask(value: .sendMessageData(WCSessionData.responseAppData(responseData)))
                             .receive(on: DispatchQueue.main)
                             .eraseToEffect()
                     }
@@ -89,7 +89,5 @@ struct WatchConnection: ReducerProtocol {
         }
     }
 
-    static let initialState = State(
-        host: UserDefaultsHelper.host
-    )
+    static let initialState = State()
 }

@@ -12,7 +12,7 @@ extension WatchKitSessionClient: DependencyKey {
 }
 
 extension DependencyValues {
-  var watchkitSessionClient: WatchKitSessionClient {
+  var watchKitSessionClient: WatchKitSessionClient {
     get { self[WatchKitSessionClient.self] }
     set { self[WatchKitSessionClient.self] = newValue }
   }

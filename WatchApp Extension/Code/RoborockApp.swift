@@ -12,7 +12,7 @@ import SwiftUI
 struct RoborockApp: App {
     @Environment(\.scenePhase) var scenePhase
 
-    var store: Store<Main.State, Main.Action> = Main.store
+    var store: StoreOf<Main> = Main.store
 
     @SceneBuilder
     var body: some Scene {
@@ -49,6 +49,6 @@ struct RoborockApp: App {
     }
 
     private func requestSettings() {
-        ViewStore(store).send(.watchConnection(.connect))
+        ViewStore(Main.store.watchConnection).send(.connect)
     }
 }

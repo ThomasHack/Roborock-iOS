@@ -16,9 +16,14 @@ struct MainView: View {
             if !(viewStore.host ?? "").isEmpty {
                 HomeView(store: store)
             } else {
-                VStack(spacing: 0) {
+                VStack(spacing: 16) {
                     Spacer()
                     ProgressView()
+                    Button {
+                        viewStore.send(.watchConnection(.requestDataSync))
+                    } label: {
+                        Text("Connect")
+                    }
                     Spacer()
                 }
             }

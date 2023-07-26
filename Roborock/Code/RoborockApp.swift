@@ -47,8 +47,10 @@ struct RoborockApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    @Dependency(\.watchKitSessionClient) var watchKitSessionClient
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        ViewStore(Main.store).send(.watchConnectionAction(.connect))
+        ViewStore(Main.store.watchConnection).send(.connect)
         return true
     }
 }

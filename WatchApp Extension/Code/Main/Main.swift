@@ -14,7 +14,11 @@ struct WatchKitId: Hashable {}
 
 struct Main: ReducerProtocol {
     struct State: Equatable {
-        var host: String?
+        var host: String? {
+            didSet {
+                UserDefaultsHelper.setHost(host)
+            }
+        }
         var connectivityState: ConnectivityState = .disconnected
         var segments: Segments?
         var fanspeeds = Fanspeed.allCases
@@ -56,6 +60,7 @@ struct Main: ReducerProtocol {
             }
             set {
                 _watchConnectionState = newValue
+                host = newValue.host
             }
         }
     }

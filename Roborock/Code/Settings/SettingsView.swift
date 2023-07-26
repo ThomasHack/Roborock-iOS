@@ -22,7 +22,7 @@ struct SettingsView: View {
                             VStack(alignment: .leading) {
                                 SectionHeader(text: "settings.host")
                                 HStack(spacing: 0) {
-                                    Text("ws://")
+                                    Text("wss://")
                                         .foregroundColor(Color(.quaternaryLabel))
                                     TextField("roborock",
                                               text: viewStore.binding(

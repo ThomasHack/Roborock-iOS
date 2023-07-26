@@ -15,7 +15,7 @@ extension Api {
             switch action {
             case .connectWebsocket:
                 guard let host = state.host,
-                      let url = URL(string: "ws://\(host)") else { return .none }
+                      let url = URL(string: "wss://\(host)") else { return .none }
 
                 return websocketClient.connect(ApiId(), url)
                     .receive(on: DispatchQueue.main)
@@ -23,7 +23,7 @@ extension Api {
 
             case .connectRest:
                 guard let host = state.host,
-                      let url = URL(string: "http://\(host)") else { return .none }
+                      let url = URL(string: "https://\(host)") else { return .none }
                 restClient.connect(url)
                 return EffectTask(value: .fetchSegments)
 
@@ -166,7 +166,6 @@ extension Api {
                 state.segmentLabelsImage = nil
 
             case .generateMapImage:
-                print("generateMapImage")
                 return rrFileParser.drawMapImage()
                     .receive(on: DispatchQueue.main)
                     .catchToEffect()
@@ -203,7 +202,6 @@ extension Api {
                     .map(Action.setChargerImage)
 
             case .generateSegmentLabelsImage:
-                print("generateSegmentLabelsImage")
                 guard let segments = state.segments else { return .none }
                 return rrFileParser.drawSegmentLabelsImage(segments)
                     .receive(on: DispatchQueue.main)
@@ -214,7 +212,6 @@ extension Api {
                 switch result {
                 case .success(let mapData):
                     state.mapData = mapData
-                    print("mapData success")
                     if state.initialUpdateDone {
                         // Static images have been generated already
                         // So just update the changed ones
@@ -242,7 +239,6 @@ extension Api {
             case .setMapImage(let result):
                 switch result {
                 case .success(let image):
-                    print("setMapImage")
                     state.mapImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -251,7 +247,6 @@ extension Api {
             case .setPathImage(let result):
                 switch result {
                 case .success(let image):
-                    print("setPathImage")
                     state.pathImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -260,7 +255,6 @@ extension Api {
             case .setForbiddenZonesImage(let result):
                 switch result {
                 case .success(let image):
-                    print("setForbiddenZonesImage")
                     state.forbiddenZonesImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -269,7 +263,6 @@ extension Api {
             case .setRobotImage(let result):
                 switch result {
                 case .success(let image):
-                    print("setRobotImage")
                     state.robotImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -278,7 +271,6 @@ extension Api {
             case .setChargerImage(let result):
                 switch result {
                 case .success(let image):
-                    print("setChargerImage")
                     state.chargerImage = image
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -287,7 +279,6 @@ extension Api {
             case .setSegmentLabelsImage(let result):
                 switch result {
                 case .success(let image):
-                    print("setSegmentLabelsImage")
                     state.segmentLabelsImage = image
                 case .failure(let error):
                     print(error.localizedDescription)

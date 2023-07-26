@@ -13,7 +13,7 @@ struct PrimaryButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Self.Configuration) -> some View {
         let foregroundColor = isEnabled ? Color.white : Color.gray
-        let backgroundColor = isEnabled ? Color("blue-primary") : Color("secondarySystemBackground")
+        let backgroundColor = isEnabled ? Color("blue-primary") : Color("secondaryBackground")
 
         return configuration.label
             .fixedSize(horizontal: true, vertical: false)
