@@ -87,12 +87,12 @@ struct MapView: View {
                 segments: Segments(segment: Api.segments),
                 rooms: [],
                 status: Api.status,
-                mapImage: #imageLiteral(resourceName: "mapImage"),
-                pathImage: #imageLiteral(resourceName: "pathImage"),
-                forbiddenZonesImage: #imageLiteral(resourceName: "forbiddenZonesImage"),
-                robotImage: #imageLiteral(resourceName: "robotImage"),
-                chargerImage: #imageLiteral(resourceName: "chargerImage"),
-                segmentLabelsImage: #imageLiteral(resourceName: "segmentLabelsImage")
+                mapImage: #imageLiteral(resourceName: "mapImagePreview"),
+                pathImage: #imageLiteral(resourceName: "pathImagePreview"),
+                forbiddenZonesImage: #imageLiteral(resourceName: "forbiddenZonesImagePreview"),
+                robotImage: #imageLiteral(resourceName: "robotImagePreview"),
+                chargerImage: #imageLiteral(resourceName: "chargerImagePreview"),
+                segmentLabelsImage: #imageLiteral(resourceName: "segmentLabelsImagePreview")
             ),
             reducer: Api()
         )
