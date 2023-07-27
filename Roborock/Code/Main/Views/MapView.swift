@@ -79,22 +79,24 @@ struct MapView: View {
     }
 }
 
-#Preview {
-    MapView(
-        store: Store(
-            initialState: Api.State(
-                connectivityState: .connected,
-                segments: Segments(segment: Api.segments),
-                rooms: [],
-                status: Api.status,
-                mapImage: #imageLiteral(resourceName: "mapImagePreview"),
-                pathImage: #imageLiteral(resourceName: "pathImagePreview"),
-                forbiddenZonesImage: #imageLiteral(resourceName: "forbiddenZonesImagePreview"),
-                robotImage: #imageLiteral(resourceName: "robotImagePreview"),
-                chargerImage: #imageLiteral(resourceName: "chargerImagePreview"),
-                segmentLabelsImage: #imageLiteral(resourceName: "segmentLabelsImagePreview")
-            ),
-            reducer: Api()
+struct MapView_Previews: PreviewProvider {
+    static var previews: some View {
+        MapView(
+            store: Store(
+                initialState: Api.State(
+                    connectivityState: .connected,
+                    segments: Segments(segment: Api.segments),
+                    rooms: [],
+                    status: Api.status,
+                    mapImage: #imageLiteral(resourceName: "mapImagePreview"),
+                    pathImage: #imageLiteral(resourceName: "pathImagePreview"),
+                    forbiddenZonesImage: #imageLiteral(resourceName: "forbiddenZonesImagePreview"),
+                    robotImage: #imageLiteral(resourceName: "robotImagePreview"),
+                    chargerImage: #imageLiteral(resourceName: "chargerImagePreview"),
+                    segmentLabelsImage: #imageLiteral(resourceName: "segmentLabelsImagePreview")
+                ),
+                reducer: Api()
+            )
         )
-    )
+    }
 }
