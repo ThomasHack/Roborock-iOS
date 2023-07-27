@@ -19,6 +19,44 @@ private struct Dependencies {
     let subscriber: EffectTask<Api.Action>.Subscriber
 }
 
+var tlsParameters: NWParameters {
+    let options = NWProtocolTLS.Options()
+    let securityOptions = options.securityProtocolOptions
+    sec_protocol_options_set_verify_block(securityOptions, { _, sec_trust, completionHandler in
+        // Load local certificate
+        guard let certificatePath = Bundle.main.path(forResource: "friday", ofType: "cer"),
+              let pinnedCertificateData = NSData(contentsOfFile: certificatePath) else {
+            print("Could not load local certificate")
+            completionHandler(false)
+            return
+        }
+
+        let trust = sec_trust_copy_ref(sec_trust).takeRetainedValue()
+
+        // Load remote certificate chain
+        guard let remoteCertificateChain = SecTrustCopyCertificateChain(trust) as? [SecCertificate] else {
+            print("Could not load remote certificate chain")
+            completionHandler(false)
+            return
+        }
+
+        // Map remote certificate chain
+        let remoteCertificatesData = Set(
+            remoteCertificateChain.map { SecCertificateCopyData($0) as NSData }
+        )
+
+        // Check if remote chain contains local certificate
+        if remoteCertificatesData.contains(pinnedCertificateData) {
+            completionHandler(true)
+        } else {
+            print("Certificate does not match")
+            completionHandler(false)
+            return
+        }
+    }, .main)
+    return NWParameters(tls: options)
+}
+
 struct ApiWebSocketClient {
     var connect: (AnyHashable, URL) -> EffectTask<Api.Action>
     var disconnect: (AnyHashable) -> EffectTask<Api.Action>
@@ -42,7 +80,7 @@ extension ApiWebSocketClient {
                         subscriber.send(.didUpdateStatus($0 as Status))
                     }
                 )
-                let socket = NWWebSocket(url: url)
+                let socket = NWWebSocket(url: url, connectAutomatically: true, tlsParamters: tlsParameters)
                 socket.delegate = delegate
                 socket.connect()
                 dependencies[id] = Dependencies(delegate: delegate, socket: socket, subscriber: subscriber)

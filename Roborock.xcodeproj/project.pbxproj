@@ -8,13 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		5200DB3726AC76450026D69F /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 5200DB3626AC76450026D69F /* RoborockApi */; };
-		5200DB3926AC764E0026D69F /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 5200DB3826AC764E0026D69F /* RoborockApi */; };
 		5200DB3B26AC76540026D69F /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 5200DB3A26AC76540026D69F /* RoborockApi */; };
 		52046F2326494C0000E1C041 /* StatusItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2226494C0000E1C041 /* StatusItemView.swift */; };
 		52046F2626494DA100E1C041 /* PrimaryRoundedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2526494DA100E1C041 /* PrimaryRoundedButtonStyle.swift */; };
 		52046F2926494DC400E1C041 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52046F2826494DC400E1C041 /* BlurView.swift */; };
 		5214A18B29BCDAC400C3FD57 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 657FAE3328DB784000FFCACC /* ComposableArchitecture */; };
-		5214A18C29BCDAC400C3FD57 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 657FAE3428DB784000FFCACC /* RoborockApi */; };
 		5214A18E29BCDBD400C3FD57 /* RestClient+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214A18D29BCDBD400C3FD57 /* RestClient+Dependency.swift */; };
 		5214A18F29BCDBD400C3FD57 /* RestClient+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214A18D29BCDBD400C3FD57 /* RestClient+Dependency.swift */; };
 		5214A19329BCDE3C00C3FD57 /* RRFileParser+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214A19229BCDE3C00C3FD57 /* RRFileParser+Dependency.swift */; };
@@ -42,6 +40,9 @@
 		52232AE826A87F310024D072 /* WatchKitSessionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52232AE726A87F310024D072 /* WatchKitSessionClient.swift */; };
 		52232AE926A881050024D072 /* WatchKitSessionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52232AE726A87F310024D072 /* WatchKitSessionClient.swift */; };
 		5238572626A056B800B2FBEA /* StatusTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5238572526A056B800B2FBEA /* StatusTileView.swift */; };
+		52480D492A72598E00227FB8 /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 52480D482A72598E00227FB8 /* RoborockApi */; };
+		52480D4A2A7259E700227FB8 /* friday.cer in Resources */ = {isa = PBXBuildFile; fileRef = 52480D472A72553100227FB8 /* friday.cer */; };
+		52480D4B2A7259E800227FB8 /* friday.cer in Resources */ = {isa = PBXBuildFile; fileRef = 52480D472A72553100227FB8 /* friday.cer */; };
 		5249E97E2695D6930095828E /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E97D2695D6930095828E /* HeaderView.swift */; };
 		5249E9802695D6ED0095828E /* NotConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E97F2695D6ED0095828E /* NotConnectedView.swift */; };
 		5249E9822695D7C00095828E /* RoomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249E9812695D7C00095828E /* RoomSelectionView.swift */; };
@@ -204,6 +205,7 @@
 		52232AE026A81C2A0024D072 /* WatchkitSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchkitSessionDelegate.swift; sourceTree = "<group>"; };
 		52232AE726A87F310024D072 /* WatchKitSessionClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchKitSessionClient.swift; sourceTree = "<group>"; };
 		5238572526A056B800B2FBEA /* StatusTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTileView.swift; sourceTree = "<group>"; };
+		52480D472A72553100227FB8 /* friday.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = friday.cer; sourceTree = "<group>"; };
 		5249E97D2695D6930095828E /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		5249E97F2695D6ED0095828E /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
 		5249E9812695D7C00095828E /* RoomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSelectionView.swift; sourceTree = "<group>"; };
@@ -271,9 +273,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5214A18C29BCDAC400C3FD57 /* RoborockApi in Frameworks */,
 				5214A18B29BCDAC400C3FD57 /* ComposableArchitecture in Frameworks */,
-				5200DB3926AC764E0026D69F /* RoborockApi in Frameworks */,
+				52480D492A72598E00227FB8 /* RoborockApi in Frameworks */,
 				521C7432269DFA6A0098D71A /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -540,6 +541,7 @@
 				52232AE326A81E840024D072 /* Shared */,
 				52EE04C7269CA2AB00C677AA /* .swiftlint.yml */,
 				52232ADC26A74C250024D072 /* bitrise.yml */,
+				52480D472A72553100227FB8 /* friday.cer */,
 				5249E98E2696E7A70095828E /* Frameworks */,
 				654289392646B78B009B8BE5 /* Products */,
 				6542893A2646B78B009B8BE5 /* Roborock */,
@@ -631,7 +633,7 @@
 			name = WatchApp;
 			packageProductDependencies = (
 				657FAE3328DB784000FFCACC /* ComposableArchitecture */,
-				657FAE3428DB784000FFCACC /* RoborockApi */,
+				52480D482A72598E00227FB8 /* RoborockApi */,
 			);
 			productName = WatchApp;
 			productReference = 521C7403269DD3CC0098D71A /* WatchApp.app */;
@@ -720,7 +722,6 @@
 			mainGroup = 6542892F2646B78B009B8BE5;
 			packageReferences = (
 				6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
-				6510E8DB268888B9001E9230 /* XCRemoteSwiftPackageReference "NWWebSocket" */,
 				6510E8E12688B50C001E9230 /* XCRemoteSwiftPackageReference "GzipSwift" */,
 				5200DB3526AC76450026D69F /* XCRemoteSwiftPackageReference "Roborock-Api" */,
 			);
@@ -740,6 +741,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52480D4B2A7259E800227FB8 /* friday.cer in Resources */,
 				52E890AE26A723BA004E9D7A /* Assets.xcassets in Resources */,
 				6510D92B26A5EFE800FECC97 /* Localizable.strings in Resources */,
 				521C741F269DD3CF0098D71A /* Preview Assets.xcassets in Resources */,
@@ -759,6 +761,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				654289432646B78C009B8BE5 /* Preview Assets.xcassets in Resources */,
+				52480D4A2A7259E700227FB8 /* friday.cer in Resources */,
 				52AD4DAA2695D2C700D5C839 /* Localizable.strings in Resources */,
 				654289402646B78C009B8BE5 /* Assets.xcassets in Resources */,
 			);
@@ -1035,7 +1038,7 @@
 				INFOPLIST_KEY_CFBundleName = StartCleaning;
 				INFOPLIST_KEY_CFBundleVersion = 20210706;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1066,7 +1069,7 @@
 				INFOPLIST_KEY_CFBundleName = StartCleaning;
 				INFOPLIST_KEY_CFBundleVersion = 20210706;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1313,14 +1316,6 @@
 				kind = branch;
 			};
 		};
-		6510E8DB268888B9001E9230 /* XCRemoteSwiftPackageReference "NWWebSocket" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pusher/NWWebSocket.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.5.2;
-			};
-		};
 		6510E8E12688B50C001E9230 /* XCRemoteSwiftPackageReference "GzipSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/1024jp/GzipSwift";
@@ -1345,11 +1340,6 @@
 			package = 5200DB3526AC76450026D69F /* XCRemoteSwiftPackageReference "Roborock-Api" */;
 			productName = RoborockApi;
 		};
-		5200DB3826AC764E0026D69F /* RoborockApi */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5200DB3526AC76450026D69F /* XCRemoteSwiftPackageReference "Roborock-Api" */;
-			productName = RoborockApi;
-		};
 		5200DB3A26AC76540026D69F /* RoborockApi */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5200DB3526AC76450026D69F /* XCRemoteSwiftPackageReference "Roborock-Api" */;
@@ -1359,6 +1349,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		52480D482A72598E00227FB8 /* RoborockApi */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RoborockApi;
 		};
 		52D1BAAD269C6AB900219230 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1374,11 +1368,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
-		};
-		657FAE3428DB784000FFCACC /* RoborockApi */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5200DB3526AC76450026D69F /* XCRemoteSwiftPackageReference "Roborock-Api" */;
-			productName = RoborockApi;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
