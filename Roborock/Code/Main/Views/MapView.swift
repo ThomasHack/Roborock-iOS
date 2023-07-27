@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import RoborockApi
 import SwiftUI
 
 struct MapView: View {
@@ -17,10 +18,11 @@ struct MapView: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             if let mapImage = viewStore.mapImage,
-               let forbiddenZonesImage = viewStore.forbiddenZonesImage,
-               let chargerImage = viewStore.chargerImage,
                let pathImage = viewStore.pathImage,
-               let robotImage = viewStore.robotImage {
+               let forbiddenZonesImage = viewStore.forbiddenZonesImage,
+               let robotImage = viewStore.robotImage,
+               let chargerImage = viewStore.chargerImage,
+               let segmentLabelsImage = viewStore.segmentLabelsImage {
                 GeometryReader { geometry in
                     ZStack(alignment: .center) {
                         LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom)
@@ -43,25 +45,27 @@ struct MapView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
 
-                                if let segmentLabelsImage = viewStore.segmentLabelsImage {
-                                    Image(uiImage: segmentLabelsImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                }
+                                Image(uiImage: segmentLabelsImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
 
                                 Image(uiImage: robotImage)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                             }
-                            .frame(width: (geometry.size.width + 250) * zoom)
+                            .modifier(
+                                ZoomableModifier(
+                                    contentSize: geometry.size,
+                                    min: 0.9,
+                                    max: 1.2
+                                )
+                            )
+                            .frame(
+                                width: geometry.size.width,
+                                height: geometry.size.height,
+                                alignment: .center)
                         }
                     }
-                    .onTapGesture(count: 2, perform: {
-                        withAnimation(.spring(), {
-                            zoom = zoom > 1.0 ? 1.0 : 2.0
-                        })
-                    })
-                    .frame(width: geometry.size.width, height: geometry.size.height)
                 }
             } else {
                 Spacer()
@@ -75,8 +79,22 @@ struct MapView: View {
     }
 }
 
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView(store: Api.previewStore)
-    }
+#Preview {
+    MapView(
+        store: Store(
+            initialState: Api.State(
+                connectivityState: .connected,
+                segments: Segments(segment: Api.segments),
+                rooms: [],
+                status: Api.status,
+                mapImage: #imageLiteral(resourceName: "mapImage"),
+                pathImage: #imageLiteral(resourceName: "pathImage"),
+                forbiddenZonesImage: #imageLiteral(resourceName: "forbiddenZonesImage"),
+                robotImage: #imageLiteral(resourceName: "robotImage"),
+                chargerImage: #imageLiteral(resourceName: "chargerImage"),
+                segmentLabelsImage: #imageLiteral(resourceName: "segmentLabelsImage")
+            ),
+            reducer: Api()
+        )
+    )
 }
