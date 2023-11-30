@@ -25,7 +25,6 @@
 		524CD8AA2B14C70900751EBB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 524CD8A92B14C70900751EBB /* Preview Assets.xcassets */; };
 		524CD8AD2B14C70900751EBB /* Roborock.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 524CD8A02B14C70800751EBB /* Roborock.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		524CD8B22B14C84F00751EBB /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 524CD8B12B14C84F00751EBB /* ComposableArchitecture */; };
-		524CD8B42B14C85200751EBB /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 524CD8B32B14C85200751EBB /* RoborockApi */; };
 		524CD8DA2B14C8C600751EBB /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CD8C62B14C87500751EBB /* Main.swift */; };
 		524CD8DB2B14C8CB00751EBB /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CD8C92B14C87500751EBB /* CircularButtonStyle.swift */; };
 		524CD8DC2B14C8CB00751EBB /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CD8C82B14C87500751EBB /* PrimaryButtonStyle.swift */; };
@@ -61,12 +60,12 @@
 		524CD9012B151D9F00751EBB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52AD4DAC2695D2C700D5C839 /* Localizable.strings */; };
 		525079D2268F82E6000F7095 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D1268F82E6000F7095 /* UIColor+Hex.swift */; };
 		525079D4268F82ED000F7095 /* UIImage+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525079D3268F82ED000F7095 /* UIImage+Rotate.swift */; };
+		525323872B18C5FD0066666B /* RoborockApi in Frameworks */ = {isa = PBXBuildFile; productRef = 525323862B18C5FD0066666B /* RoborockApi */; };
 		5260D9EF26AB282900901A10 /* WCSessionWatchResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EC26AB27F500901A10 /* WCSessionWatchResponseData.swift */; };
 		5260D9F026AB282900901A10 /* WCSessionRequestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9E826AB27C900901A10 /* WCSessionRequestData.swift */; };
 		5260D9F226AB282900901A10 /* WCSessionAppResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5260D9EB26AB27E700901A10 /* WCSessionAppResponseData.swift */; };
 		5275B16E2649A05B008B4DC7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5275B16D2649A05B008B4DC7 /* MapView.swift */; };
 		528A3A022A716F530005A4DF /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528A3A012A716F530005A4DF /* UserDefaultsHelper.swift */; };
-		5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 5297E3A52698949300680D9A /* Intents.intentdefinition */; };
 		52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */; };
 		52AD4DAA2695D2C700D5C839 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52AD4DAC2695D2C700D5C839 /* Localizable.strings */; };
 		52C658EA26A5C79B009C8D07 /* FanspeedSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */; };
@@ -147,7 +146,6 @@
 		5214A19229BCDE3C00C3FD57 /* RRFileParser+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RRFileParser+Dependency.swift"; sourceTree = "<group>"; };
 		5214A19729BCE8A800C3FD57 /* Api+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Api+State.swift"; sourceTree = "<group>"; };
 		52232ADC26A74C250024D072 /* bitrise.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bitrise.yml; sourceTree = "<group>"; };
-		52232ADE26A752480024D072 /* StartCleaning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StartCleaning.entitlements; sourceTree = "<group>"; };
 		52232AE026A81C2A0024D072 /* WatchKitSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchKitSessionDelegate.swift; sourceTree = "<group>"; };
 		52232AE726A87F310024D072 /* WatchKitSessionClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchKitSessionClient.swift; sourceTree = "<group>"; };
 		52480D4F2A72B46300227FB8 /* ZoomableModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableModifier.swift; sourceTree = "<group>"; };
@@ -158,9 +156,6 @@
 		5249E984269609FA0095828E /* Roborock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Roborock.entitlements; sourceTree = "<group>"; };
 		5249E98F2696E7A70095828E /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
 		5249E9A426970BD00095828E /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
-		5249E9A726970BD00095828E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
-		5249E9A926970BD00095828E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanRoomIntentHandler.swift; sourceTree = "<group>"; };
 		524CD8622B14C32A00751EBB /* Api+Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Api+Action.swift"; sourceTree = "<group>"; };
 		524CD8A02B14C70800751EBB /* Roborock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roborock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		524CD8A22B14C70800751EBB /* RoborockWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoborockWatchApp.swift; sourceTree = "<group>"; };
@@ -191,11 +186,9 @@
 		5275B169264999D1008B4DC7 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		5275B16D2649A05B008B4DC7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		528A3A012A716F530005A4DF /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
-		5297E3A42698949300680D9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Intents.intentdefinition; sourceTree = "<group>"; };
 		52989C80268A3FCF00DF3237 /* UIColor+PixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+PixelData.swift"; sourceTree = "<group>"; };
 		52AD4DAB2695D2C700D5C839 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		52AD4DAD2695D2D200D5C839 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		52BC56732B0F8EBA00A8E356 /* Roborock-Api */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Roborock-Api"; path = "../Roborock-Api"; sourceTree = "<group>"; };
 		52C658E926A5C79B009C8D07 /* FanspeedSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanspeedSelection.swift; sourceTree = "<group>"; };
 		52C7F1B22A08E3FD00D4E495 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
 		52C7F1B42A08E48000D4E495 /* SecondaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButtonStyle.swift; sourceTree = "<group>"; };
@@ -206,7 +199,6 @@
 		52DBCBB22694C20900D25CC6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		52E0F62C26AADCF200C34206 /* WCSessionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionData.swift; sourceTree = "<group>"; };
 		52E39B422A73AAE9006E93E3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
-		52EE04C5269CA00900C677AA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Intents.strings; sourceTree = "<group>"; };
 		52EE04C7269CA2AB00C677AA /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		52EE04CE269CAE8D00C677AA /* SecondaryRoundedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryRoundedButtonStyle.swift; sourceTree = "<group>"; };
 		52F12B992689BF4300C5494E /* RRFileParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RRFileParser.swift; sourceTree = "<group>"; };
@@ -228,7 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				524CD8B42B14C85200751EBB /* RoborockApi in Frameworks */,
+				525323872B18C5FD0066666B /* RoborockApi in Frameworks */,
 				524CD8B22B14C84F00751EBB /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,18 +347,6 @@
 				5249E9A426970BD00095828E /* Intents.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5249E9A626970BD00095828E /* StartCleaning */ = {
-			isa = PBXGroup;
-			children = (
-				52232ADE26A752480024D072 /* StartCleaning.entitlements */,
-				5297E3A52698949300680D9A /* Intents.intentdefinition */,
-				5249E9C526970CD50095828E /* CleanRoomIntentHandler.swift */,
-				5249E9A726970BD00095828E /* IntentHandler.swift */,
-				5249E9A926970BD00095828E /* Info.plist */,
-			);
-			path = StartCleaning;
 			sourceTree = "<group>";
 		};
 		524CD8A12B14C70800751EBB /* Roborock Watch App */ = {
@@ -499,10 +479,8 @@
 				524CD8FF2B151A6400751EBB /* Roborock-Watch-App--Info.plist */,
 				52EE04C7269CA2AB00C677AA /* .swiftlint.yml */,
 				52232ADC26A74C250024D072 /* bitrise.yml */,
-				52BC56732B0F8EBA00A8E356 /* Roborock-Api */,
 				6542893A2646B78B009B8BE5 /* Roborock */,
 				524CD8A12B14C70800751EBB /* Roborock Watch App */,
-				5249E9A626970BD00095828E /* StartCleaning */,
 				52232AE326A81E840024D072 /* Shared */,
 				5249E98E2696E7A70095828E /* Frameworks */,
 				654289392646B78B009B8BE5 /* Products */,
@@ -566,7 +544,7 @@
 			name = "Roborock Watch App´";
 			packageProductDependencies = (
 				524CD8B12B14C84F00751EBB /* ComposableArchitecture */,
-				524CD8B32B14C85200751EBB /* RoborockApi */,
+				525323862B18C5FD0066666B /* RoborockApi */,
 			);
 			productName = "Valetudo Watch App Watch App";
 			productReference = 524CD8A02B14C70800751EBB /* Roborock.app */;
@@ -737,7 +715,6 @@
 				52C658EA26A5C79B009C8D07 /* FanspeedSelection.swift in Sources */,
 				5214A19329BCDE3C00C3FD57 /* RRFileParser+Dependency.swift in Sources */,
 				6510E8DF2688AD02001E9230 /* ButtonView.swift in Sources */,
-				5297E3A32698949300680D9A /* Intents.intentdefinition in Sources */,
 				52DBCBA626946C0300D25CC6 /* UIColor+Custom.swift in Sources */,
 				52989C81268A3FCF00DF3237 /* UIColor+PixelData.swift in Sources */,
 				5260D9F226AB282900901A10 /* WCSessionAppResponseData.swift in Sources */,
@@ -786,15 +763,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		5297E3A52698949300680D9A /* Intents.intentdefinition */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5297E3A42698949300680D9A /* Base */,
-				52EE04C5269CA00900C677AA /* de */,
-			);
-			name = Intents.intentdefinition;
-			sourceTree = "<group>";
-		};
 		52AD4DAC2695D2C700D5C839 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1124,8 +1092,9 @@
 			package = 6542894A2646B7D5009B8BE5 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
-		524CD8B32B14C85200751EBB /* RoborockApi */ = {
+		525323862B18C5FD0066666B /* RoborockApi */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 5200DB3526AC76450026D69F /* XCRemoteSwiftPackageReference "Roborock-Api" */;
 			productName = RoborockApi;
 		};
 		52D1BAAD269C6AB900219230 /* ComposableArchitecture */ = {
