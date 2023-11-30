@@ -62,117 +62,68 @@ public class RRFileParser {
 
     /// Parse data from Websocket
     /// - Parameter data: Gzipped binary data array
-    /// - Returns: Promise with MapData or MapDataError
-    func parse(_ data: Data) -> AnyPublisher<MapData, ParsingError> {
-        Future { promise in
-            self.parseData(data)
-            promise(.success(self.mapData))
-        }
-        .eraseToAnyPublisher()
+    /// - Returns: MapData
+    func parse(_ data: Data) throws -> MapData {
+        try self.parseData(data)
+        return self.mapData
     }
 
     /// Parse current data again to refresh images
-    /// - Returns: Promise with MapData or MapDataError
-    func refreshData() -> AnyPublisher<MapData, ParsingError> {
-        Future { promise in
-            self.parseBlocks()
-            promise(.success(self.mapData))
-        }
-        .eraseToAnyPublisher()
+    /// - Returns: MapData
+    func refreshData() -> MapData {
+        self.parseBlocks()
+        return self.mapData
     }
 
     /// Draw map image
-    /// - Returns: Promise with Image or Error
-    func drawMapImage() -> AnyPublisher<UIImage, ImageGenerationError> {
-        Future { promise in
-            self.drawMap { result in
-                promise(result)
-            }
-        }
-        .eraseToAnyPublisher()
+    /// - Returns: UIImage
+    func drawMapImage() throws -> UIImage {
+        try self.drawMap()
     }
 
     /// Draw path image
-    /// - Returns: Promise with Image or Error
-    func drawPathsImage() -> AnyPublisher<UIImage, ImageGenerationError> {
-        Future { promise in
-            self.drawMapPaths { result in
-                promise(result)
-            }
-        }
-        .eraseToAnyPublisher()
+    /// - Returns: UIImage
+    func drawPathsImage() throws -> UIImage {
+        try self.drawMapPaths()
     }
 
     /// Draw forbidden zones image
-    /// - Returns: Promise with Image or Error
-    func drawForbiddenZonesImage() -> AnyPublisher<UIImage, ImageGenerationError> {
-        Future { promise in
-            self.drawForbiddenZonesImage { result in
-                promise(result)
-            }
-        }
-        .eraseToAnyPublisher()
+    /// - Returns: UIImage
+    func drawForbiddenZonesImage() throws -> UIImage {
+        try self.drawForbiddenZones()
     }
 
     /// Draw robot image
-    /// - Returns: Promise with Image or Error
-    func drawRobotImage() -> AnyPublisher<UIImage, ImageGenerationError> {
-        Future { promise in
-            self.drawRobotImage { result in
-                promise(result)
-            }
-        }
-        .eraseToAnyPublisher()
+    /// - Returns: UIImage
+    func drawRobotImage() throws -> UIImage {
+        try self.drawRobot()
     }
 
     /// Draw charger image
-    /// - Returns: Promise with Image or Error
-    func drawChargerImage() -> AnyPublisher<UIImage, ImageGenerationError> {
-        Future { promise in
-            self.drawChargerImage { result in
-                promise(result)
-            }
-        }
-        .eraseToAnyPublisher()
+    /// - Returns: UIImage
+    func drawChargerImage() throws -> UIImage {
+        try self.drawCharger()
     }
 
     /// Draw segment names image
-    /// - Returns: Promise with Image or Error
-    func drawSegmentLabelsImage(_ segments: Segments) -> AnyPublisher<UIImage, ImageGenerationError> {
-        Future { promise in
-            self.drawSegmentLabelsImage(segments: segments) { result in
-                promise(result)
-            }
-        }
-        .eraseToAnyPublisher()
+    /// - Parameter data: Segments
+    /// - Returns: UIImage
+    func drawSegmentLabelsImage(_ segments: Segments) throws -> UIImage {
+        try self.drawSegmentLabels(segments: segments)
     }
 
     // MARK: - Parsing
 
-    /// Provides custom color for segment
-    /// - Parameter segment: Segment object
-    /// - Returns: Color
-    private func colorForSegmentId(segmentId: Int) -> UIColor {
-        // TODO: add color coding for segments if preferred
-        switch segmentId {
-        case 0:
-            return UIColor.floorColor
-        default:
-            return UIColor.floorColor
-        }
-    }
-
     /// Unzip and parse data from Websocket
     /// - Parameter data: Gzipped binary data array
     /// - Returns: Image with map, robot, paths, etc.
-    private func parseData(_ data: Data) {
-        if data.isGzipped {
-            do {
-                self.data = try data.gunzipped()
-                parseBlocks()
-            } catch {
-                print(error.localizedDescription)
-            }
+    private func parseData(_ data: Data) throws {
+        guard data.isGzipped else { throw ParsingError.gzipError  }
+        do {
+            self.data = try data.gunzipped()
+            parseBlocks()
+        } catch {
+            throw error
         }
     }
 
@@ -184,7 +135,7 @@ public class RRFileParser {
         guard let data = self.data, data[0] == 0x72 && data[1] == 0x72 else { return }
 
         // Parse map data
-        parseBlock(data, offset: 0x14)
+        return parseBlock(data, offset: 0x14)
     }
 
     /// Parse binary data block
@@ -361,7 +312,7 @@ public class RRFileParser {
                 let segmentId = (type & 248) >> 3
                 if segmentId != 0 {
                     // Optional colors for each segment
-                    var color = colorForSegmentId(segmentId: segmentId)
+                    var color = UIColor.floorColor
 
                     // Color if segment is currently selected
                     if segments.contains(segmentId) {
@@ -413,24 +364,25 @@ public class RRFileParser {
 
     /// Internal method to draw map image
     /// - Parameter completion: completion handler
-    private func drawMap(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
-        guard let pixels = mapData.imageData?.pixels, let image = drawMap(pixels: pixels) else {
-            completion(.failure(ImageGenerationError.mapImageError))
-            return
+    private func drawMap() throws -> UIImage {
+        guard
+            let pixels = mapData.imageData?.pixels,
+            let image = drawMap(pixels: pixels)
+        else {
+            throw ImageGenerationError.mapImageError
         }
-        completion(.success(image))
+        return image
     }
 
     /// Internal method to draw vacuum, goto and predicted paths to a single image
     /// - Parameter completion: completion handler
-    private func drawMapPaths(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
+    private func drawMapPaths() throws -> UIImage {
         // Draw vaccum path on map
         var image = UIImage()
 
         if let paths = mapData.vacuumPath {
             guard let vaccumPathImage = drawMapPaths(path: paths, image: image) else {
-                completion(.failure(ImageGenerationError.pathImageError))
-                return
+                throw ImageGenerationError.pathImageError
             }
             image = vaccumPathImage
         }
@@ -438,8 +390,7 @@ public class RRFileParser {
         // Draw vaccum path on map
         if let paths = mapData.gotoPredictedPath {
             guard let gotoPredictedPathImage = drawMapPaths(path: paths, image: image) else {
-                completion(.failure(ImageGenerationError.pathImageError))
-                return
+                throw ImageGenerationError.pathImageError
             }
             image = gotoPredictedPathImage
         }
@@ -447,53 +398,59 @@ public class RRFileParser {
         // Draw vaccum path on map
         if let paths = mapData.gotoPath {
             guard let gotoPathImage = drawMapPaths(path: paths, image: image) else {
-                completion(.failure(ImageGenerationError.pathImageError))
-                return
+                throw ImageGenerationError.pathImageError
             }
             image = gotoPathImage
         }
-
-        completion(.success(image))
+        return image
     }
 
     /// Internal method to draw forbidden zones image
     /// - Parameter completion: completion handler
-    private func drawForbiddenZonesImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
-        guard let forbiddenZones = mapData.forbiddenZones, let image = drawForbiddenZones(zones: forbiddenZones) else {
-            completion(.failure(ImageGenerationError.forbiddenZonesImageError))
-            return
+    private func drawForbiddenZones() throws -> UIImage {
+        guard
+            let forbiddenZones = mapData.forbiddenZones,
+            let image = drawForbiddenZones(zones: forbiddenZones)
+        else {
+            throw ImageGenerationError.forbiddenZonesImageError
         }
-        completion(.success(image))
+        return image
     }
 
     /// Internal method to draw robot image
     /// - Parameter completion: completion handler
-    private func drawRobotImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
-        guard let robotPosition = mapData.robotPosition, let image = drawRobot(robot: robotPosition) else {
-            completion(.failure(ImageGenerationError.robotImageError))
-            return
+    private func drawRobot() throws -> UIImage {
+        guard
+            let robotPosition = mapData.robotPosition,
+            let image = drawRobot(robot: robotPosition)
+        else {
+            throw ImageGenerationError.robotImageError
         }
-        completion(.success(image))
+        return image
     }
 
     /// Internal method to draw charger image
     /// - Parameter completion: completion handler
-    private func drawChargerImage(completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
-        guard let chargerLocation = mapData.chargerLocation, let image = drawCharger(charger: chargerLocation) else {
-            completion(.failure(ImageGenerationError.chargerImageError))
-            return
+    private func drawCharger() throws -> UIImage {
+        guard
+            let chargerLocation = mapData.chargerLocation,
+            let image = drawCharger(charger: chargerLocation)
+        else {
+            throw ImageGenerationError.chargerImageError
         }
-        completion(.success(image))
+        return image
     }
 
     /// Internal method to draw segment labels
     /// - Parameter completion: completion handler
-    private func drawSegmentLabelsImage(segments: Segments, completion: @escaping (Result<UIImage, ImageGenerationError>) -> Void) {
-        guard let segmentsData = mapData.imageData?.segments, let image = drawSegmentLabels(labels: segments, segments: segmentsData) else {
-            completion(.failure(ImageGenerationError.chargerImageError))
-            return
+    private func drawSegmentLabels(segments: Segments) throws -> UIImage {
+        guard
+            let segmentsData = mapData.imageData?.segments,
+            let image = drawSegmentLabels(labels: segments, segments: segmentsData)
+        else {
+            throw ImageGenerationError.chargerImageError
         }
-        completion(.success(image))
+        return image
     }
 
     /// Draw actual map image from pixel array

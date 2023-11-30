@@ -13,10 +13,9 @@ struct ButtonView: View {
     let store: Store<Main.State, Main.Action>
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             VStack {
-                if viewStore.apiState.connectivityState == .connected {
-
+                if viewStore.connectivityState == .connected {
                     HStack(alignment: .center, spacing: 16) {
                         Button {
                             viewStore.send(.driveHome)
@@ -26,7 +25,7 @@ struct ButtonView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 20, height: 20)
                         }
-                        .disabled(!viewStore.apiState.isConnected || viewStore.apiState.state == .charging)
+                        .disabled(viewStore.apiState.state == .charging)
                         .buttonStyle(SecondaryRoundedButtonStyle())
 
                         if !viewStore.apiState.inCleaning && !viewStore.apiState.inReturning {
@@ -39,7 +38,6 @@ struct ButtonView: View {
                                     .frame(width: 20, height: 20)
                                     .offset(x: 2, y: 0)
                             }
-                            .disabled(!viewStore.apiState.isConnected)
                             .buttonStyle(PrimaryRoundedButtonStyle())
                         } else {
                             Button {
@@ -50,7 +48,6 @@ struct ButtonView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 20, height: 20)
                             }
-                            .disabled(!viewStore.apiState.isConnected)
                             .buttonStyle(PrimaryRoundedButtonStyle())
                         }
 
@@ -63,11 +60,14 @@ struct ButtonView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 20, height: 20)
                             }
-                            .disabled(!viewStore.apiState.isConnected)
                             .buttonStyle(SecondaryRoundedButtonStyle())
                         }
 
                         FanspeedSelection(store: self.store)
+                    }
+                } else if viewStore.connectivityState == .connecting {
+                    VStack {
+                        ProgressView()
                     }
                 } else {
                     VStack {
@@ -76,12 +76,7 @@ struct ButtonView: View {
                         } label: {
                             HStack(alignment: .center) {
                                 Spacer()
-                                if viewStore.apiState.connectivityState == .disconnected {
-                                    Text("api.connect")
-                                } else {
-                                    Text("api.disconnect")
-                                        .foregroundColor(.red)
-                                }
+                                Text("api.connect")
                                 Spacer()
                             }
                             .padding()
@@ -92,12 +87,16 @@ struct ButtonView: View {
                     .padding(8)
                 }
             }
-        }
+            .frame(height: 70)
+        })
     }
 }
 
 struct ButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonView(store: Main.previewStore)
+        ZStack {
+            Color(.secondarySystemBackground).edgesIgnoringSafeArea(.all)
+            ButtonView(store: Main.previewStore)
+        }
     }
 }

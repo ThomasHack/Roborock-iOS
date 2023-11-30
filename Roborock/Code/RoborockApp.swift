@@ -38,19 +38,19 @@ struct RoborockApp: App {
     }
 
     private func connect() {
-        ViewStore(store).send(.apiAction(.connectRest))
+        ViewStore(store, observe: { $0 }).send(.apiAction(.connectRest))
     }
 
     private func disconnect() {
-        ViewStore(store).send(.apiAction(.disconnect))
+        ViewStore(store, observe: { $0 }).send(.apiAction(.disconnectWebsocket))
     }
 }
 
-class AppDelegate: NSObject, UIApplicationDelegate {
-    @Dependency(\.watchKitSessionClient) var watchKitSessionClient
+ class AppDelegate: NSObject, UIApplicationDelegate {
+    @Dependency(\.watchkitSessionClient) var watchKitSessionClient
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        ViewStore(Main.store.watchConnection).send(.connect)
+        ViewStore(Main.store.watchKitSession, observe: { $0 }).send(.connect)
         return true
     }
-}
+ }

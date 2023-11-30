@@ -11,29 +11,25 @@ import UIKit
 
 extension Api {
     enum Action: Equatable {
-        case connectWebsocket
         case connectRest
+        case connectWebsocket
+        case disconnectWebsocket
         case didConnect
-        case disconnect
         case didDisconnect
-        case didReceiveWebSocketEvent(ApiWebSocketEvent)
         case didUpdateStatus(Status)
 
         case fetchSegments
-        case fetchSegmentsResponse(Result<Segments, RestClientError>)
+        case fetchSegmentsResponse(Segments)
         case startCleaningSegment
-        case startCleaningSegmentResponse(Result<ResponseString, RestClientError>)
         case stopCleaning
-        case stopCleaningResponse(Result<ResponseString, RestClientError>)
         case pauseCleaning
-        case pauseCleaningResponse(Result<ResponseString, RestClientError>)
         case driveHome
-        case driveHomeResponse(Result<ResponseString, RestClientError>)
         case setFanspeed(Fanspeed)
-        case setFanspeedResponse(Result<ResponseString, RestClientError>)
         case toggleRoom(Int)
         case resetRooms
         case resetState
+
+        case webSocket(WebSocket.Action)
 
 #if os(iOS)
         case generateMapImage
@@ -44,12 +40,13 @@ extension Api {
         case generateChargerImage
         case generateSegmentLabelsImage
 
-        case setMapData(Result<MapData, ParsingError>)
-        case setMapImage(Result<UIImage, ImageGenerationError>)
-        case setPathImage(Result<UIImage, ImageGenerationError>)
-        case setForbiddenZonesImage(Result<UIImage, ImageGenerationError>)
-        case setRobotImage(Result<UIImage, ImageGenerationError>)
-        case setChargerImage(Result<UIImage, ImageGenerationError>)
-        case setSegmentLabelsImage(Result<UIImage, ImageGenerationError>)
+        case setMapData(MapData)
+        case setMapImage(UIImage)
+        case setPathImage(UIImage)
+        case setForbiddenZonesImage(UIImage)
+        case setRobotImage(UIImage)
+        case setChargerImage(UIImage)
+        case setSegmentLabelsImage(UIImage)
 #endif
-    }}
+    }
+}

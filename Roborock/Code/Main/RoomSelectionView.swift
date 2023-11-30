@@ -12,7 +12,7 @@ struct RoomSelectionView: View {
     let store: Store<Main.State, Main.Action>
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             NavigationStack {
                 SegmentList(store: store)
                     .navigationTitle("home.selectRoom")
@@ -36,7 +36,7 @@ struct RoomSelectionView: View {
                         }
                     }
             }
-        }
+        })
     }
 }
 

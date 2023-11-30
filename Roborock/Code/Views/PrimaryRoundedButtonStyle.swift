@@ -29,7 +29,7 @@ struct PrimaryRoundedButton: View {
             Image(systemName: "house.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 36, height: 36)
+                .frame(width: 20, height: 20)
         }
         .buttonStyle(PrimaryRoundedButtonStyle())
     }

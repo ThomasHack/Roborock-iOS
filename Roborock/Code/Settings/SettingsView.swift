@@ -9,54 +9,23 @@ import ComposableArchitecture
 import SwiftUI
 
 struct SettingsView: View {
-    let store: Store<Settings.State, Settings.Action>
+    let store: StoreOf<Settings>
 
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(self.store, observe: { $0 }, content: { viewStore in
             NavigationView {
                 VStack {
-                    List {
+                    Form {
                         Section(header: Text("settings.host")) {
-                            VStack(alignment: .leading) {
-                                SectionHeader(text: "settings.host")
-                                HStack(spacing: 0) {
-                                    Text("wss://")
-                                        .foregroundColor(Color(.quaternaryLabel))
-                                    TextField("roborock",
-                                              text: viewStore.binding(
-                                                get: { $0.hostInput },
-                                                send: Settings.Action.hostInputTextChanged)
-                                    )
-                                        .keyboardType(.URL)
-                                        .disableAutocorrection(true)
-                                        .autocapitalization(.none)
-                                }
-                            }
-                        }
-
-                        Section(header: Text("settings.siriShortcut")) {
-                            Button {
-                                viewStore.send(.requestSiriAuthorization)
-                            } label: {
-                                Text("settings.donateSiriShortcut")
-                                    .foregroundColor(Color.blue)
-                            }
-                        }
-
-                        Button {
-                            viewStore.send(.connectButtonTapped)
-                        } label: {
-                            HStack(alignment: .center) {
-                                Spacer()
-                                if viewStore.apiState.connectivityState == .disconnected {
-                                    Text("api.connect")
-                                } else {
-                                    Text("api.disconnect")
-                                        .foregroundColor(.red)
-                                }
-                                Spacer()
+                            HStack(spacing: 0) {
+                                Text("wss://")
+                                    .foregroundColor(Color(.quaternaryLabel))
+                                TextField("roborock", text: viewStore.$hostInput)
+                                    .keyboardType(.URL)
+                                    .disableAutocorrection(true)
+                                    .autocapitalization(.none)
                             }
                         }
                     }
@@ -75,12 +44,15 @@ struct SettingsView: View {
                     }
                 }
             }
-        }
+        })
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(store: Settings.previewStore)
+        Text("")
+            .sheet(isPresented: .constant(true), content: {
+                SettingsView(store: Settings.previewStore)
+            })
     }
 }

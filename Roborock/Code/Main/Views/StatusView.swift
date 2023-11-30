@@ -9,35 +9,37 @@ import ComposableArchitecture
 import SwiftUI
 
 struct StatusView: View {
-    let store: Store<Main.State, Main.Action>
+    let store: StoreOf<Api>
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             HStack(spacing: 10) {
                 StatusItemView(label: "home.battery",
                                unit: "%",
                                iconName: viewStore.batteryIcon,
-                               value: viewStore.apiState.battery
+                               value: viewStore.batteryValue
                 )
-
                 StatusItemView(label: "home.cleanTime",
                                unit: "min",
                                iconName: "stopwatch",
-                               value: viewStore.apiState.cleanTime
+                               value: viewStore.cleanTime
                 )
-
                 StatusItemView(label: "home.cleanArea",
                                unit: "qm",
                                iconName: "square.dashed",
-                               value: viewStore.apiState.cleanArea
+                               value: viewStore.cleanArea
                 )
             }
-        }
+        })
     }
 }
 
 struct StatusView_Previews: PreviewProvider {
     static var previews: some View {
-        StatusView(store: Main.previewStore)
+        ZStack {
+            Color(.secondarySystemBackground).edgesIgnoringSafeArea(.all)
+            StatusView(store: Api.previewStore)
+                .padding()
+        }
     }
 }

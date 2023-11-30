@@ -13,7 +13,7 @@ struct FanspeedSelection: View {
     let store: Store<Main.State, Main.Action>
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             VStack {
                 Menu(content: {
                     ForEach(viewStore.fanspeeds.reversed(), id: \.self) { value in
@@ -35,17 +35,20 @@ struct FanspeedSelection: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
+                        .padding(16)
+                        .background(Color(.systemBackground))
+                        .clipShape(Circle())
                 })
-                .padding(16)
-                .background(Color(.systemBackground))
-                .clipShape(Circle())
             }
-        }
+        })
     }
 }
 
 struct FanspeedSelection_Previews: PreviewProvider {
     static var previews: some View {
-        FanspeedSelection(store: Main.previewStore)
+        ZStack {
+            Color(.secondarySystemBackground).edgesIgnoringSafeArea(.all)
+            FanspeedSelection(store: Main.previewStore)
+        }
     }
 }

@@ -12,7 +12,7 @@ struct NotConnectedView: View {
     let store: Store<Main.State, Main.Action>
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             VStack(alignment: .center) {
                 Spacer()
                 HStack {
@@ -35,7 +35,7 @@ struct NotConnectedView: View {
                 .buttonStyle(PrimaryButtonStyle())
                 Spacer()
             }
-        }
+        })
     }
 }
 

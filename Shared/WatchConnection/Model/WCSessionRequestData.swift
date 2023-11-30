@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct WCSessionRequestData: Codable {
+public struct WCSessionRequestData: Equatable, Codable {
     var action: WCSessionAction
 
     enum CodingKeys: String, CodingKey {

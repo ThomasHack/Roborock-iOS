@@ -11,6 +11,20 @@ import UIKit
 
 extension Api {
     struct State: Equatable {
+        var _webSocket: WebSocket.State?
+        var webSocket: WebSocket.State {
+            get {
+                if let tempState = _webSocket {
+                    return tempState
+                }
+                return WebSocket.State()
+            }
+            set {
+                _webSocket = newValue
+                connectivityState = newValue.connectivityState
+            }
+        }
+
         var host: String?
         var connectivityState: ConnectivityState = .disconnected
         var segments: Segments?
@@ -41,21 +55,41 @@ extension Api {
         }
 
         var inReturning: Bool {
-            guard let status = status else {
+            guard isConnected, let status = status else {
                 return false
             }
             return status.inReturning != 0
         }
 
-        var battery: String {
-            guard let status = status else {
+        var batteryIcon: String {
+            guard isConnected, let status = status else {
+                return "exclamationmark.circle"
+            }
+            if status.state == 8 { // Charging
+                return "battery.100.bolt"
+            } else if status.battery < 25 {
+                return "battery.25"
+            } else {
+                return "battery.100"
+            }
+        }
+
+        var batteryValue: String {
+            guard isConnected, let status = status else {
                 return "-"
             }
             return "\(status.battery)"
         }
 
+        var cleanArea: String {
+            guard isConnected, let status = status else {
+                return "-"
+            }
+            return String(format: "%.2f", Double(status.cleanArea) / 1000000)
+        }
+
         var cleanTime: String {
-            guard let status = status else {
+            guard isConnected, let status = status else {
                 return "-"
             }
             let minutes = String(format: "%02d", (status.cleanTime % 3600) / 60)
@@ -63,18 +97,11 @@ extension Api {
             return "\(minutes):\(seconds)"
         }
 
-        var cleanArea: String {
-            guard let status = status else {
-                return "-"
-            }
-            return String(format: "%.2f", Double(status.cleanArea) / 1000000)
-        }
-
         #if os(iOS)
         var status: Status? {
             willSet {
                 if self.inCleaning && newValue?.inCleaning == 0 {
-                    ViewStore(Main.store.api).send(.resetRooms)
+                    ViewStore(Main.store.api, observe: { $0 }).send(.resetRooms)
                 }
             }
         }

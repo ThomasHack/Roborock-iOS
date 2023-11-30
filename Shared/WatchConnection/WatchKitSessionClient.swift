@@ -10,114 +10,128 @@ import ComposableArchitecture
 import Foundation
 import WatchConnectivity
 
-private var dependencies: [AnyHashable: Dependencies] = [:]
-
-private struct Dependencies {
-    let session: WCSession
-    let delegate: WatchkitSessionDelegate
-    let subscriber: EffectTask<WatchConnection.Action>.Subscriber
+extension DependencyValues {
+    public var watchkitSessionClient: WatchKitSessionClient {
+        get { self[WatchKitSessionClient.self] }
+        set { self[WatchKitSessionClient.self] = newValue }
+    }
 }
 
-struct WatchKitSessionClient {
-    var connect: (AnyHashable) -> EffectTask<WatchConnection.Action>
-    var disconnect: (AnyHashable) -> EffectTask<WatchConnection.Action>
-    var sendMessage: (AnyHashable, [String: Any]) -> EffectTask<WatchConnection.Action>
-    var sendMessageWithReplyHandler: (AnyHashable, [String: Any], @escaping ([String: Any]) -> Void) -> EffectTask<WatchConnection.Action>
-    var sendMessageData: (AnyHashable, WCSessionData) throws -> EffectTask<WatchConnection.Action>
-    var sendMessageDataWithReplyHandler: (AnyHashable, Data, @escaping (Data) -> Void) -> EffectTask<WatchConnection.Action>
+public struct WatchKitSessionClient {
+    // swiftlint:disable:next type_name
+    public struct ID: Hashable, @unchecked Sendable {
+        let rawValue: AnyHashable
+
+        init<RawValue: Hashable & Sendable>(_ rawValue: RawValue) {
+            self.rawValue = rawValue
+        }
+
+        public init() {
+            struct RawValue: Hashable, Sendable {}
+            self.rawValue = RawValue()
+        }
+    }
+
+    @CasePathable
+    public enum Action {
+        case sessionDidActivate(WCSessionActivationState)
+        case sessionDidDeactivate
+        case sessionDidBecomeInactive
+        case sessionWatchStateDidChange
+        case didReceiveMessage([String: Any])
+        case didReceiveMessageData(WCSessionData)
+    }
+
+    public enum Message: Equatable {
+        struct Unknown: Error {}
+        case string(String)
+        case data(Data)
+    }
+
+    public var connect: @Sendable (ID) async throws -> AsyncStream<Action>
+    public var sendMessage: @Sendable (ID, [String: Any]) async throws -> Void
+    public var sendMessageWithReplyHandler: @Sendable (ID, [String: Any], @escaping ([String: Any]) -> Void) async throws -> Void
+    public var sendMessageData: @Sendable (ID, Data) async throws -> Void
 }
 
-extension WatchKitSessionClient {
-    static let live = WatchKitSessionClient(
-        connect: { id in
-            .run { subscriber in
-                let delegate = WatchkitSessionDelegate(
-                    sessionDidActivate: {
-                        subscriber.send(.watchSessionDidActivate)
-                    },
-                    sessionDidDeactivate: {
-                        subscriber.send(.watchSessionDidDeactivate)
-                    },
-                    sessionDidBecomeInactive: {
-                        subscriber.send(.watchSessionDidBecomeInactive)
-                    },
-                    sessionWatchStateDidChange: {
-                        subscriber.send(.watchSessionWatchStateDidChange)
-                    },
-                    didReceiveMessage: {
-                        subscriber.send(.didReceiveMessage($0))
-                    },
-                    didReceiveMessageData: {
-                        subscriber.send(.didReceiveMessageData($0))
-                    }/*,
-                    didReceiveMessageWithReplyHandler: { message, replyHandler in
-                        subscriber.send(.didReceiveMessageWithReplyHandler(message, { response in
-                            replyHandler(response)
-                        }))
-                    },
-                    didReceiveMessageDataWithReplyHandler: { message, replyHandler in
-                        subscriber.send(.didReceiveMessageDataWithReplyHandler(message, { response in
-                            replyHandler(response)
-                        }))
-                    }*/
-                )
+extension WatchKitSessionClient: DependencyKey {
+    public static var liveValue: Self {
+        return Self(
+            connect: {
+                try await WatchKitSessionActor.shared.connect(id: $0)
+            },
+            sendMessage: {
+                try await WatchKitSessionActor.shared.sendMessage(id: $0, message: $1)
+            },
+            sendMessageWithReplyHandler: {
+                try await WatchKitSessionActor.shared.sendMessageWithReplyHandler(id: $0, message: $1, replyHandler: $2)
+            },
+            sendMessageData: {
+                try await WatchKitSessionActor.shared.sendMessageData(id: $0, message: $1)
+            }
+        )
+
+        final actor WatchKitSessionActor: GlobalActor {
+            typealias Dependencies = (session: WCSession, delegate: WatchKitSessionDelegate)
+
+            static let shared = WatchKitSessionActor()
+
+            var dependencies: [ID: Dependencies] = [:]
+
+            func connect(id: ID) throws -> AsyncStream<Action> {
+                let delegate = WatchKitSessionDelegate()
                 let session = WCSession.default
-                dependencies[id] = Dependencies(session: session, delegate: delegate, subscriber: subscriber)
-                return AnyCancellable {
-                    dependencies[id]?.subscriber.send(completion: .finished)
-                    dependencies[id] = nil
+
+                struct NotSupported: Error {}
+
+                guard WCSession.isSupported() else {
+                    print("WCSession is not supported")
+                    throw NotSupported()
                 }
-            }
-        },
-        disconnect: { id in
-            .run { _ in
-                dependencies[id]?.subscriber.send(.watchSessionDidDeactivate)
-                return AnyCancellable {
-                    dependencies[id]?.subscriber.send(completion: .finished)
-                    dependencies[id] = nil
+                session.delegate = delegate
+                defer {  }
+                session.activate()
+
+                // swiftlint:disable:next implicitly_unwrapped_optional
+                var continuation: AsyncStream<Action>.Continuation!
+                let stream = AsyncStream<Action> {
+                    $0.onTermination = { _ in
+                        Task { await self.removeDependencies(id: id) }
+                    }
+                    continuation = $0
                 }
+                delegate.continuation = continuation
+                self.dependencies[id] = (session, delegate)
+                return stream
             }
-        },
-        sendMessage: { id, message in
-            .run { _ in
-                dependencies[id]?.session.sendMessage(message, replyHandler: nil, errorHandler: nil)
-                return AnyCancellable {}
+
+            func sendMessage(id: ID, message: [String: Any]) throws {
+                try self.session(id: id).sendMessage(message, replyHandler: nil)
             }
-        },
-        sendMessageWithReplyHandler: { id, message, replyHandler in
-            .run { _ in
-                dependencies[id]?.session.sendMessage(message,
-                                                      replyHandler: { response in
-                    replyHandler(response)
-                    // subscriber.send(.didReceiveMessage(response))
-                }, errorHandler: { error in
-                    print(error.localizedDescription)
-                })
-                return AnyCancellable {}
+
+            func sendMessageWithReplyHandler(id: ID, message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) throws {
+                try self.session(id: id).sendMessage(message, replyHandler: replyHandler)
             }
-        },
-        sendMessageData: { id, sessionData in
-            .run { _ in
-                do {
-                    let data = try JSONEncoder().encode(sessionData)
-                    dependencies[id]?.session.sendMessageData(data, replyHandler: nil, errorHandler: nil)
-                } catch {
-                    assertionFailure("")
+
+            func sendMessageData(id: ID, message: Data) throws {
+                try self.session(id: id).sendMessageData(message, replyHandler: nil)
+            }
+
+            func sendMessageDataWithReplyHandler(id: ID, message: Data, replyHandler: @escaping (Data) -> Void) async throws {
+                try self.session(id: id).sendMessageData(message, replyHandler: replyHandler)
+            }
+
+            private func session(id: ID) throws -> WCSession {
+                guard let dependencies = self.dependencies[id]?.session else {
+                    struct Closed: Error {}
+                    throw Closed()
                 }
-                return AnyCancellable {}
+                return dependencies
             }
-        },
-        sendMessageDataWithReplyHandler: { id, data, replyHandler in
-            .run { _ in
-                dependencies[id]?.session.sendMessageData(data,
-                                                          replyHandler: { response in
-                    replyHandler(response)
-                    // subscriber.send(.didReceiveMessageData(response))
-                }, errorHandler: { error in
-                    print(error.localizedDescription)
-                })
-                return AnyCancellable {}
+
+            private func removeDependencies(id: ID) {
+                self.dependencies[id] = nil
             }
         }
-    )
+    }
 }

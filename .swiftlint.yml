@@ -12,7 +12,6 @@ opt_in_rules:
 - enum_case_associated_values_count
 - flatmap_over_map_reduce
 - prefer_self_type_over_type_of_self
-- anyobject_protocol
 - array_init
 # - closure_body_length disabled, because function-builders tend to be long
 - closure_spacing

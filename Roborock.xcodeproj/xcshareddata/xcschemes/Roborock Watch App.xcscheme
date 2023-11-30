@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "524CD89F2B14C70800751EBB"
+               BuildableName = "Roborock.app"
+               BlueprintName = "Roborock Watch App&#xb4;"
+               ReferencedContainer = "container:Roborock.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "654289372646B78B009B8BE5"
                BuildableName = "Roborock.app"
                BlueprintName = "Roborock"
@@ -43,9 +57,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "654289372646B78B009B8BE5"
+            BlueprintIdentifier = "524CD89F2B14C70800751EBB"
             BuildableName = "Roborock.app"
-            BlueprintName = "Roborock"
+            BlueprintName = "Roborock Watch App&#xb4;"
             ReferencedContainer = "container:Roborock.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -60,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "654289372646B78B009B8BE5"
+            BlueprintIdentifier = "524CD89F2B14C70800751EBB"
             BuildableName = "Roborock.app"
-            BlueprintName = "Roborock"
+            BlueprintName = "Roborock Watch App&#xb4;"
             ReferencedContainer = "container:Roborock.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

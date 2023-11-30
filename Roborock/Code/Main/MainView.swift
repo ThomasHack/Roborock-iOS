@@ -12,7 +12,7 @@ struct MainView: View {
     var store: Store<Main.State, Main.Action>
 
     @State private var expanded = true
-    @State private var offset: CGFloat = 20
+    @State private var offset: CGFloat = 0
     @GestureState private var startOffset: CGFloat?
 
     var swipe: some Gesture {
@@ -67,6 +67,10 @@ struct MainView: View {
                         )
                     }
 
+                    Rectangle()
+                        .foregroundColor(Color(.secondarySystemBackground))
+                        .frame(height: 50)
+
                     ZStack {
                         RoundedRectangle(cornerRadius: 15)
                             .foregroundColor(Color(.secondarySystemBackground))
@@ -75,7 +79,10 @@ struct MainView: View {
                             HeaderView(store: store)
                                 .padding(.bottom, 32)
 
-                            StatusView(store: store)
+                            StatusView(store: store.scope(
+                                state: \.apiState,
+                                action: Main.Action.apiAction
+                            ))
                                 .padding(.bottom, 32)
 
                             ButtonView(store: store)

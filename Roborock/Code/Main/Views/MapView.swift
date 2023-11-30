@@ -16,7 +16,7 @@ struct MapView: View {
     @State var zoom = 1.0
 
     var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             if let mapImage = viewStore.mapImage,
                let pathImage = viewStore.pathImage,
                let forbiddenZonesImage = viewStore.forbiddenZonesImage,
@@ -75,28 +75,26 @@ struct MapView: View {
                 }
                 Spacer()
             }
-        }
+        })
     }
 }
 
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
-        MapView(
-            store: Store(
-                initialState: Api.State(
-                    connectivityState: .connected,
-                    segments: Segments(segment: Api.segments),
-                    rooms: [],
-                    status: Api.status,
-                    mapImage: #imageLiteral(resourceName: "mapImagePreview"),
-                    pathImage: #imageLiteral(resourceName: "pathImagePreview"),
-                    forbiddenZonesImage: #imageLiteral(resourceName: "forbiddenZonesImagePreview"),
-                    robotImage: #imageLiteral(resourceName: "robotImagePreview"),
-                    chargerImage: #imageLiteral(resourceName: "chargerImagePreview"),
-                    segmentLabelsImage: #imageLiteral(resourceName: "segmentLabelsImagePreview")
-                ),
-                reducer: Api()
-            )
+        MapView(store: Store(initialState: Api.State(
+            connectivityState: .connected,
+            segments: Segments(segment: Api.segments),
+            rooms: [],
+            status: Api.status,
+            mapImage: #imageLiteral(resourceName: "mapImagePreview"),
+            pathImage: #imageLiteral(resourceName: "pathImagePreview"),
+            forbiddenZonesImage: #imageLiteral(resourceName: "forbiddenZonesImagePreview"),
+            robotImage: #imageLiteral(resourceName: "robotImagePreview"),
+            chargerImage: #imageLiteral(resourceName: "chargerImagePreview"),
+            segmentLabelsImage: #imageLiteral(resourceName: "segmentLabelsImagePreview")
+        ), reducer: {
+            Api()
+        })
         )
     }
 }

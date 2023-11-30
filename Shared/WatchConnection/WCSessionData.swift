@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum WCSessionData: Codable {
+public enum WCSessionData: Equatable, Codable {
     case requestData(WCSessionRequestData)
     case responseAppData(WCSessionAppResponseData)
     case responseWatchData(WCSessionWatchResponseData)

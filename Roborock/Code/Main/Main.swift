@@ -11,10 +11,9 @@ import RoborockApi
 
 struct WatchKitId: Hashable {}
 
-struct Main: ReducerProtocol {
+@Reducer
+struct Main {
     struct State: Equatable {
-        var showSettings = false
-        var showRoomSelection = false
         var host: String? {
             didSet {
                 UserDefaultsHelper.setHost(host)
@@ -22,6 +21,9 @@ struct Main: ReducerProtocol {
         }
         var connectivityState: ConnectivityState = .disconnected
         var segments: Segments?
+        var fanspeeds = Fanspeed.allCases
+        var showSettings = false
+        var showRoomSelection = false
 
         var _apiState: Api.State?
         var apiState: Api.State {
@@ -50,12 +52,12 @@ struct Main: ReducerProtocol {
             get {
                 if var tempState = _settingsState {
                     tempState.host = host
+                    tempState.connectivityState = connectivityState
                     return tempState
                 }
                 return Settings.State(
                     host: host,
-                    hostInput: host ?? "",
-                    apiState: apiState
+                    hostInput: host ?? ""
                 )
             }
             set {
@@ -64,32 +66,19 @@ struct Main: ReducerProtocol {
             }
         }
 
-        var _watchConnectionState: WatchConnection.State?
-        var watchConnectionState: WatchConnection.State {
+        var _watchKitSession: WatchKitSession.State?
+        var watchKitSession: WatchKitSession.State {
             get {
-                if var tempState = _watchConnectionState {
+                if var tempState = _watchKitSession {
                     tempState.host = host
                     return tempState
                 }
-                return WatchConnection.initialState
+                return WatchKitSession.initialState
             }
             set {
-                _watchConnectionState = newValue
+                _watchKitSession = newValue
             }
         }
-
-        var batteryIcon: String {
-            guard let status = apiState.status else { return "exclamationmark.circle" }
-            if status.state == 8 { // Charging
-                return "battery.100.bolt"
-            } else if status.battery < 25 {
-                return "battery.25"
-            } else {
-                return "battery.100"
-            }
-        }
-
-        var fanspeeds = Fanspeed.allCases
     }
 
     enum Action {
@@ -106,38 +95,38 @@ struct Main: ReducerProtocol {
 
         case apiAction(Api.Action)
         case settingsAction(Settings.Action)
-        case watchConnectionAction(WatchConnection.Action)
+        case watchKitSession(WatchKitSession.Action)
     }
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .connectButtonTapped:
                 switch state.apiState.connectivityState {
                 case .connected, .connecting:
                     state.showSettings = false
-                    return EffectTask(value: Action.apiAction(.disconnect))
+                    return .send(.apiAction(.disconnectWebsocket))
 
                 case .disconnected:
                     guard state.host != nil else { return .none }
                     state.showSettings = false
-                    return EffectTask(value: Action.apiAction(.connectRest))
+                    return .send(.apiAction(.connectRest))
                 }
 
             case .fetchSegments:
-                return EffectTask(value: Action.apiAction(.fetchSegments))
+                return .send(.apiAction(.fetchSegments))
 
             case .startCleaning:
-                return EffectTask(value: Action.apiAction(.startCleaningSegment))
+                return .send(.apiAction(.startCleaningSegment))
 
             case .stopCleaning:
-                return EffectTask(value: Action.apiAction(.stopCleaning))
+                return .send(.apiAction(.stopCleaning))
 
             case .pauseCleaning:
-                return EffectTask(value: Action.apiAction(.pauseCleaning))
+                return .send(.apiAction(.pauseCleaning))
 
             case .driveHome:
-                return EffectTask(value: Action.apiAction(.driveHome))
+                return .send(.apiAction(.driveHome))
 
             case .selectAll:
                 if state.apiState.rooms.isEmpty {
@@ -155,7 +144,7 @@ struct Main: ReducerProtocol {
             case .toggleRoomSelection(let toggle):
                 state.showRoomSelection = toggle
 
-            case .apiAction, .settingsAction, .watchConnectionAction:
+            case .apiAction, .settingsAction, .watchKitSession:
                 break
             case .none:
                 break
@@ -168,8 +157,8 @@ struct Main: ReducerProtocol {
         Scope(state: \.settingsState, action: /Action.settingsAction) {
             Settings()
         }
-        Scope(state: \.watchConnectionState, action: /Action.watchConnectionAction) {
-            WatchConnection()
+        Scope(state: \.watchKitSession, action: /Action.watchKitSession) {
+            WatchKitSession()
         }
     }
 
@@ -179,20 +168,19 @@ struct Main: ReducerProtocol {
 
     static let previewState = State(
         host: "roborock.friday.home",
+        connectivityState: .connecting,
         _apiState: Api.previewState,
         _settingsState: Settings.initialState,
-        _watchConnectionState: WatchConnection.initialState
+        _watchKitSession: WatchKitSession.initialState
     )
 
-    static let previewStore = Store(
-        initialState: previewState,
-        reducer: Main()
-    )
+    static let previewStore = Store(initialState: previewState) {
+        Main()
+    }
 
-    static let store = Store<Main.State, Main.Action>(
-        initialState: initialState,
-        reducer: Main()
-    )
+    static let store = Store(initialState: initialState) {
+        Main()
+    }
 }
 
 extension Store where State == Main.State, Action == Main.Action {
@@ -204,7 +192,7 @@ extension Store where State == Main.State, Action == Main.Action {
         scope(state: \.apiState, action: Main.Action.apiAction)
     }
 
-    var watchConnection: Store<WatchConnection.State, WatchConnection.Action> {
-        scope(state: \.watchConnectionState, action: Main.Action.watchConnectionAction)
+    var watchKitSession: Store<WatchKitSession.State, WatchKitSession.Action> {
+        scope(state: \.watchKitSession, action: Main.Action.watchKitSession)
     }
 }

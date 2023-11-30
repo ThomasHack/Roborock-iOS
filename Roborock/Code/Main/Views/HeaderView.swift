@@ -12,14 +12,12 @@ struct HeaderView: View {
     let store: Store<Main.State, Main.Action>
 
     var body: some View {
-        WithViewStore(self.store) { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
             VStack(spacing: 0) {
-                HStack {
+                HStack(alignment: .top) {
                     Text("Roborock")
                         .font(.system(size: 42, weight: .bold, design: .default))
-
                     Spacer()
-
                     Button {
                         viewStore.send(.toggleSettings(true))
                     } label: {
@@ -30,7 +28,6 @@ struct HeaderView: View {
                     }
                     .buttonStyle(SecondaryRoundedButtonStyle())
                 }
-
                 HStack {
                     Text("home.status")
                         .font(.system(size: 16, weight: .light, design: .default))
@@ -44,12 +41,13 @@ struct HeaderView: View {
                     Spacer()
                 }
             }
-        }
+        })
     }
 }
 
 struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
-       HeaderView(store: Main.previewStore)
+        HeaderView(store: Main.previewStore)
+
     }
 }

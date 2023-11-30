@@ -14,7 +14,6 @@ struct SectionHeader: View {
 
     var body: some View {
         Text(LocalizedStringKey(text))
-        .foregroundColor(Color(UIColor.label))
         .font(.system(size: 16.0, weight: .semibold))
     }
 }
