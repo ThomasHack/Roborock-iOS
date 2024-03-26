@@ -20,7 +20,7 @@ struct SettingsView: View {
                     Form {
                         Section(header: Text("settings.host")) {
                             HStack(spacing: 0) {
-                                Text("wss://")
+                                Text("https://")
                                     .foregroundColor(Color(.quaternaryLabel))
                                 TextField("roborock", text: viewStore.$hostInput)
                                     .keyboardType(.URL)
@@ -48,11 +48,9 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("")
-            .sheet(isPresented: .constant(true), content: {
-                SettingsView(store: Settings.previewStore)
-            })
-    }
+#Preview {
+    Text("")
+        .sheet(isPresented: .constant(true), content: {
+            SettingsView(store: Settings.previewStore)
+        })
 }

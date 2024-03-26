@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1500"
+   LastUpgradeVersion = "1510"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "524CD89F2B14C70800751EBB"
                BuildableName = "Roborock.app"
-               BlueprintName = "Roborock Watch App&#xb4;"
+               BlueprintName = "Roborock Watch App"
                ReferencedContainer = "container:Roborock.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -59,7 +59,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "524CD89F2B14C70800751EBB"
             BuildableName = "Roborock.app"
-            BlueprintName = "Roborock Watch App&#xb4;"
+            BlueprintName = "Roborock Watch App"
             ReferencedContainer = "container:Roborock.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -76,7 +76,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "524CD89F2B14C70800751EBB"
             BuildableName = "Roborock.app"
-            BlueprintName = "Roborock Watch App&#xb4;"
+            BlueprintName = "Roborock Watch App"
             ReferencedContainer = "container:Roborock.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

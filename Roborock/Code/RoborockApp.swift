@@ -14,16 +14,16 @@ struct RoborockApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) var scenePhase
 
-    var store: Store<Main.State, Main.Action> = Main.store
+    let store: StoreOf<Main> = Main.store
 
     @SceneBuilder
     var body: some Scene {
         WindowGroup {
             MainView(store: store)
         }
-        .onChange(of: scenePhase) { phase in
-            handlePhaseChange(phase)
-        }
+        .onChange(of: scenePhase, { _, newValue in
+            handlePhaseChange(newValue)
+        })
     }
 
     private func handlePhaseChange(_ phase: ScenePhase) {
@@ -38,11 +38,11 @@ struct RoborockApp: App {
     }
 
     private func connect() {
-        ViewStore(store, observe: { $0 }).send(.apiAction(.connectRest))
+        ViewStore(store, observe: { $0 }).send(.connect)
     }
 
     private func disconnect() {
-        ViewStore(store, observe: { $0 }).send(.apiAction(.disconnectWebsocket))
+        ViewStore(store, observe: { $0 }).send(.disconnect)
     }
 }
 

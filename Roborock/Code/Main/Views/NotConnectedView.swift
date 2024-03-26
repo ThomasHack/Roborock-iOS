@@ -9,38 +9,34 @@ import ComposableArchitecture
 import SwiftUI
 
 struct NotConnectedView: View {
-    let store: Store<Main.State, Main.Action>
+    @Bindable var store: StoreOf<Main>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            VStack(alignment: .center) {
-                Spacer()
-                HStack {
-                    Text("api.disconnected")
-                }
-                .foregroundColor(.secondary)
-
-                Button {
-                    if viewStore.host != nil {
-                        viewStore.send(.toggleSettings(true))
-                    } else {
-                        viewStore.send(.toggleSettings(true))
-                    }
-                } label: {
-                    HStack {
-                        Image(systemName: "bolt.fill")
-                        Text((viewStore.host ?? "").isEmpty ? "home.setHost" : "api.connect")
-                    }
-                }
-                .buttonStyle(PrimaryButtonStyle())
-                Spacer()
+        VStack(alignment: .center) {
+            Spacer()
+            HStack {
+                Text("api.disconnected")
             }
-        })
+            .foregroundColor(.secondary)
+
+            Button {
+                if store.host != nil {
+                    store.send(.toggleSettings(true))
+                } else {
+                    store.send(.toggleSettings(true))
+                }
+            } label: {
+                HStack {
+                    Image(systemName: "bolt.fill")
+                    Text((store.host ?? "").isEmpty ? "home.setHost" : "api.connect")
+                }
+            }
+            .buttonStyle(PrimaryButtonStyle())
+            Spacer()
+        }
     }
 }
 
-struct NotConnectedView_Previews: PreviewProvider {
-    static var previews: some View {
-        NotConnectedView(store: Main.previewStore)
-    }
+#Preview {
+    NotConnectedView(store: Main.previewStore)
 }

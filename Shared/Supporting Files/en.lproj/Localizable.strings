@@ -31,22 +31,38 @@
 "settings.donateSiriShortcut" = "Donate Siri Shortcut";
 
 // Roborock vaccum state
-"roborock.state.0" = "Connecting...";
-"roborock.state.1" = "Starting";
-"roborock.state.2" = "Standby without Charging";
-"roborock.state.3" = "Idle";
-"roborock.state.4" = "Remote control active";
-"roborock.state.5" = "Cleaning";
-"roborock.state.6" = "Returning to dock";
-"roborock.state.7" = "Manual mode";
-"roborock.state.8" = "Charging";
-"roborock.state.9" = "Charging problem";
-"roborock.state.10" = "Paused";
-"roborock.state.11" = "Spot cleaning";
-"roborock.state.12" = "Error";
-"roborock.state.13" = "Shutting down";
-"roborock.state.14" = "Updating";
-"roborock.state.15" = "Docking";
-"roborock.state.16" = "Going to target";
-"roborock.state.17" = "Zoned cleaning";
-"roborock.state.18" = "Rooms cleaning";
+"roborock.state.value.error" = "Error";
+"roborock.state.value.docked" = "Docked";
+"roborock.state.value.idle" = "Idle";
+"roborock.state.value.returning" = "Returning to dock";
+"roborock.state.value.cleaning" = "Cleaning";
+"roborock.state.value.paused" = "Paused";
+"roborock.state.value.manual" = "Manual mode";
+"roborock.state.value.moving" = "Moving";
+
+"roborock.state.flag.none" = "";
+"roborock.state.flag.zone" = "Zone Cleaning";
+"roborock.state.flag.segment" = "Segment Cleaning";
+"roborock.state.flag.spot" = "Spot Cleaning";
+"roborock.state.flag.target" = "Target cleaning";
+"roborock.state.flag.resumable" = "Resumable";
+"roborock.state.flag.mapping" = "Mapping";
+
+"roborock.batteryState.flag.none" = "";
+"roborock.batteryState.flag.charging" = "Charging";
+"roborock.batteryState.flag.discharging" = "Discharging";
+"roborock.batteryState.flag.charged" = "Charged";
+
+"roborock.attachment.watertank" = "Watertank";
+"roborock.attachment.mop" = "Mop";
+
+"robot.fanSpeed.off" = "Off";
+"robot.fanSpeed.low" = "Low";
+"robot.fanSpeed.medium" = "Medium";
+"robot.fanSpeed.high" = "High";
+"robot.fanSpeed.max" = "Max";
+
+"robot.waterUsage.off" = "Off";
+"robot.waterUsage.low" = "Low";
+"robot.waterUsage.medium" = "Medium";
+"robot.waterUsage.high" = "High";

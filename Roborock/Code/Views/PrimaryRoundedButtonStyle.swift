@@ -35,11 +35,9 @@ struct PrimaryRoundedButton: View {
     }
 }
 
-struct PrimaryRoundedButton_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color(.secondarySystemBackground)
-            PrimaryRoundedButton()
-        }
+#Preview {
+    ZStack {
+        Color(.secondarySystemBackground)
+        PrimaryRoundedButton()
     }
 }

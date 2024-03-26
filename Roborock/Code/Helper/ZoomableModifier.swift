@@ -67,12 +67,18 @@ public struct ZoomableModifier: ViewModifier {
 
     var doubleTapGesture: some Gesture {
         TapGesture(count: 2).onEnded {
+            if scale == max, scale == min {
+                currentScale = 1.0
+            }
+            if scale == 1.0 {
+                currentScale = max
+            }
             if scale <= min {
                 currentScale = max
             } else if scale >= max {
                 currentScale = min
             } else {
-                currentScale = ((max - min) * 0.5 + min) < scale ? max : min
+                currentScale = 1.0 // ((max - min) * 0.5 + min) < scale ? max : min
             }
         }
     }

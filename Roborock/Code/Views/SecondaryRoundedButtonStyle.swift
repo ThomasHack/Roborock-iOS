@@ -35,14 +35,12 @@ struct SecondaryRoundedButton: View {
     }
 }
 
-struct SecondaryRoundedButton_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            SecondaryRoundedButton()
-        }
-        .padding(.vertical, 100)
-        .padding(.horizontal, 100)
-        .background(Color(UIColor.secondarySystemBackground))
-        .previewLayout(.fixed(width: 150, height: 200))
+#Preview {
+    VStack {
+        SecondaryRoundedButton()
     }
+    .padding(.vertical, 100)
+    .padding(.horizontal, 100)
+    .background(Color(UIColor.secondarySystemBackground))
+    .previewLayout(.fixed(width: 150, height: 200))
 }

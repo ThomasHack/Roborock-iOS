@@ -13,7 +13,6 @@ import RoborockApi
 struct Settings {
     struct State: Equatable {
         var host: String?
-        var connectivityState: ConnectivityState = .disconnected
         @BindingState var hostInput = ""
     }
 
@@ -30,6 +29,7 @@ struct Settings {
                 break
             case .doneButtonTapped:
                 state.host = state.hostInput
+                UserDefaultsHelper.setHost(state.host)
             }
             return .none
         }
@@ -40,7 +40,6 @@ struct Settings {
     )
 
     static let previewState = State(
-        connectivityState: .disconnected,
         hostInput: "roborock.friday.home"
     )
 

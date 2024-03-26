@@ -36,11 +36,9 @@ struct PrimaryButton: View {
     }
 }
 
-struct PrimaryButton_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color(.secondarySystemBackground)
-            PrimaryButton()
-        }
+#Preview {
+    ZStack {
+        Color(.secondarySystemBackground)
+        PrimaryButton()
     }
 }

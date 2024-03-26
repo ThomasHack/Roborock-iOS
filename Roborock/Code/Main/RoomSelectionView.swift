@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct RoomSelectionView: View {
-    let store: Store<Main.State, Main.Action>
+    let store: StoreOf<Main>
 
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
@@ -40,8 +40,6 @@ struct RoomSelectionView: View {
     }
 }
 
-struct RoomSelectionView_Previews: PreviewProvider {
-    static var previews: some View {
-        RoomSelectionView(store: Main.previewStore)
-    }
+#Preview {
+    RoomSelectionView(store: Main.previewStore)
 }

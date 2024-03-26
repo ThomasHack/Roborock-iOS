@@ -18,10 +18,12 @@ struct HomeView: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
             VStack(alignment: .leading, spacing: 16) {
-                StateTileView(state: viewStore.apiState.state)
+                if let status = viewStore.apiState.robotStatus {
+                    StateTileView(status: status)
+                }
 
                 HStack(spacing: 4) {
-                    BatteryTileView(value: viewStore.apiState.status?.battery)
+                    BatteryTileView(value: viewStore.apiState.batteryStatus?.level)
                         .frame(width: 68, height: 68)
 
                     VStack(alignment: .leading, spacing: 8) {
@@ -29,14 +31,14 @@ struct HomeView: View {
                                        label: "Clean time",
                                        unit: "h",
                                        color: Color("blue-primary"),
-                                       value: viewStore.apiState.cleanTime
+                                       value: viewStore.apiState.cleanTimeReadable
                         )
 
                         StatusTileView(iconName: "square.dashed",
                                        label: "Clean area",
                                        unit: "qm",
                                        color: Color("blue-primary"),
-                                       value: viewStore.apiState.cleanArea
+                                       value: viewStore.apiState.cleanAreaReadable
                         )
                     }
                     .padding(.leading, 8)
@@ -57,6 +59,12 @@ struct HomeView: View {
                 send: Main.Action.toggleFanspeedModal
             )) {
                 FanspeedList(store: store)
+            }
+            .sheet(isPresented: viewStore.binding(
+                get: \.showWaterUsageModal,
+                send: Main.Action.toggleWaterUsageModal
+            )) {
+                WaterUsageList(store: store)
             }
         })
         .navigationTitle("Status")

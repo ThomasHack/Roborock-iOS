@@ -10,43 +10,44 @@ import RoborockApi
 import UIKit
 
 extension Api {
+    @CasePathable
     enum Action: Equatable {
-        case connectRest
-        case connectWebsocket
-        case disconnectWebsocket
+        case connect
+        case disconnect
+        case update
+        case subscribe
+        case subscribeState
+        case unsubscribe
         case didConnect
         case didDisconnect
-        case didUpdateStatus(Status)
-
+        case fetchInfo
+        case fetchInfoResponse(RobotInfo)
+        case fetchState
+        case updateState([StateAttribute])
+        case fetchCurrentStatistics
+        case fetchCurrentStatisticsResponse([StatisticsDataPoint])
+        case fetchTotalStatistics
+        case fetchTotalStatisticsResponse([StatisticsDataPoint])
         case fetchSegments
-        case fetchSegmentsResponse(Segments)
+        case fetchSegmentsResponse([Segment])
         case startCleaningSegment
         case stopCleaning
         case pauseCleaning
         case driveHome
-        case setFanspeed(Fanspeed)
-        case toggleRoom(Int)
+        case controlFanSpeed(FanSpeedControlPreset)
+        case controlWaterUsage(WaterUsageControlPreset?)
+        case toggleRoom(Segment)
         case resetRooms
         case resetState
-
-        case webSocket(WebSocket.Action)
-
-#if os(iOS)
-        case generateMapImage
-        case refreshMapImage
-        case generatePathImage
-        case generateForbiddenZones
-        case generateRobotImage
-        case generateChargerImage
-        case generateSegmentLabelsImage
-
-        case setMapData(MapData)
-        case setMapImage(UIImage)
-        case setPathImage(UIImage)
-        case setForbiddenZonesImage(UIImage)
-        case setRobotImage(UIImage)
-        case setChargerImage(UIImage)
-        case setSegmentLabelsImage(UIImage)
-#endif
+        case eventClient(EventClient.Action)
+        #if os(iOS) || os(tvOS) || os(visionOS)
+        case fetchMap
+        case subscribeMap
+        case drawMapImage(Map)
+        case redrawMapImage
+        case drawEntityImages(Map)
+        case updateMapImage(MapImage?)
+        case updateEntityImages([MapImage])
+        #endif
     }
 }

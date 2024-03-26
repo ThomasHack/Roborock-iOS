@@ -8,110 +8,100 @@
 import ComposableArchitecture
 import Foundation
 import RoborockApi
+import UIKit
 
 struct WatchKitId: Hashable {}
 
 @Reducer
 struct Main {
+    @Dependency(\.restClient) var restClient
+    @Dependency(\.valetudoMapParser) var vatudoMapParser
+
+    @ObservableState
     struct State: Equatable {
-        var host: String? {
-            didSet {
-                UserDefaultsHelper.setHost(host)
-            }
-        }
-        var connectivityState: ConnectivityState = .disconnected
-        var segments: Segments?
-        var fanspeeds = Fanspeed.allCases
+        var host: String?
+        var connectivityState: ConnectivityState
+        var selectedSegments: [Segment] = []
+        var fanSpeedPresets = FanSpeedControlPreset.allCases
+        var waterUsagePresets = WaterUsageControlPreset.allCases
         var showSettings = false
         var showRoomSelection = false
+        var mapImage: MapImage?
+        var entityImages = MapImages(images: [])
 
-        var _apiState: Api.State?
-        var apiState: Api.State {
-            get {
-                if var tempState = _apiState {
-                    tempState.host = host
-                    tempState.connectivityState = connectivityState
-                    tempState.segments = segments
-                    return tempState
-                }
-                return Api.State(
-                    host: host,
-                    connectivityState: connectivityState,
-                    segments: segments
-                )
-            }
-            set {
-                _apiState = newValue
-                segments = newValue.segments
-                connectivityState = newValue.connectivityState
-            }
-        }
+        var apiState: Api.State
+//            get {
+//                if var tempState = _apiState {
+//                    tempState.host = host
+//                    tempState.segments = selectedSegments
+//                    tempState.mapImage = mapImage
+//                    tempState.entityImages = entityImages
+//                    return tempState
+//                }
+//            }
+//            set {
+//                _apiState = newValue
+//                connectivityState = newValue.connectivityState
+//                selectedSegments = newValue.segments
+//                mapImage = newValue.mapImage
+//                entityImages = newValue.entityImages
+//            }
 
-        var _settingsState: Settings.State?
-        var settingsState: Settings.State {
-            get {
-                if var tempState = _settingsState {
-                    tempState.host = host
-                    tempState.connectivityState = connectivityState
-                    return tempState
-                }
-                return Settings.State(
-                    host: host,
-                    hostInput: host ?? ""
-                )
-            }
-            set {
-                _settingsState = newValue
-                host = newValue.host
-            }
-        }
+        var settingsState: Settings.State
+//            get {
+//                if var tempState = _settingsState {
+//                    tempState.host = host
+//                    tempState.connectivityState = connectivityState
+//                    return tempState
+//                }
+//            }
+//            set {
+//                _settingsState = newValue
+//                host = newValue.host
+//            }
 
-        var _watchKitSession: WatchKitSession.State?
-        var watchKitSession: WatchKitSession.State {
-            get {
-                if var tempState = _watchKitSession {
-                    tempState.host = host
-                    return tempState
-                }
-                return WatchKitSession.initialState
-            }
-            set {
-                _watchKitSession = newValue
-            }
-        }
+        var watchKitSession: WatchKitSession.State
+//            get {
+//                if var tempState = _watchKitSession {
+//                    tempState.host = host
+//                    return tempState
+//                }
+//            }
+//            set {
+//                _watchKitSession = newValue
+//            }
     }
 
-    enum Action {
+    @CasePathable
+    enum Action: BindableAction {
+        case connect
+        case disconnect
+
+        case fetchSegments
+        case connectButtonTapped
         case toggleSettings(Bool)
         case toggleRoomSelection(Bool)
-        case connectButtonTapped
-        case fetchSegments
         case startCleaning
         case stopCleaning
         case pauseCleaning
         case driveHome
         case selectAll
-        case none
 
         case apiAction(Api.Action)
         case settingsAction(Settings.Action)
         case watchKitSession(WatchKitSession.Action)
+        case binding(BindingAction<State>)
     }
 
     var body: some Reducer<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
-            case .connectButtonTapped:
-                switch state.apiState.connectivityState {
-                case .connected, .connecting:
-                    state.showSettings = false
-                    return .send(.apiAction(.disconnectWebsocket))
+            case .connect:
+                return .send(.apiAction(.connect))
 
-                case .disconnected:
-                    guard state.host != nil else { return .none }
-                    state.showSettings = false
-                    return .send(.apiAction(.connectRest))
-                }
+            case .disconnect:
+                return .send(.apiAction(.disconnect))
 
             case .fetchSegments:
                 return .send(.apiAction(.fetchSegments))
@@ -129,14 +119,15 @@ struct Main {
                 return .send(.apiAction(.driveHome))
 
             case .selectAll:
-                if state.apiState.rooms.isEmpty {
-                    guard let segments = state.apiState.segments else { return .none }
-                    let rooms = segments.data.map { $0.id }
-                    state.apiState.rooms = rooms
+                if state.apiState.selectedSegments.isEmpty {
+                    state.apiState.selectedSegments = state.apiState.segments
                     return .none
                 }
-                state.apiState.rooms = []
+                state.apiState.selectedSegments = []
                 return .none
+
+            case .connectButtonTapped:
+                break
 
             case .toggleSettings(let toggle):
                 state.showSettings = toggle
@@ -144,34 +135,42 @@ struct Main {
             case .toggleRoomSelection(let toggle):
                 state.showRoomSelection = toggle
 
-            case .apiAction, .settingsAction, .watchKitSession:
-                break
-            case .none:
+            case .apiAction(.didConnect):
+                state.connectivityState = .connected
+
+            case .apiAction(.didDisconnect):
+                state.connectivityState = .disconnected
+
+            case .apiAction, .settingsAction, .watchKitSession, .binding:
                 break
             }
             return .none
         }
-        Scope(state: \.apiState, action: /Action.apiAction) {
+        Scope(state: \.apiState, action: \.apiAction) {
             Api()
         }
-        Scope(state: \.settingsState, action: /Action.settingsAction) {
+        Scope(state: \.settingsState, action: \.settingsAction) {
             Settings()
         }
-        Scope(state: \.watchKitSession, action: /Action.watchKitSession) {
+        Scope(state: \.watchKitSession, action: \.watchKitSession) {
             WatchKitSession()
         }
     }
 
     static let initialState = State(
-        host: UserDefaultsHelper.host
+        host: UserDefaultsHelper.host,
+        connectivityState: .disconnected,
+        apiState: Api.initialState,
+        settingsState: Settings.initialState,
+        watchKitSession: WatchKitSession.initialState
     )
 
     static let previewState = State(
         host: "roborock.friday.home",
-        connectivityState: .connecting,
-        _apiState: Api.previewState,
-        _settingsState: Settings.initialState,
-        _watchKitSession: WatchKitSession.initialState
+        connectivityState: .connected,
+        apiState: Api.previewState,
+        settingsState: Settings.previewState,
+        watchKitSession: WatchKitSession.previewState
     )
 
     static let previewStore = Store(initialState: previewState) {
@@ -185,14 +184,14 @@ struct Main {
 
 extension Store where State == Main.State, Action == Main.Action {
     var settings: Store<Settings.State, Settings.Action> {
-        scope(state: \.settingsState, action: Main.Action.settingsAction)
+        scope(state: \.settingsState, action: \.settingsAction)
     }
 
     var api: Store<Api.State, Api.Action> {
-        scope(state: \.apiState, action: Main.Action.apiAction)
+        scope(state: \.apiState, action: \.apiAction)
     }
 
     var watchKitSession: Store<WatchKitSession.State, WatchKitSession.Action> {
-        scope(state: \.watchKitSession, action: Main.Action.watchKitSession)
+        scope(state: \.watchKitSession, action: \.watchKitSession)
     }
 }

@@ -19,49 +19,41 @@ struct StatusItemView: View {
     var value: String
 
     var body: some View {
-        VStack {
+        HStack(spacing: 0) {
             VStack {
                 Image(systemName: iconName)
-                    .font(.system(size: 24))
-                    .foregroundColor(Color("blue-primary"))
+                    .font(.system(size: 12))
             }
-            .frame(height: 28)
+            .padding(.trailing, 4)
 
-            VStack {
-                HStack(alignment: .lastTextBaseline, spacing: 2) {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .lastTextBaseline, spacing: 0) {
                     Text(value)
-                        .font(.system(size: 18, weight: .bold, design: .default))
-                        .foregroundColor(Color("blue-primary"))
-                        .fixedSize(horizontal: true, vertical: false)
+                        .font(.system(size: 12, weight: .bold, design: .default))
                     Text(unit)
-                        .font(.system(size: 14, weight: .bold, design: .default))
-                        .foregroundColor(Color("blue-primary"))
+                        .font(.system(size: 10, weight: .bold, design: .default))
                 }
-
                 Text(LocalizedStringKey(label))
-                    .font(.system(size: 12, weight: .regular, design: .default))
-                    .foregroundColor(Color(.secondaryLabel))
+                    .font(.system(size: 10, weight: .regular, design: .default))
             }
-            .frame(maxWidth: .infinity)
+            .foregroundColor(.primary)
         }
-        .padding()
-        .background(
-            Color(.systemBackground)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .padding(4)
+        .padding(.horizontal, 4)
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }
 
-struct StatusItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        HStack {
-            StatusItemView(label: "Battery", unit: "%", iconName: "battery.100.bolt", value: "100")
-            StatusItemView(label: "Clean Time", unit: "min", iconName: "stopwatch", value: "52")
-            StatusItemView(label: "Clean Area", unit: "qm", iconName: "square.dashed", value: "56.8")
-        }
-        .padding(.vertical, 100)
-        .padding(.horizontal, 24)
-        .background(Color(.secondarySystemBackground))
-        .previewLayout(.fixed(width: 360, height: 280))
+#Preview {
+    HStack {
+        StatusItemView(label: "Battery", unit: "%", iconName: "battery.100.bolt", value: "100")
+        StatusItemView(label: "Clean Time", unit: "min", iconName: "stopwatch", value: "52")
+        StatusItemView(label: "Clean Area", unit: "qm", iconName: "square.dashed", value: "56.8")
     }
+    .padding(.vertical, 100)
+    .padding(.horizontal, 24)
+    .background(Color(.secondarySystemBackground))
+    .previewLayout(.fixed(width: 360, height: 280))
 }

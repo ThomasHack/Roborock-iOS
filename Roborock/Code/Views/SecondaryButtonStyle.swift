@@ -15,11 +15,12 @@ struct SecondaryButtonStyle: ButtonStyle {
         let backgroundColor = isEnabled ? Color(.systemBackground) : Color(.tertiarySystemBackground)
 
         return configuration.label
+            .font(.system(size: 16))
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
             .foregroundColor(foregroundColor.opacity(configuration.isPressed ? 0.9 : 1.0))
             .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(RoundedRectangle(cornerRadius: 26))
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
     }
 }
@@ -36,11 +37,9 @@ struct SecondaryButton: View {
     }
 }
 
-struct SecondaryButton_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color(.secondarySystemBackground)
-            SecondaryButton()
-        }
+#Preview {
+    ZStack {
+        Color(.secondarySystemBackground)
+        SecondaryButton()
     }
 }

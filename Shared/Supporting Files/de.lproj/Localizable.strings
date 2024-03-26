@@ -18,7 +18,7 @@
 
 // Home
 "home.status" = "Status";
-"home.battery" = "Ladezustand";
+"home.battery" = "Batterie";
 "home.cleanTime" = "Zeit";
 "home.cleanArea" = "Fläche";
 "home.selectRoom" = "Raum wählen";
@@ -31,22 +31,38 @@
 "settings.donateSiriShortcut" = "Siri Shortcut hinzufügen";
 
 // Roborock vaccum state
-"roborock.state.0" = "Verbinde...";
-"roborock.state.1" = "Starte";
-"roborock.state.2" = "Ladegerät nicht angeschlossen";
-"roborock.state.3" = "Leerlauf";
-"roborock.state.4" = "Fernbedienung aktiv";
-"roborock.state.5" = "Reinigung";
-"roborock.state.6" = "Rückkehr zur Station";
-"roborock.state.7" = "Manueller Modus";
-"roborock.state.8" = "Lädt";
-"roborock.state.9" = "Ladeproblem";
-"roborock.state.10" = "Pausiert";
-"roborock.state.11" = "Spotreinigung";
-"roborock.state.12" = "Fehler";
-"roborock.state.13" = "Herunterfahren";
-"roborock.state.14" = "Aktualisierung";
-"roborock.state.15" = "Ankopplung";
-"roborock.state.16" = "Zum Ziel gehen";
-"roborock.state.17" = "Zonenreinigung";
-"roborock.state.18" = "Zimmerreinigung";
+"roborock.state.value.error" = "Fehler";
+"roborock.state.value.docked" = "Im Dock";
+"roborock.state.value.idle" = "Warte";
+"roborock.state.value.returning" = "Rückkehr zur Station";
+"roborock.state.value.cleaning" = "Reinigung";
+"roborock.state.value.paused" = "Pause";
+"roborock.state.value.manual" = "Manueller Modus";
+"roborock.state.value.moving" = "In Bewegung";
+
+"roborock.state.flag.none" = "";
+"roborock.state.flag.zone" = "Zonenreinigung";
+"roborock.state.flag.segment" = "Raumreinigung";
+"roborock.state.flag.spot" = "Bereichsreinigung";
+"roborock.state.flag.target" = "Zielreinigung";
+"roborock.state.flag.resumable" = "Fortführbar";
+"roborock.state.flag.mapping" = "Kartierung";
+
+"roborock.batteryState.flag.none" = "";
+"roborock.batteryState.flag.charging" = "Lädt";
+"roborock.batteryState.flag.discharging" = "Entlädt";
+"roborock.batteryState.flag.charged" = "Geladen";
+
+"roborock.attachment.watertank" = "Wassertank";
+"roborock.attachment.mop" = "Mop";
+
+"robot.fanSpeed.off" = "Aus";
+"robot.fanSpeed.low" = "Niedrig";
+"robot.fanSpeed.medium" = "Medium";
+"robot.fanSpeed.high" = "Hoch";
+"robot.fanSpeed.max" = "Max";
+
+"robot.waterUsage.off" = "Aus";
+"robot.waterUsage.low" = "Niedrig";
+"robot.waterUsage.medium" = "Medium";
+"robot.waterUsage.high" = "Hoch";

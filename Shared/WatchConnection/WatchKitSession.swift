@@ -98,4 +98,6 @@ struct WatchKitSession {
     }
 
     static let initialState = State()
+
+    static let previewState = State()
 }

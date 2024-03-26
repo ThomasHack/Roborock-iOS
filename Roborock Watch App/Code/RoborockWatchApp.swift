@@ -40,11 +40,11 @@ struct RoborockWatchApp: App {
     }
 
     private func connect() {
-        ViewStore(store, observe: { $0 }).send(.api(.connectRest))
+        ViewStore(store, observe: { $0 }).send(.api(.connect))
     }
 
     private func disconnect() {
-        ViewStore(store, observe: { $0 }).send(.api(.disconnectWebsocket))
+        ViewStore(store, observe: { $0 }).send(.api(.disconnect))
     }
 
     private func requestSettings() {

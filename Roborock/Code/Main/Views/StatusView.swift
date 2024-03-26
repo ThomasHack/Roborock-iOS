@@ -9,37 +9,26 @@ import ComposableArchitecture
 import SwiftUI
 
 struct StatusView: View {
-    let store: StoreOf<Api>
+    @Bindable var store: StoreOf<Api>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            HStack(spacing: 10) {
-                StatusItemView(label: "home.battery",
-                               unit: "%",
-                               iconName: viewStore.batteryIcon,
-                               value: viewStore.batteryValue
-                )
-                StatusItemView(label: "home.cleanTime",
-                               unit: "min",
-                               iconName: "stopwatch",
-                               value: viewStore.cleanTime
-                )
-                StatusItemView(label: "home.cleanArea",
-                               unit: "qm",
-                               iconName: "square.dashed",
-                               value: viewStore.cleanArea
-                )
+        VStack {
+            HStack {
+                ForEach(store.attachments, id: \.self) { attachment in
+                    AttachmentItemView(label: attachment.type.rawValue,
+                                       iconName: attachment.icon,
+                                       attached: attachment.attached
+                    )
+                }
             }
-        })
+        }
     }
 }
 
-struct StatusView_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color(.secondarySystemBackground).edgesIgnoringSafeArea(.all)
-            StatusView(store: Api.previewStore)
-                .padding()
-        }
+#Preview {
+    ZStack {
+        Color(.secondarySystemBackground).edgesIgnoringSafeArea(.all)
+        StatusView(store: Api.previewStore)
+            .padding()
     }
 }

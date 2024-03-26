@@ -9,29 +9,27 @@ import ComposableArchitecture
 import SwiftUI
 
 struct FanspeedList: View {
-    let store: StoreOf<Main>
+    @Bindable var store: StoreOf<Main>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            ScrollView {
-                VStack {
-                    ForEach(viewStore.fanspeeds, id: \.self) { value in
-                        Button {
-                            viewStore.send(.setFanspeed(value))
-                        } label: {
-                            HStack {
-                                Text(value.label)
-                                Spacer()
-                                if viewStore.apiState.status?.fanPower == value.rawValue {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundColor(.blue)
-                                }
+        ScrollView {
+            VStack {
+                ForEach(store.fanSpeedPresets, id: \.self) { value in
+                    Button {
+                        store.send(.controlFanSpeed(value))
+                    } label: {
+                        HStack {
+                            Text(value.rawValue)
+                            Spacer()
+                            if store.apiState.fanSpeed.rawValue == value.rawValue {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.blue)
                             }
                         }
                     }
                 }
             }
-        })
+        }
     }
 }
 
