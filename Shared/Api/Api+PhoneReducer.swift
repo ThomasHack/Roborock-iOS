@@ -27,6 +27,8 @@ extension Api {
                     .send(.subscribeMap),
                     .send(.subscribeState)
                 )
+            case .unsubscribe:
+                Task.cancel(id: EventClient.ID())
             case .toggleRoom(let segment):
                 if let index = state.selectedSegments.firstIndex(of: segment) {
                     state.selectedSegments.remove(at: index)

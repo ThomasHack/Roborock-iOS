@@ -11,11 +11,13 @@ import RoborockApi
 
 @Reducer
 struct Settings {
+    @ObservableState
     struct State: Equatable {
-        var host: String?
-        @BindingState var hostInput = ""
+        @Shared(.appStorage("host")) var host = ""
+        var hostInput = ""
     }
 
+    @CasePathable
     enum Action: BindableAction {
         case binding(BindingAction<State>)
         case doneButtonTapped
@@ -35,9 +37,7 @@ struct Settings {
         }
     }
 
-    static let initialState = State(
-        hostInput: UserDefaultsHelper.host ?? ""
-    )
+    static let initialState = State()
 
     static let previewState = State(
         hostInput: "roborock.friday.home"

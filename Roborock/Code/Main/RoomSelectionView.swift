@@ -9,34 +9,32 @@ import ComposableArchitecture
 import SwiftUI
 
 struct RoomSelectionView: View {
-    let store: StoreOf<Main>
+    @Bindable var store: StoreOf<Main>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            NavigationStack {
-                SegmentList(store: store)
-                    .navigationTitle("home.selectRoom")
-                    .navigationBarTitleDisplayMode(.large)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button {
-                                viewStore.send(.toggleRoomSelection(false))
-                            } label: {
-                                Text("cancel")
-                            }
-                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button {
-                                viewStore.send(.startCleaning)
-                                viewStore.send(.toggleRoomSelection(false))
-                            } label: {
-                                Text("start")
-                                    .bold()
-                            }
+        NavigationStack {
+            SegmentList(store: store)
+                .navigationTitle("home.selectRoom")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            store.send(.toggleRoomSelection(false))
+                        } label: {
+                            Text("cancel")
                         }
                     }
-            }
-        })
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            store.send(.apiAction(.startCleaningSegment))
+                            store.send(.toggleRoomSelection(false))
+                        } label: {
+                            Text("start")
+                                .bold()
+                        }
+                        .disabled(store.apiState.selectedSegments.isEmpty)
+                    }
+                }
+        }
     }
 }
 

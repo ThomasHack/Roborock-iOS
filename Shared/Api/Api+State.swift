@@ -12,12 +12,13 @@ import UIKit
 extension Api {
     @ObservableState
     struct State: Equatable {
-        var host: String?
-        var connectivityState: ConnectivityState = .disconnected
+        @Shared(.appStorage("host")) var host = ""
+        @Shared(.inMemory("connectivityState")) var connectivityState: ConnectivityState = .disconnected
+        @Presents var alert: AlertState<Action.Alert>?
+
         var isConnected: Bool {
             connectivityState == .connected
         }
-
         var status: RobotState?
         var segments: [Segment] = []
         var sortedSegments: [Segment] {
@@ -27,7 +28,6 @@ extension Api {
             })
         }
         var selectedSegments: [Segment] = []
-
         var robotInfo: RobotInfo?
         var robotStatus: StateAttribute.StatusStateAttribute? {
             willSet {
@@ -39,7 +39,6 @@ extension Api {
         var batteryStatus: StateAttribute.BatteryStateAttribute?
         var fanSpeed: FanSpeedControlPreset = .off
         var waterUsage: WaterUsageControlPreset = .off
-//        var operationMode: StateAttribute.PresetSelectionStateAttribute.PresetValue?
         var attachments: [StateAttribute.AttachmentStateAttribute] = []
         var isDustbinAttached = false
         var isWatertankAttached = false
@@ -97,9 +96,7 @@ extension Api {
         #endif
     }
 
-    static let initialState = State(
-        host: UserDefaultsHelper.host
-    )
+    static let initialState = State()
 
     static let previewSegments = [
         Segment(id: "11", name: "Wohnzimmer"),
@@ -117,6 +114,7 @@ extension Api {
 
     #if os(iOS) || os(tvOS) || os(visionOS)
     static let previewState = State(
+        host: "roborock.friday.home",
         connectivityState: .connected,
         segments: previewSegments,
         selectedSegments: [],
@@ -125,7 +123,6 @@ extension Api {
         batteryStatus: StateAttribute.BatteryStateAttribute(level: 88, flag: .charging),
         fanSpeed: .max,
         waterUsage: .high,
-//        operationMode: .vacuum_and_mop,
         attachments: [
             StateAttribute.AttachmentStateAttribute(type: .watertank, attached: true),
             StateAttribute.AttachmentStateAttribute(type: .mop, attached: false)
@@ -136,15 +133,12 @@ extension Api {
         totalCleanTime: 759065,
         totalCleanCount: 384,
         mapImage: .map(#imageLiteral(resourceName: "mapImagePreview")),
-        entityImages: MapImages(images: [
-            .charger(#imageLiteral(resourceName: "chargerImagePreview")),
-            .robot(#imageLiteral(resourceName: "robotImagePreview"))
-        ])
+        entityImages: MapImages(images: [.charger(#imageLiteral(resourceName: "chargerImagePreview")), .robot(#imageLiteral(resourceName: "robotImagePreview"))])
     )
     #endif
     #if os(watchOS)
     static let previewState = State(
-        connectivityState: .connected,
+        connectivityState: .disconnected,
         segments: previewSegments,
         selectedSegments: []
     )

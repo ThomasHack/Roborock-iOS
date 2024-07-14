@@ -15,73 +15,36 @@ enum TabSelection {
 
 @Reducer
 struct Main {
+    @ObservableState
     struct State: Equatable {
-        var host: String? {
-            didSet {
-                UserDefaultsHelper.setHost(host)
-            }
-        }
-        var connectivityState: ConnectivityState = .disconnected
-        var segments: Segments?
-        var fanspeeds = Fanspeed.allCases
+        @Shared(.appStorage("host")) var host = ""
+        @Shared(.inMemory("connectivityState")) var connectivityState: ConnectivityState = .disconnected
+        // TODO: Check if needed
+        // @Shared(.inMemory("showSettings")) var showSettings = false
+        @Shared(.inMemory("showRoomSelection")) var showRoomSelection = false
+
+        var selectedSegments: [Segment] = []
+        var fanSpeedPresets = FanSpeedControlPreset.allCases
         var isMapLoading = true
-        @BindingState var showRoomSelection = false
-        @BindingState var selection: TabSelection = .home
+        var selection: TabSelection = .home
 
-        var _apiState: Api.State?
-        var apiState: Api.State {
-            get {
-                if var tempState = _apiState {
-                    tempState.host = host
-                    tempState.connectivityState = connectivityState
-                    tempState.segments = segments
-                    return tempState
-                }
-                return Api.State(
-                    host: host,
-                    connectivityState: connectivityState,
-                    segments: segments
-                )
-            }
-            set {
-                _apiState = newValue
-                segments = newValue.segments
-                connectivityState = newValue.connectivityState
-            }
-        }
-
-        var _settingsState: Settings.State?
-        var settingsState: Settings.State {
-            get {
-                if var tempState = _settingsState {
-                    tempState.host = host
-                    tempState.connectivityState = connectivityState
-                    return tempState
-                }
-                return Settings.State(
-                    host: host,
-                    hostInput: host ?? ""
-                )
-            }
-            set {
-                _settingsState = newValue
-                host = newValue.host
-            }
-        }
+        var apiState: Api.State
+        var settingsState: Settings.State
     }
 
+    @CasePathable
     enum Action: BindableAction {
         case binding(BindingAction<State>)
+        case connect
+        case disconnect
         case showSettings
         case toggleRoomSelection(Bool)
-        case connectButtonTapped
         case fetchSegments
         case startCleaning
         case stopCleaning
         case pauseCleaning
         case driveHome
         case selectAll
-        case none
 
         case apiAction(Api.Action)
         case settingsAction(Settings.Action)
@@ -91,18 +54,10 @@ struct Main {
         BindingReducer()
         Reduce { state, action in
             switch action {
-            case .binding:
-                break
-            case .connectButtonTapped:
-                switch state.apiState.connectivityState {
-                case .connected, .connecting:
-                    return .send(.apiAction(.disconnectWebsocket))
-
-                case .disconnected:
-                    guard state.host != nil else { return .none }
-                    return .send(.apiAction(.connectRest))
-                }
-
+            case .connect:
+                return .send(.apiAction(.connect))
+            case .disconnect:
+                return .send(.apiAction(.disconnect))
             case .fetchSegments:
                 return .send(.apiAction(.fetchSegments))
 
@@ -119,14 +74,11 @@ struct Main {
                 return .send(.apiAction(.driveHome))
 
             case .selectAll:
-                if state.apiState.rooms.isEmpty {
-                    guard let segments = state.apiState.segments else { return .none }
-                    let rooms = segments.data.map { $0.id }
-                    state.apiState.rooms = rooms
+                if state.apiState.selectedSegments.isEmpty {
+                    state.apiState.selectedSegments = state.apiState.segments
                     return .none
                 }
-                state.apiState.rooms = []
-                return .none
+                state.apiState.selectedSegments = []
 
             case .showSettings:
                 state.selection = .settings
@@ -134,36 +86,27 @@ struct Main {
             case let .toggleRoomSelection(toggle):
                 state.showRoomSelection = toggle
 
-            case .apiAction(.refreshMapImage):
-                state.isMapLoading = true
-
-            case .apiAction(.setMapData):
-                state.isMapLoading = false
-
-            case .apiAction, .settingsAction:
-                break
-            case .none:
+            case .apiAction, .settingsAction, .binding:
                 break
             }
             return .none
         }
-        Scope(state: \.apiState, action: /Action.apiAction) {
+        Scope(state: \.apiState, action: \.apiAction) {
             Api()
         }
-        Scope(state: \.settingsState, action: /Action.settingsAction) {
+        Scope(state: \.settingsState, action: \.settingsAction) {
             Settings()
         }
     }
 
     static let initialState = State(
-        host: UserDefaultsHelper.host
+        apiState: Api.initialState,
+        settingsState: Settings.initialState
     )
 
     static let previewState = State(
-        host: "roborock.friday.home",
-        connectivityState: .connected,
-        _apiState: Api.previewState,
-        _settingsState: Settings.initialState
+        apiState: Api.previewState,
+        settingsState: Settings.previewState
     )
 
     static let previewStore = Store(initialState: previewState) {
@@ -177,10 +120,10 @@ struct Main {
 
 extension Store where State == Main.State, Action == Main.Action {
     var settings: Store<Settings.State, Settings.Action> {
-        scope(state: \.settingsState, action: Main.Action.settingsAction)
+        scope(state: \.settingsState, action: \.settingsAction)
     }
 
     var api: Store<Api.State, Api.Action> {
-        scope(state: \.apiState, action: Main.Action.apiAction)
+        scope(state: \.apiState, action: \.apiAction)
     }
 }

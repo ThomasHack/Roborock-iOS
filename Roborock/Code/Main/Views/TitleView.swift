@@ -12,14 +12,12 @@ struct TitleView: View {
     @Bindable var store: StoreOf<Api>
 
     var body: some View {
-        if let state = store.robotStatus?.value,
-           let flag = store.batteryStatus?.flag,
-           let info = store.robotInfo {
+        if let info = store.robotInfo, let state = store.robotStatus?.value {
              HStack {
                  Text("\(info.manufacturer) \(info.modelName)")
                      .font(.system(size: 16, weight: .bold))
+                 Text("-")
                  Text(LocalizedStringKey(String("roborock.state.value.\(state)")))
-                 Text(LocalizedStringKey(String("roborock.batteryState.flag.\(flag)")))
              }
          } else {
             Text(store.connectivityState == .connected ? "api.connected" : "api.disconnected")

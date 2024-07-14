@@ -38,11 +38,11 @@ struct RoborockApp: App {
     }
 
     private func connect() {
-        ViewStore(store, observe: { $0 }).send(.connect)
+        store.send(.connect)
     }
 
     private func disconnect() {
-        ViewStore(store, observe: { $0 }).send(.disconnect)
+        store.send(.disconnect)
     }
 }
 
@@ -50,7 +50,7 @@ struct RoborockApp: App {
     @Dependency(\.watchkitSessionClient) var watchKitSessionClient
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        ViewStore(Main.store.watchKitSession, observe: { $0 }).send(.connect)
+        Main.store.watchKitSession.send(.connect)
         return true
     }
  }

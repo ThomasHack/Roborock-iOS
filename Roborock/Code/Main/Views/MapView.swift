@@ -17,13 +17,14 @@ struct MapView: View {
     var body: some View {
         if store.mapImage != nil, !store.entityImages.images.isEmpty {
             GeometryReader { geometry in
-                ZStack {
-                    ScrollView([.vertical, .horizontal], showsIndicators: false) {
-                        ZStack {
-                            if let image = store.mapImage {
-                                Image(uiImage: image.associatedValue)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
+                ScrollView([.vertical, .horizontal], showsIndicators: false) {
+                    let height = geometry.size.height - 100
+                    let width = geometry.size.width
+                    ZStack {
+                        if let image = store.mapImage {
+                            Image(uiImage: image.associatedValue)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
                             }
                             ForEach(store.entityImages.zones, id: \.self) { image in
                                 Image(uiImage: image)
@@ -58,27 +59,20 @@ struct MapView: View {
                         }
                         .modifier(
                             ZoomableModifier(
-                                contentSize: CGSize(width: geometry.size.width, height: geometry.size.height - 100),
+                                contentSize: CGSize(width: width, height: height),
                                 min: 0.8,
                                 max: 1.2
                             )
                         )
                         .offset(y: 40)
-                        .frame(
-                            width: geometry.size.width,
-                            height: geometry.size.height - 100,
-                            alignment: .top
-                        )
+                        .frame(width: width, height: height, alignment: .top)
                     }
-                }
             }
         } else {
-            Spacer()
-            if store.connectivityState == .connected {
+            ZStack {
                 ProgressView()
-                    .foregroundColor(Color(UIColor.label))
             }
-            Spacer()
+            .frame(maxHeight: .infinity)
         }
     }
 }

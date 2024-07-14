@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import Foundation
+import RoborockApi
 
 extension Api {
     var watchReducer: some ReducerOf<Api> {
@@ -21,6 +22,8 @@ extension Api {
                 return .merge(
                     .send(.fetchState)
                 )
+            case .unsubscribe:
+                Task.cancel(id: EventClient.ID())
             case .toggleRoom(let roomId):
                 if let index = state.selectedSegments.firstIndex(of: roomId) {
                     state.selectedSegments.remove(at: index)

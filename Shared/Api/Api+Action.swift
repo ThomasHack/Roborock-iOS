@@ -14,12 +14,12 @@ extension Api {
     enum Action: Equatable {
         case connect
         case disconnect
+        case didConnect
+        case didDisconnect
         case update
         case subscribe
         case subscribeState
         case unsubscribe
-        case didConnect
-        case didDisconnect
         case fetchInfo
         case fetchInfoResponse(RobotInfo)
         case fetchState
@@ -35,11 +35,12 @@ extension Api {
         case pauseCleaning
         case driveHome
         case controlFanSpeed(FanSpeedControlPreset)
-        case controlWaterUsage(WaterUsageControlPreset?)
+        case controlWaterUsage(WaterUsageControlPreset)
         case toggleRoom(Segment)
         case resetRooms
         case resetState
         case eventClient(EventClient.Action)
+        case alert(PresentationAction<Alert>)
         #if os(iOS) || os(tvOS) || os(visionOS)
         case fetchMap
         case subscribeMap
@@ -49,5 +50,10 @@ extension Api {
         case updateMapImage(MapImage?)
         case updateEntityImages([MapImage])
         #endif
+
+        @CasePathable
+        enum Alert: Equatable {
+            case apiError(String)
+        }
     }
 }

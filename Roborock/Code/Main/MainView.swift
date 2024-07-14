@@ -14,10 +14,6 @@ struct MainView: View {
 
     var body: some View {
         HomeView(store: store)
-            .edgesIgnoringSafeArea(.all)
-            .sheet(isPresented: $store.showSettings) {
-                SettingsView(store: Main.store.settings)
-            }
     }
 }
 

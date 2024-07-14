@@ -13,7 +13,7 @@ struct WatchKitSession {
     @Dependency(\.watchkitSessionClient) var watchkitSessionClient
 
     struct State: Equatable {
-        var host: String?
+        @Shared(.appStorage("host")) var host = ""
     }
 
     @CasePathable
@@ -41,6 +41,8 @@ struct WatchKitSession {
                             }
                         }
                     }
+                } catch: { error, _ in
+                    print(error.localizedDescription)
                 }
 
             case .requestDataSync:
@@ -53,7 +55,7 @@ struct WatchKitSession {
                 state.host = host
 
             case .resetHost:
-                state.host = nil
+                state.host = ""
 
             case let .sendMessageData(message):
                 return .run { _ in
@@ -67,6 +69,7 @@ struct WatchKitSession {
                 #if os(iOS)
                 return .none
                 #else
+                print("session did activate")
                 return .send(.requestDataSync)
                 #endif
 
@@ -76,8 +79,7 @@ struct WatchKitSession {
                     switch request.action {
                     case .synchronizeUserDefaults:
                         print("sync")
-                        guard let host = state.host else { return .none }
-                        let responseData = WCSessionAppResponseData(host: host)
+                        let responseData = WCSessionAppResponseData(host: state.host)
                         return .run { send in
                             await send(.sendMessageData(WCSessionData.responseAppData(responseData)))
                         }

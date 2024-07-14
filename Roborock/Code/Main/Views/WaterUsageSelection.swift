@@ -19,6 +19,7 @@ struct WaterUsageSelection: View {
         VStack(alignment: .leading) {
             Text("Water Usage")
                 .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(Color("textColorDark"))
             Picker("Water Usage", selection: $store.waterUsage.sending(\.controlWaterUsage)) {
                 ForEach(WaterUsageControlPreset.allCases, id: \.self) { value in
                     Text(value.rawValue.capitalized)
@@ -26,6 +27,7 @@ struct WaterUsageSelection: View {
                 }
             }
             .pickerStyle(.segmented)
+            .tint(Color("textColorDark"))
         }
     }
 }

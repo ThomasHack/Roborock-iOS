@@ -10,96 +10,66 @@ import RoborockApi
 import SwiftUI
 
 struct ButtonView: View {
-    @Bindable var store: StoreOf<Api>
+    @Bindable var store: StoreOf<Main>
 
     var body: some View {
         VStack {
-            if store.connectivityState == .connected {
-                HStack(alignment: .center, spacing: 16) {
+            HStack(alignment: .center, spacing: 16) {
+                Button {
+                    store.send(.apiAction(.driveHome))
+                } label: {
+                    Image(systemName: "house.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
+                }
+                .disabled(store.apiState.robotStatus?.value == .docked)
+                .buttonStyle(SecondaryRoundedButtonStyle())
+
+                if !store.apiState.inCleaning && !store.apiState.inReturning {
                     Button {
-                        store.send(.driveHome)
+                        store.send(.toggleRoomSelection(true))
                     } label: {
-                        Image(systemName: "house.fill")
+                        Image(systemName: "play.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
+                            .offset(x: 2, y: 0)
+                    }
+                    .buttonStyle(PrimaryRoundedButtonStyle())
+                } else {
+                    Button {
+                        store.send(.apiAction(.stopCleaning))
+                    } label: {
+                        Image(systemName: "stop.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
                     }
-                    .disabled(store.robotStatus?.value == .docked)
-                    .buttonStyle(SecondaryRoundedButtonStyle())
+                    .buttonStyle(PrimaryRoundedButtonStyle())
+                }
 
-                    if !store.inCleaning && !store.inReturning {
-                        Button {
-                            // store.send(.toggleRoomSelection(true))
-                        } label: {
-                            Image(systemName: "play.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
-                                .offset(x: 2, y: 0)
-                        }
-                        .buttonStyle(PrimaryRoundedButtonStyle())
-                    } else {
-                        Button {
-                            store.send(.stopCleaning)
-                        } label: {
-                            Image(systemName: "stop.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
-                        }
-                        .buttonStyle(PrimaryRoundedButtonStyle())
-                    }
-
-                    if store.inCleaning && store.inReturning {
-                        Button {
-                            store.send(.pauseCleaning)
-                        } label: {
-                            Image(systemName: "pause.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20)
-                        }
-                        .buttonStyle(SecondaryRoundedButtonStyle())
-                    }
-
+                if store.apiState.inCleaning && store.apiState.inReturning {
                     Button {
-                        // store.send(.toggleSettings(true))
+                        store.send(.apiAction(.pauseCleaning))
                     } label: {
-                        Image(systemName: "gear")
+                        Image(systemName: "pause.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
                     }
                     .buttonStyle(SecondaryRoundedButtonStyle())
                 }
-            } else if store.connectivityState == .connecting {
-                VStack {
-                    ProgressView()
+
+                Button {
+                    store.send(.toggleSettings(true))
+                } label: {
+                    Image(systemName: "gear")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
                 }
-            } else {
-                HStack {
-                    Button {
-                        // store.send(.connectButtonTapped)
-                    } label: {
-                        HStack(alignment: .center) {
-                            Text("api.connect")
-                        }
-                        .padding()
-                        .background(Color(.systemBackground))
-                        .cornerRadius(15)
-                    }
-                    Button {
-                        store.send(.disconnect)
-                    } label: {
-                        HStack(alignment: .center) {
-                            Text("api.disconnect")
-                        }
-                        .padding()
-                        .background(Color(.systemBackground))
-                        .cornerRadius(15)
-                    }
-                }
-                .padding(8)
+                .buttonStyle(SecondaryRoundedButtonStyle())
             }
         }
         .frame(height: 70)
@@ -109,6 +79,6 @@ struct ButtonView: View {
 #Preview {
     ZStack {
         Color(.secondarySystemBackground).edgesIgnoringSafeArea(.all)
-        ButtonView(store: Api.previewStore)
+        ButtonView(store: Main.previewStore)
     }
 }

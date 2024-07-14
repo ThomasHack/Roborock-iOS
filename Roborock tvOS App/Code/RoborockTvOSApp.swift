@@ -12,35 +12,33 @@ import SwiftUI
 struct RoborockTvOSApp: App {
     @Environment(\.scenePhase) var scenePhase
 
-    let store: StoreOf<Main> = Main.store
+    @Bindable var store: StoreOf<Main> = Main.store
 
     @SceneBuilder
     var body: some Scene {
         WindowGroup {
-            WithViewStore(store, observe: { $0 }, content: { viewStore in
-                ZStack {
-                    GradientBackgroundView()
-                        .edgesIgnoringSafeArea(.all)
+            ZStack {
+                GradientBackgroundView()
+                    .edgesIgnoringSafeArea(.all)
 
-                    TabView(selection: viewStore.$selection, content: {
-                        MainView(store: store)
-                            .tabItem {
-                                Image(systemName: "house")
-                                Text("Home")
-                            }
-                            .tag(TabSelection.home)
-                            .toolbarBackground(Color("blue-light"), for: .tabBar)
+                TabView(selection: $store.selection, content: {
+                    MainView(store: store)
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("Home")
+                        }
+                        .tag(TabSelection.home)
+                        .toolbarBackground(Color("blue-light"), for: .tabBar)
 
-                        SettingsView(store: store.settings)
-                            .tabItem {
-                                Image(systemName: "gear")
-                                Text("Settings")
-                            }
-                            .tag(TabSelection.settings)
-                            .toolbarBackground(Color("blue-light"), for: .tabBar)
-                    })
-                }
-            })
+                    SettingsView(store: store.settings)
+                        .tabItem {
+                            Image(systemName: "gear")
+                            Text("Settings")
+                        }
+                        .tag(TabSelection.settings)
+                        .toolbarBackground(Color("blue-light"), for: .tabBar)
+                })
+            }
         }
         .onChange(of: scenePhase, { _, newValue in
             handlePhaseChange(newValue)
@@ -59,10 +57,10 @@ struct RoborockTvOSApp: App {
     }
 
     private func connect() {
-        ViewStore(store, observe: { $0 }).send(.apiAction(.connectRest))
+        store.send(.apiAction(.connect))
     }
 
     private func disconnect() {
-        ViewStore(store, observe: { $0 }).send(.apiAction(.disconnectWebsocket))
+        store.send(.apiAction(.disconnect))
     }
 }

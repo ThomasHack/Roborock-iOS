@@ -9,29 +9,27 @@ import ComposableArchitecture
 import SwiftUI
 
 struct HeaderView: View {
-    let store: StoreOf<Main>
+    @Bindable var store: StoreOf<Main>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            if let state = viewStore.apiState.status?.state {
+        if let state = store.apiState.status?. {
+            VStack {
                 VStack {
-                    VStack {
-                        Image(systemName: viewStore.apiState.state.iconName)
-                            .foregroundColor(Color("textColorDark"))
-                    }
-                    .frame(height: 28)
-
-                    Text(LocalizedStringKey(String("roborock.state.\(state)")))
-                        .font(.headline)
+                    Image(systemName: store.apiState.status.iconName)
                         .foregroundColor(Color("textColorDark"))
-
-                    Text("Status")
-                        .font(.caption2)
-                        .foregroundColor(Color("textColorLight"))
                 }
-                .padding()
+                .frame(height: 28)
+
+                Text(LocalizedStringKey(String("roborock.state.\(state)")))
+                    .font(.headline)
+                    .foregroundColor(Color("textColorDark"))
+
+                Text("Status")
+                    .font(.caption2)
+                    .foregroundColor(Color("textColorLight"))
             }
-        })
+            .padding()
+        }
     }
 }
 

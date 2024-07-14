@@ -16,12 +16,9 @@ struct WatchKitId: Hashable {}
 struct Main {
     @ObservableState
     struct State: Equatable {
-        var host: String? {
-            didSet {
-                UserDefaultsHelper.setHost(host)
-            }
-        }
-        var connectivityState: ConnectivityState = .disconnected
+        @Shared(.appStorage("host")) var host = ""
+        @Shared(.inMemory("connectivityState")) var connectivityState: ConnectivityState = .disconnected
+
         var selectedSegments: [Segment] = []
         var fanSpeedPresets = FanSpeedControlPreset.allCases
         var waterUsagePresets = WaterUsageControlPreset.allCases
@@ -33,13 +30,11 @@ struct Main {
         var apiState: Api.State {
             get {
                 if var tempState = _apiState {
-                    tempState.host = host
                     tempState.connectivityState = connectivityState
                     tempState.segments = selectedSegments
                     return tempState
                 }
                 return Api.State(
-                    host: host,
                     connectivityState: connectivityState,
                     segments: selectedSegments
                 )
@@ -54,13 +49,10 @@ struct Main {
         var _watchKitSessionState: WatchKitSession.State?
         var watchKitSessionState: WatchKitSession.State {
             get {
-                if var tempState = _watchKitSessionState {
-                    tempState.host = host
+                if let tempState = _watchKitSessionState {
                     return tempState
                 }
-                return WatchKitSession.State(
-                    host: host
-                )
+                return WatchKitSession.State()
             }
             set {
                 _watchKitSessionState = newValue
@@ -70,7 +62,7 @@ struct Main {
     }
 
     @CasePathable
-    enum Action {
+    enum Action: BindableAction {
         case toggleSegmentsModal(Bool)
         case toggleFanspeedModal(Bool)
         case toggleWaterUsageModal(Bool)
@@ -85,9 +77,11 @@ struct Main {
         case controlWaterUsage(WaterUsageControlPreset)
         case api(Api.Action)
         case watchKitSession(WatchKitSession.Action)
+        case binding(BindingAction<State>)
     }
 
     var body: some Reducer<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
             case .toggleSegmentsModal(let toggle):
@@ -138,7 +132,7 @@ struct Main {
                 WKInterfaceDevice.current().play(.success)
                 return .send(.api(.controlWaterUsage(waterUsage)))
 
-            case .api, .watchKitSession:
+            case .api, .watchKitSession, .binding:
                 break
             }
             return .none
@@ -151,9 +145,7 @@ struct Main {
         }
     }
 
-    static let initialState = State(
-        host: UserDefaultsHelper.host
-    )
+    static let initialState = State()
 
     static let previewState = State(
         host: "roborock.friday.home",

@@ -23,8 +23,11 @@
 "home.cleanArea" = "Clean Area";
 "home.selectRoom" = "Select Room";
 "home.setHost" = "Set Host";
+"home.connect" = "Connect";
+"home.settings" = "Settings";
 
 // Settings
+"settings.open" = "Open Settings";
 "settings.title" = "Settings";
 "settings.host" = "Host";
 "settings.siriShortcut" = "Siri Shortcuts";

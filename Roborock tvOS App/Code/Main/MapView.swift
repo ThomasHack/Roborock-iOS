@@ -13,52 +13,58 @@ struct MapView: View {
     let store: StoreOf<Api>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            if let mapImage = viewStore.mapImage,
-               let pathImage = viewStore.pathImage,
-               let forbiddenZonesImage = viewStore.forbiddenZonesImage,
-               let robotImage = viewStore.robotImage,
-               let chargerImage = viewStore.chargerImage,
-               let segmentLabelsImage = viewStore.segmentLabelsImage {
-                GeometryReader { geometry in
-                    ZStack(alignment: .center) {
-                        ScrollView([.vertical, .horizontal], showsIndicators: false) {
-                            ZStack {
-                                Image(uiImage: mapImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-
-                                Image(uiImage: forbiddenZonesImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-
-                                Image(uiImage: chargerImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-
-                                Image(uiImage: pathImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-
-                                Image(uiImage: segmentLabelsImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-
-                                Image(uiImage: robotImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
+        if store.mapImage != nil, !store.entityImages.images.isEmpty {
+            GeometryReader { geometry in
+                ScrollView([.vertical, .horizontal], showsIndicators: false) {
+                    ZStack {
+                        if let image = store.mapImage {
+                            Image(uiImage: image.associatedValue)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
                             }
-                            .padding(geometry.size.width * 0.1)
-                            .frame(
-                                width: geometry.size.width,
-                                height: geometry.size.height,
-                                alignment: .center
-                            )
+                            ForEach(store.entityImages.zones, id: \.self) { image in
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
+                            ForEach(store.entityImages.virtualWalls, id: \.self) { image in
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
+                            ForEach(store.entityImages.paths, id: \.self) { image in
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
+                            ForEach(store.entityImages.targets, id: \.self) { image in
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
+                            if let image = store.entityImages.charger {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
+                            if let image = store.entityImages.robot {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
                         }
-                    }
+                    .frame(width: geometry.size.width,
+                           height: geometry.size.height,
+                           alignment: .top
+                    )
                 }
             }
-        })
+        } else {
+            ZStack {
+                ProgressView()
+            }
+            .frame(maxHeight: .infinity)
+        }
     }
 }
 

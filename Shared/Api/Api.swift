@@ -19,6 +19,8 @@ struct Api {
 
     enum EventClientTask: Hashable {
         case map
+        case update
+        case subscribe
         case stateAttributes
     }
 
@@ -32,8 +34,7 @@ struct Api {
         Reduce { state, action in
             switch action {
             case .connect:
-                guard let host = state.host,
-                      let url = URL(string: "https://\(host)") else { return .none }
+                guard !state.host.isEmpty, let url = URL(string: "https://\(state.host)") else { return .none }
                 state.connectivityState = .connecting
                 return .run { send in
                     try await restClient.connect(RestClient.ID(), url)
@@ -42,14 +43,9 @@ struct Api {
                     await send(.subscribe)
                 }
             case .disconnect:
-                return .merge(
-                    .send(.unsubscribe)
-                )
-            case .unsubscribe:
-                Task.cancel(id: EventClient.ID())
+                return .send(.unsubscribe)
             case .didConnect:
                 state.connectivityState = .connected
-
             case .didDisconnect:
                 state.connectivityState = .disconnected
                 return .send(.resetState)
@@ -57,7 +53,12 @@ struct Api {
                 return .run { send in
                     let state = try await restClient.fetchStateAttributes(RestClient.ID())
                     return await send(.updateState(state))
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
+            case .alert(.presented(.apiError(let description))):
+                state.connectivityState = .disconnected
+                state.alert = AlertState { TextState(description) }
             case .subscribeState:
                 return .run { send in
                     let actions = try await self.eventClient.subscribe(EventClient.ID(), .stateAttributesStream)
@@ -108,6 +109,8 @@ struct Api {
                 return .run { send in
                     let robotInfo = try await restClient.fetchInfo(RestClient.ID())
                     await send(.fetchInfoResponse(robotInfo))
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case .fetchInfoResponse(let robotInfo):
                 state.robotInfo = robotInfo
@@ -115,6 +118,8 @@ struct Api {
                 return .run { send in
                     let statistics = try await restClient.fetchCurrentStatistics(RestClient.ID())
                     await send(.fetchCurrentStatisticsResponse(statistics))
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case .fetchCurrentStatisticsResponse(let statistics):
                 for statistic in statistics {
@@ -131,6 +136,8 @@ struct Api {
                 return .run { send in
                     let statistics = try await restClient.fetchTotalStatistics(RestClient.ID())
                     await send(.fetchTotalStatisticsResponse(statistics))
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case .fetchTotalStatisticsResponse(let statistics):
                 for statistic in statistics {
@@ -147,6 +154,8 @@ struct Api {
                 return .run { send in
                     let segments = try await restClient.fetchSegments(RestClient.ID())
                     await send(.fetchSegmentsResponse(segments))
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case .fetchSegmentsResponse(let segments):
                 state.segments = segments
@@ -154,29 +163,41 @@ struct Api {
                 let selectedSegments = state.selectedSegments
                 return .run { _ in
                     _ = try await restClient.cleanSegments(RestClient.ID(), selectedSegments)
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case .stopCleaning:
                 return .run { send in
                     _ = try await restClient.stopCleaning(RestClient.ID())
                     await send(.resetRooms)
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case .pauseCleaning:
                 return .run { _ in
                     _ = try await restClient.pauseCleaning(RestClient.ID())
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case .driveHome:
                 return .run { _ in
                     _ = try await restClient.driveHome(RestClient.ID())
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case let .controlFanSpeed(preset):
-                state.fanSpeed = preset
-                return .run { _ in
+                return .run { send in
                     _ = try await restClient.controlFanSpeed(RestClient.ID(), preset)
+                    return await send(.fetchState)
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case let .controlWaterUsage(preset):
-                guard let preset = preset else { return .none }
-                return .run { _ in
+                return .run { send in
                     _ = try await restClient.controlWaterUsage(RestClient.ID(), preset)
+                    return await send(.fetchState)
+                } catch: { error, send in
+                    await send(.alert(.presented(.apiError(error.localizedDescription))))
                 }
             case .resetState:
                 state.attachments = []
@@ -194,6 +215,7 @@ struct Api {
             }
             return .none
         }
+        .ifLet(\.$alert, action: \.alert)
     }
 
     static let previewStore = Store(initialState: previewState) {

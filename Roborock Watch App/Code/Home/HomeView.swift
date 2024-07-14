@@ -9,65 +9,54 @@ import ComposableArchitecture
 import SwiftUI
 
 struct HomeView: View {
-    let store: StoreOf<Main>
+    @Bindable var store: StoreOf<Main>
 
     private let columns = Array(repeating: GridItem(.flexible()), count: 2)
 
     @State private var currentPage = 0
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            VStack(alignment: .leading, spacing: 16) {
-                if let status = viewStore.apiState.robotStatus {
-                    StateTileView(status: status)
+        VStack(alignment: .leading, spacing: 16) {
+            if let status = store.apiState.robotStatus {
+                StateTileView(status: status)
+            }
+
+            HStack(spacing: 4) {
+                BatteryTileView(value: store.apiState.batteryStatus?.level)
+                    .frame(width: 68, height: 68)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    StatusTileView(iconName: "stopwatch",
+                                   label: "Clean time",
+                                   unit: "h",
+                                   color: Color("blue-primary"),
+                                   value: store.apiState.cleanTimeReadable
+                    )
+
+                    StatusTileView(iconName: "square.dashed",
+                                   label: "Clean area",
+                                   unit: "qm",
+                                   color: Color("blue-primary"),
+                                   value: store.apiState.cleanAreaReadable
+                    )
                 }
-
-                HStack(spacing: 4) {
-                    BatteryTileView(value: viewStore.apiState.batteryStatus?.level)
-                        .frame(width: 68, height: 68)
-
-                    VStack(alignment: .leading, spacing: 8) {
-                        StatusTileView(iconName: "stopwatch",
-                                       label: "Clean time",
-                                       unit: "h",
-                                       color: Color("blue-primary"),
-                                       value: viewStore.apiState.cleanTimeReadable
-                        )
-
-                        StatusTileView(iconName: "square.dashed",
-                                       label: "Clean area",
-                                       unit: "qm",
-                                       color: Color("blue-primary"),
-                                       value: viewStore.apiState.cleanAreaReadable
-                        )
-                    }
-                    .padding(.leading, 8)
-                }
-
-                ButtonView(store: store)
+                .padding(.leading, 8)
             }
-            .navigationTitle("Roborock")
-            .padding(.top, 16)
-            .sheet(isPresented: viewStore.binding(
-                get: \.showSegmentsModal,
-                send: Main.Action.toggleSegmentsModal
-            )) {
-                SegmentList(store: store)
-            }
-            .sheet(isPresented: viewStore.binding(
-                get: \.showFanspeedModal,
-                send: Main.Action.toggleFanspeedModal
-            )) {
-                FanspeedList(store: store)
-            }
-            .sheet(isPresented: viewStore.binding(
-                get: \.showWaterUsageModal,
-                send: Main.Action.toggleWaterUsageModal
-            )) {
-                WaterUsageList(store: store)
-            }
+
+            ButtonView(store: store)
+        }
+        .padding(.top, 16)
+        .sheet(isPresented: $store.showSegmentsModal, content: {
+            SegmentList(store: store)
+        })
+        .sheet(isPresented: $store.showFanspeedModal, content: {
+            FanspeedList(store: store)
+        })
+        .sheet(isPresented: $store.showWaterUsageModal, content: {
+            WaterUsageList(store: store)
         })
         .navigationTitle("Status")
+        .navigationTitle("Roborock")
     }
 }
 

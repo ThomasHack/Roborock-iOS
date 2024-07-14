@@ -13,7 +13,12 @@ struct HeaderView: View {
 
     var body: some View {
         HStack {
-            StatusLabel(label: "home.battery", unit: "%", value: store.batteryValue)
+            if let batteryFlag = store.batteryStatus?.flag {
+                let battery = NSLocalizedString("home.battery", comment: "")
+                let state = NSLocalizedString("roborock.batteryState.flag.\(batteryFlag.rawValue)", comment: "")
+                StatusLabel(label: "\(battery): \(state)", unit: "%", value: store.batteryValue)
+            }
+
             Divider()
             StatusLabel(label: "home.cleanTime", unit: "min", value: store.cleanTimeReadable)
             Divider()

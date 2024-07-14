@@ -9,42 +9,40 @@ import ComposableArchitecture
 import SwiftUI
 
 struct SettingsView: View {
-    let store: StoreOf<Settings>
+    @Bindable var store: StoreOf<Settings>
 
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }, content: { viewStore in
-            NavigationView {
-                VStack {
-                    Form {
-                        Section(header: Text("settings.host")) {
-                            HStack(spacing: 0) {
-                                Text("https://")
-                                    .foregroundColor(Color(.quaternaryLabel))
-                                TextField("roborock", text: viewStore.$hostInput)
-                                    .keyboardType(.URL)
-                                    .disableAutocorrection(true)
-                                    .autocapitalization(.none)
-                            }
+        NavigationView {
+            VStack {
+                Form {
+                    Section(header: Text("settings.host")) {
+                        HStack(spacing: 0) {
+                            Text("https://")
+                                .foregroundColor(Color(.quaternaryLabel))
+                            TextField("roborock", text: $store.hostInput)
+                                .keyboardType(.URL)
+                                .disableAutocorrection(true)
+                                .autocapitalization(.none)
                         }
                     }
                 }
-                .navigationBarTitle(Text("settings.title"), displayMode: .large)
-                .background(Color(.systemBackground))
-                .edgesIgnoringSafeArea(.all)
-                .padding([.top], 10)
-                .toolbar {
-                    Button {
-                        viewStore.send(.doneButtonTapped)
-                        dismiss()
-                    } label: {
-                        Text("done")
-                            .font(.system(size: 17, weight: .bold))
-                    }
+            }
+            .navigationBarTitle(Text("settings.title"), displayMode: .large)
+            .background(Color(.systemBackground))
+            .edgesIgnoringSafeArea(.all)
+            .padding([.top], 10)
+            .toolbar {
+                Button {
+                    store.send(.doneButtonTapped)
+                    dismiss()
+                } label: {
+                    Text("done")
+                        .font(.system(size: 17, weight: .bold))
                 }
             }
-        })
+        }
     }
 }
 

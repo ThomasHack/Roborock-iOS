@@ -95,7 +95,6 @@ public class ValetudoMapParser {
         let paths = entity.points
         switch entity.type {
         case .activeZone:
-            // TODO: change method
             return activeZone(paths: paths)
         case .chargerLocation:
             return charger(paths: paths)

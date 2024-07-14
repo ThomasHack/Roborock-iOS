@@ -9,25 +9,23 @@ import ComposableArchitecture
 import SwiftUI
 
 struct MainView: View {
-    var store: StoreOf<Main>
+    @Bindable var store: StoreOf<Main>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            if !(viewStore.host ?? "").isEmpty {
-                HomeView(store: store)
-            } else {
-                VStack(spacing: 16) {
-                    Spacer()
-                    ProgressView()
-                    Button {
-                        viewStore.send(.watchKitSession(.requestDataSync))
-                    } label: {
-                        Text("Connect")
-                    }
-                    Spacer()
+        if !store.host.isEmpty {
+            HomeView(store: store)
+        } else {
+            VStack(spacing: 16) {
+                Spacer()
+                ProgressView()
+                Button {
+                    store.send(.watchKitSession(.connect))
+                } label: {
+                    Text("Connect")
                 }
+                Spacer()
             }
-        })
+        }
     }
 }
 
