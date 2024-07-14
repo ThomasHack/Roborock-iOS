@@ -10,7 +10,7 @@ import SwiftUI
 struct OverlaySheet<Content: View>: View {
     var content: () -> Content
     @Binding var isExpanded: Bool
-    @State private var offset: CGFloat = 0
+    @State private var offset: CGFloat = 325
     @GestureState private var startOffset: CGFloat?
 
     private let minOffset: CGFloat = 60

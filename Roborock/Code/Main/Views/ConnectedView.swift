@@ -11,7 +11,7 @@ import SwiftUI
 struct ConnectedView: View {
     @Bindable var store: StoreOf<Main>
 
-    @State private var expanded = true
+    @State private var expanded = false
 
     var body: some View {
         ZStack(alignment: .bottom) {

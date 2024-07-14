@@ -18,10 +18,17 @@ struct MainView: View {
             VStack(spacing: 16) {
                 Spacer()
                 ProgressView()
-                Button {
-                    store.send(.watchKitSession(.connect))
-                } label: {
-                    Text("Connect")
+                HStack {
+                    Button {
+                        store.send(.watchKitSession(.connect))
+                    } label: {
+                        Text("Connect")
+                    }
+                    Button {
+                        store.send(.watchKitSession(.requestDataSync))
+                    } label: {
+                        Text("Sync")
+                    }
                 }
                 Spacer()
             }

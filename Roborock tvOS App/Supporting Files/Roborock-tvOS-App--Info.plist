@@ -15,13 +15,6 @@
 				<key>NSExceptionRequiresForwardSecrecy</key>
 				<true/>
 			</dict>
-			<key>roborock.friday.home</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<true/>
-			</dict>
 		</dict>
 	</dict>
 </dict>

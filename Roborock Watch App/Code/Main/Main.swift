@@ -26,39 +26,8 @@ struct Main {
         var showFanspeedModal = false
         var showWaterUsageModal = false
 
-        var _apiState: Api.State?
-        var apiState: Api.State {
-            get {
-                if var tempState = _apiState {
-                    tempState.connectivityState = connectivityState
-                    tempState.segments = selectedSegments
-                    return tempState
-                }
-                return Api.State(
-                    connectivityState: connectivityState,
-                    segments: selectedSegments
-                )
-            }
-            set {
-                _apiState = newValue
-                selectedSegments = newValue.segments
-                connectivityState = newValue.connectivityState
-            }
-        }
-
-        var _watchKitSessionState: WatchKitSession.State?
-        var watchKitSessionState: WatchKitSession.State {
-            get {
-                if let tempState = _watchKitSessionState {
-                    return tempState
-                }
-                return WatchKitSession.State()
-            }
-            set {
-                _watchKitSessionState = newValue
-                host = newValue.host
-            }
-        }
+        var apiState: Api.State
+        var watchKitSession: WatchKitSession.State
     }
 
     @CasePathable
@@ -140,16 +109,20 @@ struct Main {
         Scope(state: \.apiState, action: \.api) {
             Api()
         }
-        Scope(state: \.watchKitSessionState, action: /Action.watchKitSession) {
+        Scope(state: \.watchKitSession, action: \.watchKitSession) {
             WatchKitSession()
         }
     }
 
-    static let initialState = State()
+    static let initialState = State(
+        apiState: Api.initialState,
+        watchKitSession: WatchKitSession.initialState
+    )
 
     static let previewState = State(
         host: "roborock.friday.home",
-        connectivityState: .connected
+        apiState: Api.previewState,
+        watchKitSession: WatchKitSession.previewState
     )
 
     static let previewStore = Store(initialState: previewState) {
@@ -167,6 +140,6 @@ extension Store where State == Main.State, Action == Main.Action {
     }
 
     var watchKitSession: Store<WatchKitSession.State, WatchKitSession.Action> {
-        scope(state: \.watchKitSessionState, action: \.watchKitSession)
+        scope(state: \.watchKitSession, action: \.watchKitSession)
     }
 }
