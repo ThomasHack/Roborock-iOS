@@ -58,26 +58,30 @@ struct ButtonView: View {
                 }
             }
 
-            Button {
-                store.send(.toggleFanspeedModal(true))
-            } label: {
-                Image(systemName: "speedometer")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 20, height: 20)
-            }
-            .buttonStyle(CircularButtonStyle())
+            NavigationLink {
+                VStack {
+                    Button {
+                        store.send(.toggleFanspeedModal(true))
+                    } label: {
+                        Label("Fanspeed", systemImage: "speedometer")
+                    }
 
-            Button {
-                store.send(.toggleWaterUsageModal(true))
+                    Button {
+                        store.send(.toggleWaterUsageModal(true))
+                    } label: {
+                        Label("Water Usage", systemImage: "drop.circle")
+                    }
+                }
+                .navigationTitle("Settings")
             } label: {
-                Image(systemName: "drop.circle")
+                Image(systemName: "gear")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
             }
             .buttonStyle(CircularButtonStyle())
         }
+        .padding(.vertical)
     }
 }
 

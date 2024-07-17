@@ -11,10 +11,6 @@ import SwiftUI
 struct HomeView: View {
     @Bindable var store: StoreOf<Main>
 
-    private let columns = Array(repeating: GridItem(.flexible()), count: 2)
-
-    @State private var currentPage = 0
-
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             if let status = store.apiState.robotStatus {
@@ -27,16 +23,14 @@ struct HomeView: View {
 
                 VStack(alignment: .leading, spacing: 8) {
                     StatusTileView(iconName: "stopwatch",
-                                   label: "Clean time",
+                                   label: "Clean Time",
                                    unit: "h",
-                                   color: Color("blue-primary"),
                                    value: store.apiState.cleanTimeReadable
                     )
 
                     StatusTileView(iconName: "square.dashed",
-                                   label: "Clean area",
+                                   label: "Clean Area",
                                    unit: "qm",
-                                   color: Color("blue-primary"),
                                    value: store.apiState.cleanAreaReadable
                     )
                 }
@@ -45,7 +39,6 @@ struct HomeView: View {
 
             ButtonView(store: store)
         }
-        .padding(.top, 16)
         .sheet(isPresented: $store.showSegmentsModal, content: {
             SegmentList(store: store)
         })
@@ -55,13 +48,11 @@ struct HomeView: View {
         .sheet(isPresented: $store.showWaterUsageModal, content: {
             WaterUsageList(store: store)
         })
-        .navigationTitle("Status")
-        .navigationTitle("Roborock")
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
+    NavigationStack {
         HomeView(store: Main.previewStore)
     }
 }

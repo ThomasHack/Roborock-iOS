@@ -60,8 +60,6 @@ struct Main {
                 state.showSettings = toggle
             case .toggleRoomSelection(let toggle):
                 state.showRoomSelection = toggle
-            case let .watchKitSession(action):
-                print(action)
             case .apiAction, .settingsAction, .watchKitSession, .binding:
                 break
             }

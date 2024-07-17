@@ -49,30 +49,19 @@ struct StateTileView: View {
     }
 
     var body: some View {
-        HStack {
-            Spacer(minLength: 0)
-
-            HStack(spacing: 8) {
-                VStack {
-                    Image(systemName: iconName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 18, height: 18)
-                }
+        HStack(spacing: 8) {
+            Image(systemName: iconName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 18, height: 18)
                 .padding(6)
                 .background(Color("blue-primary"))
                 .clipShape(Circle())
 
-                Text("")
-                Text(LocalizedStringKey(String("roborock.state.\(status.value.rawValue)")))
-                    .font(.system(size: 18, weight: .bold, design: .default))
-                    .multilineTextAlignment(.center)
-                    .frame(minHeight: 40)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            Spacer(minLength: 0)
+            Text(LocalizedStringKey(String("roborock.state.value.\(status.value)")))
+                .font(.system(size: 18, weight: .bold, design: .default))
         }
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 

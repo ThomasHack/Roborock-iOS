@@ -16,10 +16,9 @@ struct BatteryTileView: View {
             .overlay(
                 HStack(alignment: .lastTextBaseline, spacing: 0) {
                     Text("\(value ?? 0)")
-                        .font(.body)
+                        .font(.system(size: 20, weight: .semibold))
                     Text("%")
-                        .font(.system(size: 12))
-                        .foregroundColor(Color.gray)
+                        .font(.system(size: 14))
                 }
             )
     }

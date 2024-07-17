@@ -14,7 +14,7 @@ struct WaterUsageList: View {
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(store.waterUsagePresets, id: \.self) { value in
+                ForEach(store.waterUsagePresets.reversed(), id: \.self) { value in
                     Button {
                         store.send(.controlWaterUsage(value))
                     } label: {
@@ -30,6 +30,7 @@ struct WaterUsageList: View {
                 }
             }
         }
+        .navigationTitle("Water Usage")
     }
 }
 

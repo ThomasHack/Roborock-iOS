@@ -120,7 +120,6 @@ struct Main {
     )
 
     static let previewState = State(
-        host: "roborock.friday.home",
         apiState: Api.previewState,
         watchKitSession: WatchKitSession.previewState
     )

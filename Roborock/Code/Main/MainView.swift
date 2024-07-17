@@ -13,7 +13,9 @@ struct MainView: View {
     @Bindable var store: StoreOf<Main>
 
     var body: some View {
-        HomeView(store: store)
+        NavigationStack {
+            HomeView(store: store)
+        }
     }
 }
 

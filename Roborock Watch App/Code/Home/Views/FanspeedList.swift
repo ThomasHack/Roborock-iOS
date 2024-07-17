@@ -14,7 +14,7 @@ struct FanspeedList: View {
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(store.fanSpeedPresets, id: \.self) { value in
+                ForEach(store.fanSpeedPresets.reversed(), id: \.self) { value in
                     Button {
                         store.send(.controlFanSpeed(value))
                     } label: {
@@ -30,6 +30,7 @@ struct FanspeedList: View {
                 }
             }
         }
+        .navigationTitle("Fanspeed")
     }
 }
 

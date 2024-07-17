@@ -138,9 +138,24 @@ extension Api {
     #endif
     #if os(watchOS)
     static let previewState = State(
-        connectivityState: .disconnected,
+        host: "roborock.friday.home",
+        connectivityState: .connected,
         segments: previewSegments,
-        selectedSegments: []
+        selectedSegments: [],
+        robotInfo: previewRobotInfo,
+        robotStatus: StateAttribute.StatusStateAttribute(value: .docked, flag: .none),
+        batteryStatus: StateAttribute.BatteryStateAttribute(level: 88, flag: .charging),
+        fanSpeed: .max,
+        waterUsage: .high,
+        attachments: [
+            StateAttribute.AttachmentStateAttribute(type: .watertank, attached: true),
+            StateAttribute.AttachmentStateAttribute(type: .mop, attached: false)
+        ],
+        cleanArea: 296650,
+        totalCleanArea: 93832650,
+        cleanTime: 2472,
+        totalCleanTime: 759065,
+        totalCleanCount: 384
     )
     #endif
 }

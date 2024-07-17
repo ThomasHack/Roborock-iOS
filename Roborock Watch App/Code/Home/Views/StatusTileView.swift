@@ -12,12 +12,10 @@ struct StatusTileView: View {
     var iconName: String
     var label: String
     var unit: String
-    var color: Color
     var value: String
 
     var body: some View {
         HStack(spacing: 8) {
-
             VStack {
                 Image(systemName: iconName)
                     .resizable()
@@ -25,11 +23,11 @@ struct StatusTileView: View {
                     .frame(width: 18, height: 18)
             }
             .padding(6)
-            .background(color)
+            .background(Color("blue-primary"))
             .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(label)
+                Text(LocalizedStringKey(label))
                     .font(.system(size: 11, weight: .regular, design: .default))
                     .foregroundColor(Color.gray)
 
@@ -55,14 +53,12 @@ struct StatusItemView_Previews: PreviewProvider {
                     iconName: "stopwatch",
                     label: "Clean Time",
                     unit: "h",
-                    color: Color.orange,
                     value: "00:52")
 
                 StatusTileView(
                     iconName: "square.dashed",
                     label: "Clean Area",
                     unit: "qm",
-                    color: Color.green,
                     value: "56.8")
             }
             .padding()
